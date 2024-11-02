@@ -3,28 +3,17 @@ using PixelGenesis.Editor.Core;
 
 namespace PixelGenesis.Editor.GUI;
 
-public sealed class PixelGenesisEditor
+internal sealed class PixelGenesisEditor(
+    MenuItemGUIRenderer menuItemGUIRenderer,
+    EditorWindowsGUIRenderer windowsGUIRenderer
+    )
 {
-    List<IEditorWindow> Windows = new List<IEditorWindow>();
-    List<IEditorMenuAction> EditorMenuActions = new List<IEditorMenuAction>();
-        
     public void OnGui()
     {
-        OnMenuBar();
-    }
+        // Enable Docking
+        ImGui.DockSpaceOverViewport();
 
-    void OnMenuBar()
-    {
-        ImGui.BeginMainMenuBar();
-
-        if(ImGui.BeginMenu("File"))
-        {
-            ImGui.MenuItem("Open..", "Ctrl+O");
-            ImGui.MenuItem("Save", "Ctrl+S");
-            ImGui.MenuItem("Close", "Ctrl+W");
-        }
-        ImGui.EndMenu();
-
-        ImGui.EndMainMenuBar();
+        menuItemGUIRenderer.OnGui();
+        windowsGUIRenderer.OnGui();
     }
 }

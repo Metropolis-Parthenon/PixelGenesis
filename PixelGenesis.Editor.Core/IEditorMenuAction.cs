@@ -2,7 +2,7 @@
 
 public interface IEditorMenuAction
 {
-    string[] Path { get; }
+    string Path { get; }
     string Shortcut { get; }
     public void OnAction();
 }

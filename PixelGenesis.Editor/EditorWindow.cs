@@ -6,15 +6,19 @@ using ImGuiNET;
 using OpenTK.Mathematics;
 using PixelGenesis.Editor.GUI;
 
-namespace PixelGenesis.Lab;
+namespace PixelGenesis.Editor;
 
-internal class Game : GameWindow
+internal class EditorWindow : GameWindow
 {
-    public Game(int width, int height, string title) : base(GameWindowSettings.Default, new NativeWindowSettings() { ClientSize = (width, height), Title = title }) { }
+    PixelGenesisEditor EditorGUI;
+
+    public EditorWindow(int width, int height, string title, PixelGenesisEditor editorGui) : base(GameWindowSettings.Default, new NativeWindowSettings() { ClientSize = (width, height), Title = title }) 
+    { 
+        EditorGUI = editorGui;
+    }
 
     ImGuiController _controller;
-    PixelGenesisEditor EditorGUI = new PixelGenesisEditor();
-
+    
     protected override void OnLoad()
     {
         base.OnLoad();
@@ -32,9 +36,6 @@ internal class Game : GameWindow
 
         GL.ClearColor(new Color4(0, 32, 48, 255));
         GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
-
-        // Enable Docking
-        ImGui.DockSpaceOverViewport();
 
         EditorGUI.OnGui();
 

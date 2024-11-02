@@ -7,7 +7,7 @@ using OpenTK.Windowing.GraphicsLibraryFramework;
 using System.Diagnostics;
 using ErrorCode = OpenTK.Graphics.OpenGL4.ErrorCode;
 
-namespace PixelGenesis.Lab;
+namespace PixelGenesis.Editor;
 public class ImGuiController : IDisposable
 {
     private bool _frameBegun;

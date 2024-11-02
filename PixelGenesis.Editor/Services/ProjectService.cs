@@ -8,17 +8,23 @@ namespace PixelGenesis.Editor.Services;
 
 public class ProjectService
 {
-    string ProjectPath = "";
+    string SolutionPath = "";
 
-    bool IsProjectOpen => !string.IsNullOrEmpty(ProjectPath);
+    bool IsProjectOpen => !string.IsNullOrEmpty(SolutionPath);
 
-    public void OpenProject(string projectPath)
-    {        
-        ProjectPath = projectPath;
+    public void OpenSolution(string solutionPath)
+    {
+        SolutionPath = solutionPath;
     }
 
     public string GetProjectPath()
     {
-        return ProjectPath;
+        return SolutionPath;
     }
+
+    public void CreateNewProject()
+    {
+        // TODO
+    }
+
 }
