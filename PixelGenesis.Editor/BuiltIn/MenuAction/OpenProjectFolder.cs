@@ -3,7 +3,7 @@ using PixelGenesis.Editor.Services;
 
 namespace PixelGenesis.Editor.BuiltIn.MenuAction;
 
-internal sealed class OpenProjectFolder(ProjectService projectService) : IEditorMenuAction
+internal sealed class OpenProjectFolder(SolutionService projectService) : IEditorMenuAction
 {    
     public string Path => "File/Open Project";
 
@@ -15,7 +15,7 @@ internal sealed class OpenProjectFolder(ProjectService projectService) : IEditor
 
         if(result.IsOk)
         {
-            projectService.OpenProject(result.Path);
+            projectService.OpenSolution(result.Path);
         }
     }
 }
