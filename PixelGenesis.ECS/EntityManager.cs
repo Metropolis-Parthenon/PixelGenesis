@@ -3,7 +3,7 @@ using Microsoft.Extensions.ObjectPool;
 using System.Collections.Immutable;
 using System.Runtime.InteropServices;
 
-namespace PixelGenesis.GameLogic;
+namespace PixelGenesis.ECS;
 
 public sealed class EntityManager
 {
@@ -11,7 +11,7 @@ public sealed class EntityManager
     
     List<Entity> Entities = new List<Entity>();
 
-    Dictionary<Type, List<IComponent>> Components = new Dictionary<Type, List<IComponent>>();
+    Dictionary<Type, List<Component>> Components = new Dictionary<Type, List<Component>>();
 
     internal ComponentFactory ComponentFactory { get; }
 
@@ -33,17 +33,17 @@ public sealed class EntityManager
         return CollectionsMarshal.AsSpan(Entities);
     }
 
-    public ReadOnlySpan<IComponent> GetComponents<T>() where T : IComponent
+    public ReadOnlySpan<Component> GetComponents<T>() where T : Component
     {
         return GetComponents(typeof(T));
     }    
 
-    public ReadOnlySpan<IComponent> GetComponents(Type type)
+    public ReadOnlySpan<Component> GetComponents(Type type)
     {
         ref var components = ref CollectionsMarshal.GetValueRefOrAddDefault(Components, type, out var existed);
         if(!existed)
         {
-            components = new List<IComponent>();
+            components = new List<Component>();
         }
 
         return CollectionsMarshal.AsSpan(components);
@@ -97,7 +97,7 @@ public sealed class EntityManager
             var component = components[i];
 
             var newComponent = ComponentFactory.CreateComponentIfNotExists(newEntity, component.GetType());
-            component.StateObj = component.StateObj.DeepClone();
+            component.CopyToAnother(newComponent);
         }
     }
 
@@ -122,14 +122,14 @@ public sealed class EntityManager
         EntityPool.Return(entity);
     }
 
-    internal void AddComponentToEntity(IComponent component)
+    internal void AddComponentToEntity(Component component)
     {
         var type = component.GetType();
 
         ref var components = ref CollectionsMarshal.GetValueRefOrAddDefault(Components, type, out var existed);
         if(!existed)
         {
-            components = new List<IComponent>();
+            components = new List<Component>();
         }
 
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
@@ -137,7 +137,7 @@ public sealed class EntityManager
 #pragma warning restore CS8602 // Dereference of a possibly null reference.
     }
 
-    internal void RemoveComponentFromEntity(IComponent component) 
+    internal void RemoveComponentFromEntity(Component component) 
     {
         var type = component.GetType();
 

@@ -9,14 +9,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Components\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="FbxParser" Version="2.0.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\PixelGenesis.ECS.SourceGenerator\PixelGenesis.ECS.SourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     <ProjectReference Include="..\PixelGenesis.ECS\PixelGenesis.ECS.csproj" />
   </ItemGroup>
 

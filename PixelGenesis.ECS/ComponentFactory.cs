@@ -1,7 +1,7 @@
 ﻿using System.Numerics;
 using System.Runtime.CompilerServices;
 
-namespace PixelGenesis.GameLogic;
+namespace PixelGenesis.ECS;
 
 public sealed class ComponentFactory
 {
@@ -12,9 +12,9 @@ public sealed class ComponentFactory
         EntityManager = entityManager;
     }
 
-    Dictionary<Type, Func<Entity, IComponent>> ComponentFactories = new Dictionary<Type, Func<Entity, IComponent>>();
+    Dictionary<Type, Func<Entity, Component>> ComponentFactories = new Dictionary<Type, Func<Entity, Component>>();
     
-    public void AddComponentFactory(Type type, Func<Entity, IComponent> factory)
+    public void AddComponentFactory(Type type, Func<Entity, Component> factory)
     {
         ComponentFactories.Add(type, factory);
         Vector3 vector = new Vector3(0, 0, 0);
@@ -22,17 +22,17 @@ public sealed class ComponentFactory
         
     }
 
-    public T CreateComponent<T>(Entity container) where T : class, IComponent
+    public T CreateComponent<T>(Entity container) where T : Component
     {
        return Unsafe.As<T>(CreateComponent(container, typeof(T)));
     }
 
-    public T CreateComponentIfNotExists<T>(Entity container) where T : class, IComponent
+    public T CreateComponentIfNotExists<T>(Entity container) where T : Component
     {
         return Unsafe.As<T>(CreateComponentIfNotExists(container, typeof(T)));
     }
         
-    public IComponent CreateComponent(Entity container, Type type)
+    public Component CreateComponent(Entity container, Type type)
     {        
         if (!ComponentFactories.TryGetValue(type, out var factory))
         {
@@ -40,14 +40,14 @@ public sealed class ComponentFactory
         }
 
         var component = factory(container);
-        component.Entity = container;
+        component._entity = container;
 
         container.AddComponent(component);
 
         return component;
     }
 
-    public IComponent CreateComponentIfNotExists(Entity container, Type type)
+    public Component CreateComponentIfNotExists(Entity container, Type type)
     {        
         if (container.TryGetComponent(type, out var component))
         {

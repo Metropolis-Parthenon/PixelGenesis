@@ -1,9 +1,8 @@
-﻿using PixelGenesis.ECS;
-using System.Collections.Immutable;
+﻿using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
-namespace PixelGenesis.GameLogic;
+namespace PixelGenesis.ECS;
 
 public sealed partial class Entity
 {
@@ -22,7 +21,7 @@ public sealed partial class Entity
 
     public int Id { get; internal set; }
     
-    public ReadOnlySpan<IComponent> GetComponents()
+    public ReadOnlySpan<Component> GetComponents()
     {        
         return Components.ValuesAsSpan();
     }
@@ -39,22 +38,22 @@ public sealed partial class Entity
         Components.Remove(type);
     }
 
-    public T AddComponent<T>() where T : class, IComponent
+    public T AddComponent<T>() where T : Component
     {
         return EntityManager.ComponentFactory.CreateComponent<T>(this);
     }
 
-    public IComponent AddComponent(Type type)
+    public Component AddComponent(Type type)
     {
         return EntityManager.ComponentFactory.CreateComponent(this, type);
     }
 
-    public T GetComponent<T>() where T : class, IComponent
+    public T GetComponent<T>() where T : Component
     {
         return Unsafe.As<T>(GetComponent(typeof(T)));
     }
 
-    public IComponent GetComponent(Type type)
+    public Component GetComponent(Type type)
     {
         if (Components.TryGetValue(type, out var component))
         {
@@ -64,7 +63,7 @@ public sealed partial class Entity
         throw new InvalidOperationException($"Entity Does not contain Component with type {type.FullName}.");
     }
 
-    public bool TryGetComponent<T>([MaybeNullWhen(false)] out T component) where T : class, IComponent
+    public bool TryGetComponent<T>([MaybeNullWhen(false)] out T component) where T : Component
     {
         if (TryGetComponent(typeof(T), out var comp))
         {
@@ -80,19 +79,19 @@ public sealed partial class Entity
 
 public sealed partial class Entity
 {
-    SortedList<Type, IComponent> Components = new SortedList<Type, IComponent>();
+    SortedList<Type, Component> Components = new SortedList<Type, Component>();
 
     internal void Clear()
     {
         Components.Clear();
     }
 
-    internal void AddComponent(IComponent component)
+    internal void AddComponent(Component component)
     {
         Components.Add(component.GetType(), component);
     }
 
-    internal bool TryGetComponent(Type type, [MaybeNullWhen(false)] out IComponent component)
+    internal bool TryGetComponent(Type type, [MaybeNullWhen(false)] out Component component)
     {
         return Components.TryGetValue(type, out component);
     }

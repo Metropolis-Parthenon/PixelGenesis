@@ -1,10 +1,10 @@
 ﻿using CommunityToolkit.HighPerformance;
-using PixelGenesis.GameLogic;
+using PixelGenesis.ECS;
 using System.Numerics;
 
 namespace PixelGenesis._3D.Common;
 
-public interface IMesh : IStateObject
+public interface IMesh : IWritableAsset
 {
     ReadOnlyMemory<Vector3> Normals { get; }
     ReadOnlyMemory<Vector3> Vertices { get; }
@@ -14,17 +14,17 @@ public interface IMesh : IStateObject
     ReadOnlyMemory<Vector2> UV1 { get; }
     ReadOnlyMemory<Vector2> UV2 { get; }
 
-    void WriteToStream(Stream stream)
+    internal static void WriteMeshToStream(Stream stream, IMesh mesh)
     {
         using var bw = new BinaryWriter(stream);
 
-        WriteMemory(bw, Normals);
-        WriteMemory(bw, Vertices);
-        WriteMemory(bw, Triangles);
-        WriteMemory(bw, Colors);
-        WriteMemory(bw, Tangents);
-        WriteMemory(bw, UV1);
-        WriteMemory(bw, UV2);
+        WriteMemory(bw, mesh.Normals);
+        WriteMemory(bw, mesh.Vertices);
+        WriteMemory(bw, mesh.Triangles);
+        WriteMemory(bw, mesh.Colors);
+        WriteMemory(bw, mesh.Tangents);
+        WriteMemory(bw, mesh.UV1);
+        WriteMemory(bw, mesh.UV2);
     }
 
     private static void WriteMemory<T>(BinaryWriter bw, ReadOnlyMemory<T> memory) where T : unmanaged
@@ -33,10 +33,12 @@ public interface IMesh : IStateObject
         bw.Write(byteSpan.Length);
         bw.Write(byteSpan);
     }
+
+    IMesh Clone();   
 }
 
-
-public sealed class Mesh : IMesh
+[ReadableAsset<Mesh, MeshFactory>]
+public sealed class Mesh : IMesh, IReadableAsset
 {
     public ReadOnlyMemory<Vector3> Normals { get; }
 
@@ -52,19 +54,12 @@ public sealed class Mesh : IMesh
 
     public ReadOnlyMemory<Vector2> UV2 { get; }
 
-    public Mesh(IMesh mesh)
-    {
-        Normals = mesh.Normals.ToArray();
-        Vertices = mesh.Vertices.ToArray();
-        Triangles = mesh.Triangles.ToArray();
-        Colors = mesh.Colors.ToArray();
-        Tangents = mesh.Tangents.ToArray();
-        UV1 = mesh.UV1.ToArray();
-        UV2 = mesh.UV2.ToArray();
-    }
+    public string Reference { get; }
 
-    public Mesh(Stream stream)
+    private Mesh(string reference, Stream stream)
     {
+        Reference = reference;
+
         using var br = new BinaryReader(stream);
         
         Normals = ReadMemory<Vector3>(br);
@@ -86,11 +81,23 @@ public sealed class Mesh : IMesh
         return result;
     }
 
-    public IStateObject DeepClone()
+    public IMesh Clone()
     {
         return this;
     }
 
+    public void WriteToStream(Stream stream)
+    {
+        IMesh.WriteMeshToStream(stream, this);
+    }
+
+    public class MeshFactory : IReadableAssetFactory<Mesh>
+    {
+        public Mesh ReadAsset(string reference, Stream stream)
+        {
+            return new Mesh(reference, stream);
+        }
+    }
 }
 
 public sealed class MutableMesh : IMesh
@@ -117,7 +124,7 @@ public sealed class MutableMesh : IMesh
     public Memory<Vector2> MutableUV2;
     public ReadOnlyMemory<Vector2> UV2 => MutableUV2;
 
-    public IStateObject DeepClone()
+    public IMesh Clone()
     {
         var result = new MutableMesh();
         result.MutableNormals = MutableNormals.ToArray();
@@ -129,5 +136,10 @@ public sealed class MutableMesh : IMesh
         result.MutableUV2 = MutableUV2.ToArray();
 
         return result;
+    }
+
+    public void WriteToStream(Stream stream)
+    {
+        IMesh.WriteMeshToStream(stream, this);
     }
 }
