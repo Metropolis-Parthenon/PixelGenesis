@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using ImGuiNET;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PixelGenesis.Editor.Core;
 using PixelGenesis.Editor.GUI;
@@ -11,7 +12,7 @@ internal sealed class EditorApplication(EditorWindow window, IHost host) : IHost
     public Task StartAsync(CancellationToken cancellationToken)
     {
         window.Closing += Window_Closing;
-        window.Run();        
+        window.Run();
         return Task.CompletedTask;
     }
 
@@ -36,6 +37,7 @@ internal sealed class EditorApplication(EditorWindow window, IHost host) : IHost
 
     static void ConfigureService(HostApplicationBuilder builder)
     {
+        builder.Services.AddSingleton<SaveService>();
         builder.Services.AddSingleton<SolutionService>();
         builder.Services.AddSingleton<MenuItemGUIRenderer>();
         builder.Services.AddSingleton<EditorWindowsGUIRenderer>();

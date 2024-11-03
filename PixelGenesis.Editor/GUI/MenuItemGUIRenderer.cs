@@ -12,17 +12,15 @@ internal class MenuItemGUIRenderer(IEnumerable<IEditorMenuAction> menuActions)
 {
     public void OnGui()
     {
-        ImGui.BeginMainMenuBar();
-
-        CreateMenus(string.Empty, new HashSet<string>());
-
+        if(ImGui.BeginMainMenuBar())
+        {
+            CreateMenus(string.Empty, new HashSet<string>());     
+        }
         ImGui.EndMainMenuBar();
     }
 
     void CreateMenus(string path, HashSet<string> visitedPaths)
     {
-        visitedPaths.Add(path);
-
         foreach (var action in menuActions) 
         {
             if(!action.Path.AsSpan().StartsWith(path))
@@ -57,11 +55,12 @@ internal class MenuItemGUIRenderer(IEnumerable<IEditorMenuAction> menuActions)
 
             if (!visitedPaths.Contains(nextPath)) 
             {
+                visitedPaths.Add(nextPath);
                 if (ImGui.BeginMenu(nextName))
                 {
                     CreateMenus(nextPath, visitedPaths);
-                }
-                ImGui.EndMenu();
+                    ImGui.EndMenu();
+                }                
             }            
         }
     }

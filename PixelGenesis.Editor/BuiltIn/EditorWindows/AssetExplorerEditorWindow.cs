@@ -7,8 +7,7 @@ namespace PixelGenesis.Editor.BuiltIn.EditorWindows;
 
 internal class AssetExplorerEditorWindow : IEditorWindow
 {
-    public const string AssetFolderName = "Assets"; 
-
+    public const string AssetFolderName = "Assets";
     public string Name => "Asset Explorer";
     
     const int PathMaxLength = 64;

@@ -24,6 +24,8 @@ internal class EditorWindow : GameWindow
         base.OnLoad();
         
         _controller = new ImGuiController(ClientSize.X, ClientSize.Y);
+        EditorGUI.OnGuiInit();
+        _controller.RecreateFontDeviceTexture();
 
         GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     }
