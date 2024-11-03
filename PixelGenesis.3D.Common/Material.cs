@@ -6,7 +6,7 @@ public class Material : IWritableAsset, IReadableAsset
 {
     public string Reference { get; }
 
-    public Shader Shader { get; set; }
+    public Shader Shader { get; }
 
     private Material(string reference, Shader shader)
     {
