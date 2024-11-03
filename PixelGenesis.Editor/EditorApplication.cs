@@ -36,7 +36,8 @@ internal sealed class EditorApplication(EditorWindow window, IHost host) : IHost
     }
 
     static void ConfigureService(HostApplicationBuilder builder)
-    {        
+    {
+        builder.Services.AddSingleton<ImageLoader>();
         builder.Services.AddSingleton<SaveService>();
         builder.Services.AddSingleton<SolutionService>();
         builder.Services.AddSingleton<MenuItemGUIRenderer>();

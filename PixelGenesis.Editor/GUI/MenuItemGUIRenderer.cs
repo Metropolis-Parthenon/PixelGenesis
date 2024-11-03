@@ -1,22 +1,22 @@
 ﻿using ImGuiNET;
 using PixelGenesis.Editor.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using PixelGenesis.Editor.Services;
+using System.Numerics;
 
 namespace PixelGenesis.Editor.GUI;
 
-internal class MenuItemGUIRenderer(IEnumerable<IEditorMenuAction> menuActions)
+internal class MenuItemGUIRenderer(IEnumerable<IEditorMenuAction> menuActions, ImageLoader imageLoader)
 {
     public void OnGui()
     {
-        if(ImGui.BeginMainMenuBar())
-        {
-            CreateMenus(string.Empty, new HashSet<string>());     
+        ImGui.PushStyleVar(ImGuiStyleVar.FramePadding, new Vector2(20f, 10f));
+        if (ImGui.BeginMainMenuBar())
+        {            
+            ImGui.Image(imageLoader.LoadImage(Path.Combine(Directory.GetCurrentDirectory(), "Assets", "Logo", "logo.png")), new Vector2(40, 40));
+            CreateMenus(string.Empty, new HashSet<string>());       
         }
         ImGui.EndMainMenuBar();
+        ImGui.PopStyleVar();
     }
 
     void CreateMenus(string path, HashSet<string> visitedPaths)

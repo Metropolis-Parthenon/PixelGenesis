@@ -12,9 +12,12 @@ internal class EditorWindow : GameWindow
 {
     PixelGenesisEditor EditorGUI;
 
-    public EditorWindow(int width, int height, string title, PixelGenesisEditor editorGui) : base(GameWindowSettings.Default, new NativeWindowSettings() { ClientSize = (width, height), Title = title }) 
+    public EditorWindow(int width, int height, string title, PixelGenesisEditor editorGui) : base(
+        GameWindowSettings.Default,
+        new NativeWindowSettings() { ClientSize = (width, height), Title = title, WindowBorder = WindowBorder.Resizable }) 
     { 
         EditorGUI = editorGui;
+        
     }
 
     ImGuiController _controller;

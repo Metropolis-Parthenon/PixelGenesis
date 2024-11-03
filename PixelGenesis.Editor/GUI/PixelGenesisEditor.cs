@@ -9,6 +9,8 @@ internal sealed class PixelGenesisEditor(
     EditorWindowsGUIRenderer windowsGUIRenderer
     )
 {
+    const float ToolbarSize = 50;
+    
     ImFontPtr MainFont;
 
     public void OnGuiInit()
@@ -17,7 +19,7 @@ internal sealed class PixelGenesisEditor(
     }
 
     public void OnGui()
-    {
+    {        
         SetupImGuiStyle();
         
         ImGui.PushFont(MainFont);
@@ -28,6 +30,7 @@ internal sealed class PixelGenesisEditor(
         menuItemGUIRenderer.OnGui();
         windowsGUIRenderer.OnGui();
     }
+
     public static void SetupImGuiStyle()
     {
         // Fork of Moonlight style from ImThemes
