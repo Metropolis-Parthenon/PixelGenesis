@@ -36,12 +36,13 @@ internal sealed class EditorApplication(EditorWindow window, IHost host) : IHost
     }
 
     static void ConfigureService(HostApplicationBuilder builder)
-    {
+    {        
         builder.Services.AddSingleton<SaveService>();
         builder.Services.AddSingleton<SolutionService>();
         builder.Services.AddSingleton<MenuItemGUIRenderer>();
         builder.Services.AddSingleton<EditorWindowsGUIRenderer>();
         builder.Services.AddSingleton<PixelGenesisEditor>();
+        builder.Services.AddSingleton<IEditionCommandDispatcher, EditionCommandDispatcher>();
         builder.Services.AddSingleton<ICommandDispatcher, CommandDispatcher>();
         builder.Services.AddSingleton((sp) => new EditorWindow(1920, 1080, "Pixel Genesis Editor", sp.GetRequiredKeyedService<PixelGenesisEditor>(default)));
 

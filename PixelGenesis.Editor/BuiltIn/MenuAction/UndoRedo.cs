@@ -1,13 +1,9 @@
 ﻿using PixelGenesis.Editor.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using PixelGenesis.Editor.Services;
 
 namespace PixelGenesis.Editor.BuiltIn.MenuAction;
 
-internal class Undo : IEditorMenuAction
+internal class Undo(IEditionCommandDispatcher commandDispatcher) : IEditorMenuAction
 {
     public string Path => "Edit/Undo";
 
@@ -15,10 +11,11 @@ internal class Undo : IEditorMenuAction
 
     public void OnAction()
     {
+        commandDispatcher.Undo();
     }
 }
 
-internal class Redo : IEditorMenuAction
+internal class Redo(IEditionCommandDispatcher commandDispatcher) : IEditorMenuAction
 {
     public string Path => "Edit/Redo";
 
@@ -26,5 +23,6 @@ internal class Redo : IEditorMenuAction
 
     public void OnAction()
     {
+        commandDispatcher.Redo();
     }
 }
