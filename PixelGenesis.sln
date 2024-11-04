@@ -27,6 +27,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ProjectTemplate", "ProjectT
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "working", "working", "{16440712-695D-469E-80D8-65917C167B9A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PixelGenesis.Rendering.Abstractions", "PixelGenesis.Rendering.Abstractions\PixelGenesis.Rendering.Abstractions.csproj", "{D3A831E0-89CD-431E-B2B9-621994D27B3A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PixelGenesis.3D.Renderer.Abstractions", "PixelGenesis.3D.Renderer.Abstractions\PixelGenesis.3D.Renderer.Abstractions.csproj", "{01FDC66A-ABD9-4F3A-B112-F4BB07CE8D46}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +73,14 @@ Global
 		{21A73C89-7957-4FDC-9BB9-32D6883E8F52}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{21A73C89-7957-4FDC-9BB9-32D6883E8F52}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{21A73C89-7957-4FDC-9BB9-32D6883E8F52}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D3A831E0-89CD-431E-B2B9-621994D27B3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3A831E0-89CD-431E-B2B9-621994D27B3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3A831E0-89CD-431E-B2B9-621994D27B3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3A831E0-89CD-431E-B2B9-621994D27B3A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{01FDC66A-ABD9-4F3A-B112-F4BB07CE8D46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01FDC66A-ABD9-4F3A-B112-F4BB07CE8D46}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01FDC66A-ABD9-4F3A-B112-F4BB07CE8D46}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01FDC66A-ABD9-4F3A-B112-F4BB07CE8D46}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

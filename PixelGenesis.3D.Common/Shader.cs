@@ -34,8 +34,8 @@ public sealed class GLSLShaderFile : IReadableAsset, IWritableAsset
 public sealed class Shader : IWritableAsset, IReadableAsset
 {
     public string Reference { get; }
-    GLSLShaderFile VertexShade { get; }
-    GLSLShaderFile FragmentShader { get; }
+    public GLSLShaderFile VertexShade { get; }
+    public GLSLShaderFile FragmentShader { get; }
 
     private Shader(GLSLShaderFile vertexShader, GLSLShaderFile fragmentShader, string reference)
     {

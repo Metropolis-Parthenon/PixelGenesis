@@ -8,7 +8,7 @@ public interface IMesh : IWritableAsset
 {
     ReadOnlyMemory<Vector3> Normals { get; }
     ReadOnlyMemory<Vector3> Vertices { get; }
-    ReadOnlyMemory<int> Triangles { get; }
+    ReadOnlyMemory<uint> Triangles { get; }
     ReadOnlyMemory<Vector4> Colors { get; }
     ReadOnlyMemory<Vector4> Tangents { get; }
     ReadOnlyMemory<Vector2> UV1 { get; }
@@ -44,7 +44,7 @@ public sealed class Mesh : IMesh, IReadableAsset
 
     public ReadOnlyMemory<Vector3> Vertices { get; }
 
-    public ReadOnlyMemory<int> Triangles { get; }
+    public ReadOnlyMemory<uint> Triangles { get; }
 
     public ReadOnlyMemory<Vector4> Colors { get; }
 
@@ -64,7 +64,7 @@ public sealed class Mesh : IMesh, IReadableAsset
         
         Normals = ReadMemory<Vector3>(br);
         Vertices = ReadMemory<Vector3>(br);
-        Triangles = ReadMemory<int>(br);
+        Triangles = ReadMemory<uint>(br);
         Colors = ReadMemory<Vector4>(br);
         Tangents = ReadMemory<Vector4>(br);
         UV1 = ReadMemory<Vector2>(br);
@@ -109,8 +109,8 @@ public sealed class MutableMesh : IMesh
     public Memory<Vector3> MutableVertices;
     public ReadOnlyMemory<Vector3> Vertices => MutableVertices;
 
-    public Memory<int> MutableTriangles;
-    public ReadOnlyMemory<int> Triangles => MutableTriangles;
+    public Memory<uint> MutableTriangles;
+    public ReadOnlyMemory<uint> Triangles => MutableTriangles;
 
     public Memory<Vector4> MutableColors;
     public ReadOnlyMemory<Vector4> Colors => MutableColors;

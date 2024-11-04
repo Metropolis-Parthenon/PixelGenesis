@@ -11,4 +11,8 @@
     <PackageReference Include="OpenTK" Version="4.8.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\PixelGenesis.3D.Common\PixelGenesis.3D.Common.csproj" />
+  </ItemGroup>
+
 </Project>

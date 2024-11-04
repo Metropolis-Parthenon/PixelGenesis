@@ -4,7 +4,7 @@ using PixelGenesis.Lab;
 Console.WriteLine("Hello, World!");
 
 
-using (Game game = new Game(1920, 1080, "LearnOpenTK"))
+using (Game game = new Game(800, 600, "LearnOpenTK"))
 {
     game.Run();
 }

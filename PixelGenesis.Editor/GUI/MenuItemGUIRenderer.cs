@@ -13,7 +13,12 @@ internal class MenuItemGUIRenderer(IEnumerable<IEditorMenuAction> menuActions, I
         if (ImGui.BeginMainMenuBar())
         {            
             ImGui.Image(imageLoader.LoadImage(Path.Combine(Directory.GetCurrentDirectory(), "Assets", "Logo", "logo.png")), new Vector2(40, 40));
-            CreateMenus(string.Empty, new HashSet<string>());       
+            CreateMenus(string.Empty, new HashSet<string>());
+
+            if(ImGui.Button("Open in Visual Studio"))
+            {
+
+            }
         }
         ImGui.EndMainMenuBar();
         ImGui.PopStyleVar();
