@@ -5,6 +5,7 @@ using OpenTK.Windowing.GraphicsLibraryFramework;
 using CommunityToolkit.HighPerformance;
 using System.Numerics;
 using ImGuiNET;
+using PixelGenesis.Lab.Tests;
 
 namespace PixelGenesis.Lab;
 
@@ -12,37 +13,18 @@ internal class Game : GameWindow
 {
     public Game(int width, int height, string title) : base(GameWindowSettings.Default, new NativeWindowSettings() { ClientSize = (width, height), Title = title }) { }
 
-    Matrix4x4 ProjectionMatrix = Matrix4x4.CreateOrthographicOffCenter(-2.0f, 2.0f, -1.5f, 1.5f, -1.0f, 1.0f);
-    Matrix4x4 ViewMatrix = Matrix4x4.CreateTranslation(-0.5f, 0.0f, 0.0f);
-    
-    Matrix4x4 ModelMatrix;
-
-    Vector3 TranslationA = new Vector3(0.5f, 0.5f, 0.0f);
-    Vector3 TranslationB = new Vector3(0.5f, 0.5f, 0.0f);
-
     ImGuiController _controller;
 
-    Texture Texture;
-    Renderer Renderer = new Renderer();
-    Shader Shader;
-    VertexArrayObject vao;
-    VertexBuffer vb;
-    IndexBuffer ib;
+    Dictionary<string, Func<ITest>> Tests = new Dictionary<string, Func<ITest>>()
+    {
+        ["Texture"] = () => new TextureTest(),
+        ["Clear Color"] = () => new ClearColorTest()
+    };
 
-    int program;
+    Stack<string> History = new Stack<string>();
 
-    float[] positions = [
-        -0.5f, -0.5f, 0.0f, 0.0f,
-        0.5f, -0.5f, 1.0f, 0.0f,
-        0.5f, 0.5f, 1.0f, 1.0f,
-        -0.5f, 0.5f, 0.0f, 1.0f
-        ];
-
-    uint[] indices = [
-        0, 1, 2,
-        2, 3, 0
-    ];
-
+    ITest? Test;
+    
     protected override void OnLoad()
     {
         base.OnLoad();
@@ -51,26 +33,6 @@ internal class Game : GameWindow
         GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);        
 
         _controller = new ImGuiController(ClientSize.X, ClientSize.Y);
-
-        Texture = new Texture(Path.Combine(Directory.GetCurrentDirectory(), "Assets", "textures", "logo.png"));
-
-        vao = new VertexArrayObject();
-
-        // vertex buffer
-        vb = new VertexBuffer(positions.AsMemory().Cast<float, byte>());
-        var layout = new VertexBufferLayout();
-        layout.PushFloat(2);
-        layout.PushFloat(2);
-
-        vao.AddBuffer(vb, layout);
-        
-        //index buffer
-        ib = new IndexBuffer(indices.AsMemory());        
-
-        Shader = new Shader(
-            Path.Combine(Directory.GetCurrentDirectory(), "Assets", "shaders", "vertex.shader"),
-            Path.Combine(Directory.GetCurrentDirectory(), "Assets", "shaders", "fragment.shader"));
-
     }
 
     protected override void OnRenderFrame(FrameEventArgs args)
@@ -83,15 +45,9 @@ internal class Game : GameWindow
         GL.Clear(ClearBufferMask.ColorBufferBit);
         Renderer.GLClearError();
 
-        Texture.Bind(0);
+        Test?.OnUpdate((float)args.Time);
+        Test?.OnRender();
 
-        Shader.Bind();
-        Shader.SetUniformMat4f("u_MVP", ProjectionMatrix * ViewMatrix * Matrix4x4.CreateTranslation(TranslationA));
-        Renderer.Draw(vao, ib, Shader);
-
-        Shader.Bind();
-        Shader.SetUniformMat4f("u_MVP", ProjectionMatrix * ViewMatrix * Matrix4x4.CreateTranslation(TranslationB));
-        Renderer.Draw(vao, ib, Shader);
 
         _controller.Render();
         Renderer.GLCheckError();
@@ -100,12 +56,43 @@ internal class Game : GameWindow
 
     void OnGui()
     {
-        ImGui.Begin("Hello, world!");
+        ImGui.Begin("Learning OpenGL");
+        if(ImGui.BeginMainMenuBar())
+        {
+            foreach(var key in Tests.Keys)
+            {
+                if(ImGui.MenuItem(key))
+                {
+                    LoadTest(key);
+                }
+            }
 
-        ImGui.SliderFloat3("TranslationA", ref TranslationA, -1.0f, 1.0f);
-        ImGui.SliderFloat3("TranslationB", ref TranslationB, -1.0f, 1.0f);
+            if(ImGui.Button("Back"))
+            {
+                PreviousTest();
+            }
+        }
+        ImGui.EndMainMenuBar();
+
+        Test?.OnGui();
 
         ImGui.End();
+    }
+
+    void PreviousTest()
+    {
+        if (History.Count <= 1) return;
+        Test?.Dispose();        
+        History.Pop();        
+        var previous = History.Peek();
+        Test = Tests[previous]();
+    }
+
+    void LoadTest(string name)
+    {
+        Test?.Dispose();
+        Test = Tests[name]();
+        History.Push(name);
     }
 
     protected override void OnTextInput(TextInputEventArgs e)
@@ -139,8 +126,6 @@ internal class Game : GameWindow
 
     protected override void OnUnload()
     {
-        vb.Dispose();
-        ib.Dispose();
         base.OnUnload();
     }
 

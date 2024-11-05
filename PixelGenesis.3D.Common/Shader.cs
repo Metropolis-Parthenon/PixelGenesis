@@ -1,4 +1,5 @@
 ﻿using PixelGenesis.ECS;
+using System.IO;
 
 namespace PixelGenesis._3D.Common;
 
@@ -6,27 +7,38 @@ namespace PixelGenesis._3D.Common;
 public sealed class GLSLShaderFile : IReadableAsset, IWritableAsset
 {
     public string Reference { get; }
-    public string SourceCode { get; }
+    public ReadOnlyMemory<byte> SpirvBytecode { get; }
     
-    private GLSLShaderFile(string reference, string sourceCode)
+    private GLSLShaderFile(string reference, ReadOnlyMemory<byte> spirvBytecode)
     {
         Reference = reference;
-        SourceCode = sourceCode;
+        SpirvBytecode = spirvBytecode;
     }
     
     public void WriteToStream(Stream stream)
     {
-        using var sw = new StreamWriter(stream);
-        using var textWriter = new StreamWriter(stream);
-        textWriter.Write(SourceCode);
+        using var bw = new BinaryWriter(stream);
+        bw.Write(SpirvBytecode.Span);
     }
 
     public class Factory : IReadableAssetFactory<GLSLShaderFile>
     {
         public GLSLShaderFile ReadAsset(string reference, Stream stream)
         {
-            using var sr = new StreamReader(stream);
-            return new GLSLShaderFile(reference, sr.ReadToEnd());
+            MemoryStream memoryStream;
+
+            if(stream is MemoryStream ms)
+            {
+                memoryStream = ms;
+            }
+            else
+            {
+                memoryStream = new MemoryStream();
+                stream.CopyTo(memoryStream);
+            }
+
+            var memory = memoryStream.GetBuffer().AsMemory().Slice(0, (int)memoryStream.Length);
+            return new GLSLShaderFile(reference, memory);
         }
     }
 }

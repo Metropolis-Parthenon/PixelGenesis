@@ -2,7 +2,7 @@
 using StbImageSharp;
 
 
-namespace PixelGenesis.Lab;
+namespace PixelGenesis.Lab.OpenGLAbstractions;
 
 internal class Texture : IDisposable
 {
@@ -29,7 +29,7 @@ internal class Texture : IDisposable
         GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.ClampToEdge);
         GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.ClampToEdge);
 
-        GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba8, image.Width, image.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, image.Data);        
+        GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba8, image.Width, image.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, image.Data);
     }
 
     public void Bind(int slot)

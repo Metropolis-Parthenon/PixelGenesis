@@ -1,15 +1,17 @@
-#version 330 core
+#version 450
 
 layout(location = 0) in vec4 position;
 layout(location = 1) in vec2 textCoord;
 
-out vec2 v_TexCoord;
+layout(location = 0) out vec2 v_TexCoord;
 
-uniform mat4 u_MVP;
+layout(binding = 0) uniform Projection {
+    mat4 u_MVP;
+} projection;
 
 void main()
 {
-    gl_Position = u_MVP * position;
+    gl_Position = projection.u_MVP * position;
 
     // pass the texcoord to the fragment shader
     v_TexCoord = textCoord;

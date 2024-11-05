@@ -1,7 +1,7 @@
 ﻿using OpenTK.Graphics.OpenGL4;
 using System.Runtime.InteropServices;
 
-namespace PixelGenesis.Lab;
+namespace PixelGenesis.Lab.OpenGLAbstractions;
 
 struct LayoutElement
 {

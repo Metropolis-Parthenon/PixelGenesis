@@ -22,14 +22,15 @@
     <PackageReference Include="CommunityToolkit.HighPerformance" Version="8.3.2" />
     <PackageReference Include="ImGui.NET" Version="1.91.0.1" />
     <PackageReference Include="OpenTK" Version="4.8.2" />
+    <PackageReference Include="SPIRVCross.NET" Version="1.1.3" />
     <PackageReference Include="StbImageSharp" Version="2.30.15" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Assets\shaders\fragment.shader">
+    <None Update="Assets\shaders\shader.frag">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\shaders\vertex.shader">
+    <None Update="Assets\shaders\shader.vert">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="shader.vert">

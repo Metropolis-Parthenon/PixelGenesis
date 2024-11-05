@@ -1,7 +1,7 @@
 ﻿using OpenTK.Graphics.OpenGL4;
 using System.Runtime.CompilerServices;
 
-namespace PixelGenesis.Lab;
+namespace PixelGenesis.Lab.OpenGLAbstractions;
 
 internal class IndexBuffer : IDisposable
 {
@@ -18,7 +18,7 @@ internal class IndexBuffer : IDisposable
 
         GL.GenBuffers(1, out _rendererID);
         GL.BindBuffer(BufferTarget.ElementArrayBuffer, _rendererID);
-        GL.BufferData(BufferTarget.ElementArrayBuffer, data.Length * sizeof(uint), (IntPtr)dataPointer, BufferUsageHint.StaticDraw);
+        GL.BufferData(BufferTarget.ElementArrayBuffer, data.Length * sizeof(uint), (nint)dataPointer, BufferUsageHint.StaticDraw);
     }
 
     public void Bind()

@@ -1,11 +1,11 @@
 ﻿using OpenTK.Graphics.OpenGL4;
 
-namespace PixelGenesis.Lab;
+namespace PixelGenesis.Lab.OpenGLAbstractions;
 
 internal class VertexArrayObject
 {
     int _rendererID;
-    
+
     public VertexArrayObject()
     {
         _rendererID = GL.GenVertexArray();
@@ -20,8 +20,8 @@ internal class VertexArrayObject
         var elements = layout.Elements;
 
         int offset = 0;
-        
-        for(int i = 0; i < elements.Length; i++)
+
+        for (int i = 0; i < elements.Length; i++)
         {
             var element = elements[i];
             GL.EnableVertexAttribArray((uint)i);
