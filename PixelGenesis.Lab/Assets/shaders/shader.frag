@@ -9,10 +9,10 @@ layout(binding = 0) uniform Material
     vec4 u_Color;    
 } material;
 
-layout(binding = 1) uniform sampler2D u_Texture;
+layout(binding = 0) uniform sampler2D u_Texture;
 
 void main()
 {
-    //vec4 texColor = texture(u_Texture, v_TexCoord);
-    color = vec4(1,1,1,1);
+    vec4 texColor = texture(u_Texture, v_TexCoord);
+    color = texColor;
 }

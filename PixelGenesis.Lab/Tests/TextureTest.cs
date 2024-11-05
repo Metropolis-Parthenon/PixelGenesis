@@ -83,7 +83,6 @@ internal class TextureTest : ITest
         Projection.SetData(ModelMatrix, 0);
         Texture.Bind(0);
         Shader.SetUniformBlock("Projection", Projection);        
-        // Shader.SetUniformMat4f("projection.u_MVP", ModelMatrix);
         Renderer.Draw(vao, ib, Shader);
     }
 
