@@ -34,12 +34,12 @@ internal class Shader : IDisposable
 
     public void SetUniformBlock(string name, UniformBuffer buffer)
     {
-        var location = GetUniformBlockBinding(name);
-        if(location is -1)
-        {
-            Console.WriteLine($"Uniform block {name} not found!");
-            return;
-        }
+        //var location = GetUniformBlockBinding(name);
+        //if(location is -1)
+        //{
+        //    Console.WriteLine($"Uniform block {name} not found!");
+        //    return;
+        //}
 
         GL.BindBufferBase(BufferRangeTarget.UniformBuffer, 0, buffer._rendererID);
     }

@@ -6,6 +6,9 @@ using CommunityToolkit.HighPerformance;
 using System.Numerics;
 using ImGuiNET;
 using PixelGenesis.Lab.Tests;
+using PixelGenesis._3D.Renderer.DeviceApi.Abstractions;
+using PixelGenesis._3D.Renderer.DeviceApi.OpenGL;
+using OpenTK.Mathematics;
 
 namespace PixelGenesis.Lab;
 
@@ -13,7 +16,8 @@ internal class Game : GameWindow
 {
     public Game(int width, int height, string title) : base(GameWindowSettings.Default, new NativeWindowSettings() { ClientSize = (width, height), Title = title }) { }
 
-    ImGuiController _controller;
+    ImGuiPGController _controller;
+    IDeviceApi deviceApi = new OpenGLDeviceApi();
 
     Dictionary<string, Func<ITest>> Tests = new Dictionary<string, Func<ITest>>()
     {
@@ -32,7 +36,10 @@ internal class Game : GameWindow
         GL.Enable(EnableCap.Blend);
         GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);        
 
-        _controller = new ImGuiController(ClientSize.X, ClientSize.Y);
+        var vao = GL.GenVertexArray();
+        GL.BindVertexArray(vao);
+
+        _controller = new ImGuiPGController(deviceApi, ClientSize.X, ClientSize.Y);        
     }
 
     protected override void OnRenderFrame(FrameEventArgs args)
@@ -45,8 +52,8 @@ internal class Game : GameWindow
         GL.Clear(ClearBufferMask.ColorBufferBit);
         Renderer.GLClearError();
 
-        Test?.OnUpdate((float)args.Time);
-        Test?.OnRender();
+        // Test?.OnUpdate((float)args.Time);
+        // Test?.OnRender();
 
 
         _controller.Render();
@@ -105,6 +112,8 @@ internal class Game : GameWindow
     {
         base.OnMouseWheel(e);
         _controller.MouseScroll(e.Offset);
+        //_controller.MouseScroll(new System.Numerics.Vector2(e.Offset.X, e.Offset.Y));
+        
     }
 
     protected override void OnFramebufferResize(FramebufferResizeEventArgs e)

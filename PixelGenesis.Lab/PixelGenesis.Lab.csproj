@@ -27,6 +27,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\PixelGenesis.3D.Renderer.Abstractions\PixelGenesis.3D.Renderer.DeviceApi.Abstractions.csproj" />
+    <ProjectReference Include="..\PixelGenesis.3D.Renderer.OpenGL\PixelGenesis.3D.Renderer.DeviceApi.OpenGL.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="Assets\shaders\shader.frag">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

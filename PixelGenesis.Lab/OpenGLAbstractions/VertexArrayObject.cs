@@ -30,7 +30,6 @@ internal class VertexArrayObject
             offset += element.Count * element.Size;
         }
     }
-
     public void Bind()
     {
         GL.BindVertexArray(_rendererID);

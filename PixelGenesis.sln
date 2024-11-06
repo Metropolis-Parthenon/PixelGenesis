@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PixelGenesis.2D.Common", "P
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PixelGenesis.3D.Common", "PixelGenesis.3D.Common\PixelGenesis.3D.Common.csproj", "{F3FB643E-3501-4571-B48F-4B2C7C70AFB5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PixelGenesis.3D.Renderer.OpenGL", "PixelGenesis.3D.Renderer.OpenGL\PixelGenesis.3D.Renderer.OpenGL.csproj", "{BCA718F8-77B4-4ABB-B5ED-ECD2095011B1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PixelGenesis.3D.Renderer.DeviceApi.OpenGL", "PixelGenesis.3D.Renderer.OpenGL\PixelGenesis.3D.Renderer.DeviceApi.OpenGL.csproj", "{BCA718F8-77B4-4ABB-B5ED-ECD2095011B1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PixelGenesis.Editor", "PixelGenesis.Editor\PixelGenesis.Editor.csproj", "{F9FA3171-57AC-44CB-AE2D-F3F62998F7A5}"
 EndProject
@@ -27,9 +27,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ProjectTemplate", "ProjectT
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "working", "working", "{16440712-695D-469E-80D8-65917C167B9A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PixelGenesis.Rendering.Abstractions", "PixelGenesis.Rendering.Abstractions\PixelGenesis.Rendering.Abstractions.csproj", "{D3A831E0-89CD-431E-B2B9-621994D27B3A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PixelGenesis.Rendering.Abstractions", "PixelGenesis.Rendering.Abstractions\PixelGenesis.Rendering.Abstractions.csproj", "{D3A831E0-89CD-431E-B2B9-621994D27B3A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PixelGenesis.3D.Renderer.Abstractions", "PixelGenesis.3D.Renderer.Abstractions\PixelGenesis.3D.Renderer.Abstractions.csproj", "{01FDC66A-ABD9-4F3A-B112-F4BB07CE8D46}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PixelGenesis.3D.Renderer.DeviceApi.Abstractions", "PixelGenesis.3D.Renderer.Abstractions\PixelGenesis.3D.Renderer.DeviceApi.Abstractions.csproj", "{01FDC66A-ABD9-4F3A-B112-F4BB07CE8D46}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

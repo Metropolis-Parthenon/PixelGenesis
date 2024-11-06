@@ -2,17 +2,19 @@
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
-    <RootNamespace>PixelGenesis._3D.Renderer.OpenGL</RootNamespace>
+    <RootNamespace>PixelGenesis._3D.Renderer.DeviceApi.OpenGL</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="OpenTK" Version="4.8.2" />
+    <PackageReference Include="SPIRVCross.NET" Version="1.1.3" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\PixelGenesis.3D.Common\PixelGenesis.3D.Common.csproj" />
+    <ProjectReference Include="..\PixelGenesis.3D.Renderer.Abstractions\PixelGenesis.3D.Renderer.DeviceApi.Abstractions.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,14 +1,49 @@
 ﻿using PixelGenesis.ECS;
+using System.Numerics;
 
 namespace PixelGenesis._3D.Common;
 
 public class Material : IWritableAsset, IReadableAsset
 {
-    public string Reference { get; }
+    public string Reference { get; set; }
 
-    public Shader Shader { get; }
+    public CompiledShader Shader { get; set; }
 
-    private Material(string reference, Shader shader)
+    Dictionary<int, object> Parameters = new Dictionary<int, object>();
+    Dictionary<int, Texture> Textures = new Dictionary<int, Texture>();
+
+
+    public void SetParameter(int location, Matrix4x4 value)
+    {
+        Parameters[location] = value;
+    }
+
+    public void SetParameter(int location, Vector3 value)
+    {
+        Parameters[location] = value;
+    }
+
+    public void SetParameter(int location, Vector4 value)
+    {
+        Parameters[location] = value;
+    }
+
+    public void SetParameter(int location, Vector2 value)
+    {
+        Parameters[location] = value;
+    }
+
+    public void SetParameter(int location, float value)
+    {
+        Parameters[location] = value;
+    }
+
+    public void SetTexture(int location, Texture texture)
+    {
+        Textures[location] = texture;
+    }
+
+    private Material(string reference, CompiledShader shader)
     {
         Reference = reference;
         Shader = shader;
@@ -27,7 +62,7 @@ public class Material : IWritableAsset, IReadableAsset
             using var textReader = new StreamReader(stream);
 
             var shaderReference = textReader.ReadLine() ?? throw new InvalidOperationException();
-            var shader = AssetReader.ReadAsset<Shader, Shader.Factory>(shaderReference);
+            var shader = AssetReader.ReadAsset<CompiledShader, CompiledShader.Factory>(shaderReference);
 
             return new Material(reference, shader);
         }
