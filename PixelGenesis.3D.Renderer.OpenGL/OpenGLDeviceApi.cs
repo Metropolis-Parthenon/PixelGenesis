@@ -81,52 +81,62 @@ public class OpenGLDeviceApi : IDeviceApi
         return new GLVertexBuffer(data, GetUsageHint(bufferHint), this);
     }
 
-
-    public void DrawTriangles(
-        IVertexBuffer vertexBuffer, 
-        VertexBufferLayout layout, 
-        IIndexBuffer indexBuffer, 
-        IShaderProgram shaderProgram,
-        int lenght,
-        int offset)
+    public void DrawTriangles(DrawContext drawContext)
     {
-        shaderProgram.Bind();
-        indexBuffer.Bind();
-        vertexBuffer.Bind();
-        SetVertexLayout(layout);
+        drawContext.ShaderProgram.Bind();
+        drawContext.IndexBuffer.Bind();
+        drawContext.VertexBuffer.Bind();
+        SetVertexLayout(drawContext.Layout);
 
-        var glIndexBuffer = (IGLIndexBuffer)indexBuffer;
+        if(drawContext.EnableBlend)
+        {
+            GL.Enable(EnableCap.Blend);
+            GL.BlendEquation((BlendEquationMode)drawContext.BlendEquation);
+            GL.BlendFunc((BlendingFactor)drawContext.BlendSFactor, (BlendingFactor)drawContext.BlendDFactor);
+        }
+        else
+        {
+            GL.Disable(EnableCap.Blend);
+        }
 
-        GL.DrawElements(PrimitiveType.Triangles, lenght, glIndexBuffer.ElementsType, offset * glIndexBuffer.ElementSize);
-        ThrowOnGLError();
+        if (drawContext.EnableDepthTest)
+        {
+            GL.Enable(EnableCap.DepthTest);
+        }
+        else
+        {
+            GL.Disable(EnableCap.DepthTest);
+        }
 
-        shaderProgram.Unbind();
-        indexBuffer.Unbind();
-        vertexBuffer.Unbind();
-    }
+        if (drawContext.EnableCullFace)
+        {
+            GL.Enable(EnableCap.CullFace);
+        }
+        else
+        {
+            GL.Disable(EnableCap.CullFace);
+        }
 
-    public void DrawTriangles(
-        IVertexBuffer vertexBuffer, 
-        VertexBufferLayout layout, 
-        IIndexBuffer indexBuffer, 
-        IShaderProgram shaderProgram,
-        int lenght,
-        int offset,
-        int baseVertex)
-    {
-        shaderProgram.Bind();
-        indexBuffer.Bind();
-        vertexBuffer.Bind();
-        SetVertexLayout(layout);
+        if (drawContext.EnableScissorTest)
+        {
+            GL.Enable(EnableCap.ScissorTest);
+            GL.Scissor(drawContext.ScissorRect.X, drawContext.ScissorRect.Y, drawContext.ScissorRect.Width, drawContext.ScissorRect.Height);
+        }
+        else
+        {
+            GL.Disable(EnableCap.ScissorTest);
+        }
 
-        var glIndexBuffer = (IGLIndexBuffer)indexBuffer;
+        var glIndexBuffer = (IGLIndexBuffer)drawContext.IndexBuffer;
 
-        GL.DrawElementsBaseVertex(PrimitiveType.Triangles, lenght, glIndexBuffer.ElementsType, offset * glIndexBuffer.ElementSize, baseVertex);
-        ThrowOnGLError();
-
-        shaderProgram.Unbind();
-        indexBuffer.Unbind();
-        vertexBuffer.Unbind();
+        if(drawContext.BaseVertex is null)
+        {
+            GL.DrawElements(PrimitiveType.Triangles, drawContext.Lenght, glIndexBuffer.ElementsType, drawContext.Offset * glIndexBuffer.ElementSize);
+        }
+        else
+        {
+            GL.DrawElementsBaseVertex(PrimitiveType.Triangles, drawContext.Lenght, glIndexBuffer.ElementsType, drawContext.Offset * glIndexBuffer.ElementSize, drawContext.BaseVertex.Value);            
+        }
     }
 
     static void SetVertexLayout(VertexBufferLayout layout)

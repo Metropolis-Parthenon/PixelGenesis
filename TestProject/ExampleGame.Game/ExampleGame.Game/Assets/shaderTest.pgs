@@ -1,0 +1,50 @@
+blocks:
+- binding: 0
+  parameters:
+  - name: Metallic
+    type: Float
+    range:
+      min: 0
+      max: 1  
+  - name: Albeado Color
+    type: Color4
+
+vertex: >
+  #version 450
+
+  layout(location = 0) in vec4 position;
+  layout(location = 1) in vec2 textCoord;
+
+  layout(location = 0) out vec2 v_TexCoord;
+
+  layout(binding = 0) uniform Projection {
+      mat4 u_MVP;
+  } projection;
+
+  void main()
+  {
+      gl_Position = projection.u_MVP * position;
+
+      // pass the texcoord to the fragment shader
+      v_TexCoord = textCoord;
+  }
+
+fragment: >
+  #version 450
+
+  layout(location = 0) in vec2 v_TexCoord;
+
+  layout(location = 0) out vec4 color;
+
+  layout(binding = 0) uniform Material
+  {
+      vec4 u_Color;    
+  } material;
+
+  layout(binding = 0) uniform sampler2D u_Texture;
+
+  void main()
+  {
+      vec4 texColor = texture(u_Texture, v_TexCoord);
+      color = texColor;
+  }

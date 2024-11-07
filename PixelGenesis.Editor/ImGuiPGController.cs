@@ -3,24 +3,24 @@ using System.Runtime.CompilerServices;
 using OpenTK.Windowing.Desktop;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using PixelGenesis._3D.Renderer.DeviceApi.Abstractions;
-using PixelGenesis._3D.Renderer.DeviceApi.OpenGL.Helpers;
 using System.Numerics;
 using System.Drawing;
 
-namespace PixelGenesis.Lab;
+namespace PixelGenesis.Editor;
+
 public class ImGuiPGController : IDisposable
 {
     IDeviceApi _deviceApi;
 
     private bool _frameBegun;
-        
+
     IVertexBuffer _vertexBuffer;
     private int _vertexBufferSize;
     IIndexBuffer<ushort> _indexArrayBuffer;
     private int _indexBufferSize;
 
     IUniformBlockBuffer _projectionuniformBlockBuffer;
-    
+
     VertexBufferLayout _layout;
     DrawContext _drawContext = new DrawContext()
     {
@@ -32,11 +32,11 @@ public class ImGuiPGController : IDisposable
         EnableCullFace = false,
         EnableScissorTest = true,
     };
-        
+
     ITexture _fontTexture;
 
     IShaderProgram _shaderProgram;
-    
+
     private int _windowWidth;
     private int _windowHeight;
 
@@ -56,7 +56,7 @@ public class ImGuiPGController : IDisposable
 
         _windowWidth = width;
         _windowHeight = height;
-                
+
         IntPtr context = ImGui.CreateContext();
         ImGui.SetCurrentContext(context);
         var io = ImGui.GetIO();
@@ -89,9 +89,9 @@ public class ImGuiPGController : IDisposable
     {
         _vertexBufferSize = 10000;
         _indexBufferSize = 2000;
-                
+
         _vertexBuffer = _deviceApi.CreateVertexBuffer(_vertexBufferSize, BufferHint.Dynamic);
-        
+
         _indexArrayBuffer = _deviceApi.CreateIndexBuffer<ushort>(_indexBufferSize, BufferHint.Dynamic);
         _projectionuniformBlockBuffer = _deviceApi.CreateUniformBlockBuffer<Matrix4x4>(BufferHint.Dynamic);
 
@@ -135,15 +135,15 @@ void main()
         var fragmentBytecode = ShadersHelper.CompileGLSLSourceToSpirvBytecode(FragmentSource, "frag");
 
         _shaderProgram = _deviceApi.CreateShaderProgram(
-            vertexBytecode, 
-            fragmentBytecode, 
+            vertexBytecode,
+            fragmentBytecode,
             ReadOnlyMemory<byte>.Empty,
             ReadOnlyMemory<byte>.Empty);
 
         _layout = new VertexBufferLayout();
         _layout.PushFloat(2, false);
         _layout.PushFloat(2, false);
-        _layout.PushByte(4, true);        
+        _layout.PushByte(4, true);
     }
 
     /// <summary>
@@ -158,9 +158,9 @@ void main()
 
         _fontTexture = _deviceApi.CreateTexture(
             width,
-            height, 
-            new UnmanagedMemoryManager<byte>(pixels, width * height).Memory, 
-            PGPixelFormat.Bgra, 
+            height,
+            new UnmanagedMemoryManager<byte>(pixels, width * height).Memory,
+            PGPixelFormat.Bgra,
             PGInternalPixelFormat.Rgba8,
             PGPixelType.UnsignedByte);
 
@@ -282,7 +282,7 @@ void main()
             if (vertexSize > _vertexBufferSize)
             {
                 int newSize = (int)Math.Max(_vertexBufferSize * 1.5f, vertexSize);
-                                
+
                 _vertexBuffer.Dispose();
                 _vertexBuffer = _deviceApi.CreateVertexBuffer(newSize, BufferHint.Dynamic);
 
@@ -295,7 +295,7 @@ void main()
             if (indexSize > _indexBufferSize)
             {
                 int newSize = (int)Math.Max(_indexBufferSize * 1.5f, indexSize);
-                
+
                 _indexBufferSize = newSize;
 
                 _indexArrayBuffer.Dispose();
@@ -317,9 +317,9 @@ void main()
 
         _projectionuniformBlockBuffer.SetData(mvp, 0);
         _shaderProgram.SetUniformBlock(0, _projectionuniformBlockBuffer);
-        
+
         draw_data.ScaleClipRects(io.DisplayFramebufferScale);
-        
+
         // Render command lists
         for (int n = 0; n < draw_data.CmdListsCount; n++)
         {
@@ -356,7 +356,7 @@ void main()
                         _drawContext.VertexBuffer = _vertexBuffer;
                         _drawContext.IndexBuffer = _indexArrayBuffer;
 
-                        _deviceApi.DrawTriangles(_drawContext);                        
+                        _deviceApi.DrawTriangles(_drawContext);
                     }
                     else
                     {
@@ -368,8 +368,8 @@ void main()
                         _drawContext.VertexBuffer = _vertexBuffer;
                         _drawContext.IndexBuffer = _indexArrayBuffer;
 
-                        _deviceApi.DrawTriangles(_drawContext);                        
-                    }                    
+                        _deviceApi.DrawTriangles(_drawContext);
+                    }
                 }
             }
         }
@@ -379,14 +379,14 @@ void main()
     /// Frees all graphics resources used by the renderer.
     /// </summary>
     public void Dispose()
-    {        
+    {
         _vertexBuffer.Dispose();
         _indexArrayBuffer.Dispose();
 
         _fontTexture.Dispose();
-        _shaderProgram.Dispose();        
+        _shaderProgram.Dispose();
     }
-        public static ImGuiKey TranslateKey(Keys key)
+    public static ImGuiKey TranslateKey(Keys key)
     {
         if (key >= Keys.D0 && key <= Keys.D9)
             return key - Keys.D0 + ImGuiKey._0;

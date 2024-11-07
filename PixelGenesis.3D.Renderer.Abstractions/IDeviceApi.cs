@@ -51,27 +51,7 @@ public interface IDeviceApi : IDisposable
         ReadOnlyMemory<byte> tessellationSpv,
         ReadOnlyMemory<byte> geometrySpv);
 
-    void DrawTriangles(
-        IVertexBuffer vertexBuffer, 
-        VertexBufferLayout layout, 
-        IIndexBuffer indexBuffer, 
-        IShaderProgram shaderProgram, 
-        int lenght,
-        int offset);
-
-    void DrawTriangles(
-        IVertexBuffer vertexBuffer,
-        VertexBufferLayout layout,
-        IIndexBuffer indexBuffer,
-        IShaderProgram shaderProgram,
-        int lenght,
-        int offset,
-        int baseVertex);
-
-    void DrawTriangles(IVertexBuffer vertexBuffer, VertexBufferLayout layout, IIndexBuffer indexBuffer, IShaderProgram shaderProgram)
-    {
-       DrawTriangles(vertexBuffer, layout, indexBuffer, shaderProgram, 0, 0);
-    }
+    void DrawTriangles(DrawContext drawContext);    
 }
 
 public enum BufferHint

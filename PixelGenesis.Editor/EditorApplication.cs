@@ -1,6 +1,7 @@
-﻿using ImGuiNET;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using PixelGenesis._3D.Renderer.DeviceApi.Abstractions;
+using PixelGenesis._3D.Renderer.DeviceApi.OpenGL;
 using PixelGenesis.Editor.Core;
 using PixelGenesis.Editor.GUI;
 using PixelGenesis.Editor.Services;
@@ -45,7 +46,8 @@ internal sealed class EditorApplication(EditorWindow window, IHost host) : IHost
         builder.Services.AddSingleton<PixelGenesisEditor>();
         builder.Services.AddSingleton<IEditionCommandDispatcher, EditionCommandDispatcher>();
         builder.Services.AddSingleton<ICommandDispatcher, CommandDispatcher>();
-        builder.Services.AddSingleton((sp) => new EditorWindow(1920, 1080, "Pixel Genesis Editor", sp.GetRequiredKeyedService<PixelGenesisEditor>(default)));
+        builder.Services.AddSingleton<IDeviceApi, OpenGLDeviceApi>();
+        builder.Services.AddSingleton((sp) => new EditorWindow(1920, 1080, "Pixel Genesis Editor", sp.GetRequiredService<IDeviceApi>(), sp.GetRequiredKeyedService<PixelGenesisEditor>(default)));
 
         builder.Services.Scan(
             scan => 
@@ -66,6 +68,16 @@ internal sealed class EditorApplication(EditorWindow window, IHost host) : IHost
                 classes.AssignableTo<IEditorWindow>())
             .AsImplementedInterfaces()
             .WithSingletonLifetime());
+
+        builder.Services.Scan(
+            scan =>
+            scan
+            .FromCallingAssembly()
+            .AddClasses(
+                classes =>
+                classes.AssignableTo<IAssetEditor>())
+            .AsImplementedInterfaces()
+            .WithSingletonLifetime());        
 
         builder.Services.AddHostedService<EditorApplication>();
     }

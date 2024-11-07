@@ -1,4 +1,5 @@
-﻿using PixelGenesis.ECS;
+﻿using PixelGenesis._3D.Renderer.DeviceApi.Abstractions;
+using PixelGenesis.ECS;
 using System.Diagnostics;
 using System.Formats.Tar;
 using System.IO;
@@ -34,92 +35,95 @@ public sealed class CompiledShader : IReadableAsset, IWritableAsset
         Reference = reference;
     }
 
+
+    public void WriteToStream(Stream stream)
+    {
+        //using var archive = new ZipArchive(stream, ZipArchiveMode.Create);
+
+        //CompiledShaderDTO layout;
+        //var layoutEntry = archive.CreateEntry("layout.yml");
+        //using (var layoutStream = layoutEntry.Open())
+        //{
+        //    layout = _deserializer.Deserialize<CompiledShaderDTO>(new StreamReader(layoutStream));
+        //}
+
+        //var vertexEntry = archive.GetEntry("vertex.spv");
+        //var fragmentEntry = archive.GetEntry("fragment.spv");
+        //var tessellationEntry = archive.GetEntry("tessellation.spv");
+        //var geometryEntry = archive.GetEntry("geometry.spv");
+
+        //ReadOnlyMemory<byte> vertex;
+        //ReadOnlyMemory<byte> fragment;
+        //ReadOnlyMemory<byte> tessellation;
+        //ReadOnlyMemory<byte> geometry;
+
+        //if (vertexEntry is null)
+        //{
+        //    vertex = ReadOnlyMemory<byte>.Empty;
+        //}
+        //else
+        //{
+        //    using (var vertexStream = vertexEntry.Open())
+        //    {
+        //        var ms = new MemoryStream();
+        //        vertexStream.CopyTo(ms);
+        //        vertex = ms.GetBuffer().AsMemory().Slice(0, (int)ms.Length);
+        //    }
+        //}
+
+        //if (fragmentEntry is null)
+        //{
+        //    fragment = ReadOnlyMemory<byte>.Empty;
+        //}
+        //else
+        //{
+        //    using (var fragmentStream = fragmentEntry.Open())
+        //    {
+        //        var ms = new MemoryStream();
+        //        fragmentStream.CopyTo(ms);
+        //        fragment = ms.GetBuffer().AsMemory().Slice(0, (int)ms.Length);
+        //    }
+        //}
+
+        //if (tessellationEntry is null)
+        //{
+        //    tessellation = ReadOnlyMemory<byte>.Empty;
+        //}
+        //else
+        //{
+        //    using (var tessellationStream = tessellationEntry.Open())
+        //    {
+        //        var ms = new MemoryStream();
+        //        tessellationStream.CopyTo(ms);
+        //        tessellation = ms.GetBuffer().AsMemory().Slice(0, (int)ms.Length);
+        //    }
+        //}
+
+        //if (geometryEntry is null)
+        //{
+        //    geometry = ReadOnlyMemory<byte>.Empty;
+        //}
+        //else
+        //{
+        //    using (var geometryStream = geometryEntry.Open())
+        //    {
+        //        var ms = new MemoryStream();
+        //        geometryStream.CopyTo(ms);
+        //        geometry = ms.GetBuffer().AsMemory().Slice(0, (int)ms.Length);
+        //    }
+        //}
+
+        //return new CompiledShader(layout, vertex, fragment, tessellation, geometry, reference);
+        throw new NotImplementedException();
+    }
+
+
     public class Factory : IReadableAssetFactory<CompiledShader>
     {
         static IDeserializer _deserializer
             = new DeserializerBuilder()
             .WithNamingConvention(CamelCaseNamingConvention.Instance)
             .Build();
-
-        public void WriteToStream(Stream stream)
-        {
-            using var archive = new ZipArchive(stream, ZipArchiveMode.Create);
-
-            CompiledShaderDTO layout;
-            var layoutEntry = archive.CreateEntry("layout.yml");
-            using (var layoutStream = layoutEntry.Open())
-            {
-                layout = _deserializer.Deserialize<CompiledShaderDTO>(new StreamReader(layoutStream));
-            }
-
-            var vertexEntry = archive.GetEntry("vertex.spv");
-            var fragmentEntry = archive.GetEntry("fragment.spv");
-            var tessellationEntry = archive.GetEntry("tessellation.spv");
-            var geometryEntry = archive.GetEntry("geometry.spv");
-
-            ReadOnlyMemory<byte> vertex;
-            ReadOnlyMemory<byte> fragment;
-            ReadOnlyMemory<byte> tessellation;
-            ReadOnlyMemory<byte> geometry;
-
-            if (vertexEntry is null)
-            {
-                vertex = ReadOnlyMemory<byte>.Empty;
-            }
-            else
-            {
-                using (var vertexStream = vertexEntry.Open())
-                {
-                    var ms = new MemoryStream();
-                    vertexStream.CopyTo(ms);
-                    vertex = ms.GetBuffer().AsMemory().Slice(0, (int)ms.Length);
-                }
-            }
-
-            if (fragmentEntry is null)
-            {
-                fragment = ReadOnlyMemory<byte>.Empty;
-            }
-            else
-            {
-                using (var fragmentStream = fragmentEntry.Open())
-                {
-                    var ms = new MemoryStream();
-                    fragmentStream.CopyTo(ms);
-                    fragment = ms.GetBuffer().AsMemory().Slice(0, (int)ms.Length);
-                }
-            }
-
-            if (tessellationEntry is null)
-            {
-                tessellation = ReadOnlyMemory<byte>.Empty;
-            }
-            else
-            {
-                using (var tessellationStream = tessellationEntry.Open())
-                {
-                    var ms = new MemoryStream();
-                    tessellationStream.CopyTo(ms);
-                    tessellation = ms.GetBuffer().AsMemory().Slice(0, (int)ms.Length);
-                }
-            }
-
-            if (geometryEntry is null)
-            {
-                geometry = ReadOnlyMemory<byte>.Empty;
-            }
-            else
-            {
-                using (var geometryStream = geometryEntry.Open())
-                {
-                    var ms = new MemoryStream();
-                    geometryStream.CopyTo(ms);
-                    geometry = ms.GetBuffer().AsMemory().Slice(0, (int)ms.Length);
-                }
-            }
-
-            return new CompiledShader(layout, vertex, fragment, tessellation, geometry, reference);
-        }
 
         public CompiledShader ReadAsset(string reference, Stream stream)
         {
@@ -228,7 +232,9 @@ public sealed class PGGLSLShaderSource : IReadableAsset, IWritableAsset
 
     const string GLSLCPath = "C:\\VulkanSDK\\1.3.296.0\\Bin\\glslc.exe";
 
-    public CompiledShader CompiledShader()
+    public record CompilationResult(CompiledShader? Shader, string? Error);
+    
+    public CompilationResult CompiledShader()
     {
         var layout = new CompiledShaderDTO
         {
@@ -236,12 +242,20 @@ public sealed class PGGLSLShaderSource : IReadableAsset, IWritableAsset
             Textures = ShaderDTO.Textures
         };
 
-        var vertex = ShaderDTO.Vertex is not null ? CompileToSpirv(ShaderDTO.Vertex) : ReadOnlyMemory<byte>.Empty;
-        var fragment = ShaderDTO.Fragment is not null ? CompileToSpirv(ShaderDTO.Fragment) : ReadOnlyMemory<byte>.Empty;
-        var tessellation = ShaderDTO.Tessellation is not null ? CompileToSpirv(ShaderDTO.Tessellation) : ReadOnlyMemory<byte>.Empty;
-        var geometry = ShaderDTO.Geometry is not null ? CompileToSpirv(ShaderDTO.Geometry) : ReadOnlyMemory<byte>.Empty;
+        try
+        {
+            var vertex = ShaderDTO.Vertex is not null ? ShadersHelper.CompileGLSLSourceToSpirvBytecode(ShaderDTO.Vertex, "vert") : ReadOnlyMemory<byte>.Empty;
+            var fragment = ShaderDTO.Fragment is not null ? ShadersHelper.CompileGLSLSourceToSpirvBytecode(ShaderDTO.Fragment, "frag") : ReadOnlyMemory<byte>.Empty;
+            var tessellation = ShaderDTO.Tessellation is not null ? ShadersHelper.CompileGLSLSourceToSpirvBytecode(ShaderDTO.Tessellation, "tess") : ReadOnlyMemory<byte>.Empty;
+            var geometry = ShaderDTO.Geometry is not null ? ShadersHelper.CompileGLSLSourceToSpirvBytecode(ShaderDTO.Geometry, "geom") : ReadOnlyMemory<byte>.Empty;
 
-        return new CompiledShader(layout, vertex, fragment, tessellation, geometry, Reference);
+            return new CompilationResult(new CompiledShader(layout, vertex, fragment, tessellation, geometry, Reference), null);
+        }
+        catch(Exception e)
+        {
+            return new CompilationResult(null, e.Message);
+        }
+        
     }
 
     static Memory<byte> CompileToSpirv(string source)
@@ -285,7 +299,16 @@ public sealed class PGGLSLShaderSource : IReadableAsset, IWritableAsset
     {
         public PGGLSLShaderSource ReadAsset(string reference, Stream stream)
         {
-            var dto = _deserializer.Deserialize<ShaderSourceDTO>(new StreamReader(stream));
+            ShaderSourceDTO dto;
+            try
+            {
+                dto = _deserializer.Deserialize<ShaderSourceDTO>(new StreamReader(stream));
+            }
+            catch (Exception e)
+            {
+                return new PGGLSLShaderSource(reference, null);
+            }
+            
             return new PGGLSLShaderSource(reference, dto);
         }
     }
@@ -320,14 +343,21 @@ public class TextureSamplerDTO
 
 public class ParameterBlockDTO
 {
-    int Binding { get; set; }
+    public int Binding { get; set; }
     public List<ParameterDTO> Parameters { get; set; } = new List<ParameterDTO>();
 }
 
 public class ParameterDTO
 {
     public string Name { get; set; }
-    Type Type { get; set; }
+    public Type Type { get; set; }
+    public ParameterValueRangeDTO? Range { get; set; }
+}
+
+public class ParameterValueRangeDTO
+{
+    public float Min { get; set; }
+    public float Max { get; set; }
 }
 
 public enum Type

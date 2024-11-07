@@ -1,11 +1,12 @@
 ﻿using ImGuiNET;
 using PixelGenesis.Editor.Core;
 using PixelGenesis.Editor.Services;
+using System.Diagnostics;
 using System.Numerics;
 
 namespace PixelGenesis.Editor.GUI;
 
-internal class MenuItemGUIRenderer(IEnumerable<IEditorMenuAction> menuActions, ImageLoader imageLoader)
+internal class MenuItemGUIRenderer(IEnumerable<IEditorMenuAction> menuActions, ImageLoader imageLoader, SolutionService solutionService)
 {
     public void OnGui()
     {
@@ -15,10 +16,13 @@ internal class MenuItemGUIRenderer(IEnumerable<IEditorMenuAction> menuActions, I
             ImGui.Image(imageLoader.LoadImage(Path.Combine(Directory.GetCurrentDirectory(), "Assets", "Logo", "logo.png")), new Vector2(40, 40));
             CreateMenus(string.Empty, new HashSet<string>());
 
-            if(ImGui.Button("Open in Visual Studio"))
+            if(solutionService.IsProjectOpen)
             {
-
-            }
+                if (ImGui.Button("Open in Visual Studio"))
+                {
+                    OpenWithDefaultProgram(solutionService.SolutionPath);
+                }
+            }            
         }
         ImGui.EndMainMenuBar();
         ImGui.PopStyleVar();
@@ -68,6 +72,15 @@ internal class MenuItemGUIRenderer(IEnumerable<IEditorMenuAction> menuActions, I
                 }                
             }            
         }
+    }
+
+    public static void OpenWithDefaultProgram(string path)
+    {
+        using Process fileopener = new Process();
+
+        fileopener.StartInfo.FileName = "explorer";
+        fileopener.StartInfo.Arguments = "\"" + path + "\"";
+        fileopener.Start();
     }
 
 }

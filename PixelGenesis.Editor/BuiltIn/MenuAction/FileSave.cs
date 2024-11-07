@@ -3,7 +3,7 @@ using PixelGenesis.Editor.Services;
 
 namespace PixelGenesis.Editor.BuiltIn.MenuAction;
 
-public class FileSave(SaveService saveService) : IEditorMenuAction
+internal class FileSave(SaveService saveService) : IEditorMenuAction
 {
     public string Path => saveService.IsCurrentDirty ? "File/Save*" : "File/Save";
 
@@ -15,7 +15,7 @@ public class FileSave(SaveService saveService) : IEditorMenuAction
     }
 }
 
-public class FileSaveAll(SaveService saveService) : IEditorMenuAction
+internal class FileSaveAll(SaveService saveService) : IEditorMenuAction
 {
     public string Path => saveService.IsAnyDirty ? "File/Save All*" : "File/Save All";
 

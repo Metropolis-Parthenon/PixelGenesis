@@ -5,6 +5,7 @@ using OpenTK.Windowing.GraphicsLibraryFramework;
 using ImGuiNET;
 using OpenTK.Mathematics;
 using PixelGenesis.Editor.GUI;
+using PixelGenesis._3D.Renderer.DeviceApi.Abstractions;
 
 namespace PixelGenesis.Editor;
 
@@ -12,23 +13,31 @@ internal class EditorWindow : GameWindow
 {
     PixelGenesisEditor EditorGUI;
 
-    public EditorWindow(int width, int height, string title, PixelGenesisEditor editorGui) : base(
+    IDeviceApi _deviceApi;
+
+    public EditorWindow(int width, int height, string title, IDeviceApi deviceApi, PixelGenesisEditor editorGui) : base(
         GameWindowSettings.Default,
         new NativeWindowSettings() { ClientSize = (width, height), Title = title, WindowBorder = WindowBorder.Resizable }) 
     { 
         EditorGUI = editorGui;
-        
+        _deviceApi = deviceApi;
     }
 
-    ImGuiController _controller;
+    ImGuiPGController _controller;
     
     protected override void OnLoad()
     {
         base.OnLoad();
-        
-        _controller = new ImGuiController(ClientSize.X, ClientSize.Y);
+
+        var vao = GL.GenVertexArray();
+        GL.BindVertexArray(vao);
+
+        _controller = new ImGuiPGController(_deviceApi, ClientSize.X, ClientSize.Y);
         EditorGUI.OnGuiInit();
         _controller.RecreateFontDeviceTexture();
+
+        GL.Enable(EnableCap.Blend);
+        GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
 
         GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     }
@@ -47,9 +56,6 @@ internal class EditorWindow : GameWindow
         ImGui.End();
 
         _controller.Render();
-
-        ImGuiController.CheckGLError("End of frame");
-
         SwapBuffers();
     }
 
@@ -89,6 +95,7 @@ internal class EditorWindow : GameWindow
 
     protected override void OnUnload()
     {
+        _deviceApi.Dispose();
         base.OnUnload();
     }
 

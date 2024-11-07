@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PixelGenesis._3D.Renderer.DeviceApi.OpenGL.Helpers;
+namespace PixelGenesis._3D.Renderer.DeviceApi.Abstractions;
 
 public static class ShadersHelper
 {

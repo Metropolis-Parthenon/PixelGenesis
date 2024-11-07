@@ -42,7 +42,8 @@ public class ComponentSourceGenerator : IIncrementalGenerator
         var generatedSource = new StringBuilder();
 
         generatedSource.AppendLine("using PixelGenesis.ECS;");
-        
+        generatedSource.AppendLine("using System.Numerics;");
+
         generatedSource.AppendLine();
 
         foreach (var @class in distinctClasses)
@@ -63,7 +64,7 @@ public class ComponentSourceGenerator : IIncrementalGenerator
 
             generatedSource.AppendLine("        public override void CopyToAnother(Component component)");
             generatedSource.AppendLine("        {");
-            generatedSource.AppendLine("            var other = (CapsuleRendererComponent)component;");
+            generatedSource.AppendLine($"            var other = ({@class.Identifier.Text})component;");
             foreach (var field in publicFields)
             {
                 var fieldName = field.Declaration.Variables.First().Identifier.Text;
@@ -74,10 +75,19 @@ public class ComponentSourceGenerator : IIncrementalGenerator
 
             generatedSource.AppendLine("        public override IEnumerable<KeyValuePair<string, object>> GetSerializableValues()");
             generatedSource.AppendLine("        {");
+
+            if(!publicFields.Any())
+            {
+               generatedSource.AppendLine("            yield break;");
+            }
+            else 
+            {            
             foreach(var field in publicFields)
             {
                 var fieldName = field.Declaration.Variables.First().Identifier.Text;
             generatedSource.AppendLine($"           yield return new KeyValuePair<string, object>(nameof({fieldName}), {fieldName});");
+            
+            }
             }
             generatedSource.AppendLine("        }");
 

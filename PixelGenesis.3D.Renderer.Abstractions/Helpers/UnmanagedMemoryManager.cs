@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PixelGenesis._3D.Renderer.DeviceApi.OpenGL.Helpers;
+namespace PixelGenesis._3D.Renderer.DeviceApi.Abstractions;
 
 public sealed unsafe class UnmanagedMemoryManager<T> : MemoryManager<T>
        where T : unmanaged
