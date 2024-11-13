@@ -1,65 +1,21 @@
-# Shader configuration for a basic material with instancing (Vulkan-compatible)
-blocks:
-  - binding: 0
-    parameters:
-      - name: "color"
-        type: "color4"
-        range:
-          min: 0.0
-          max: 1.0
-  - binding: 1
-    parameters:
-      - name: "lightPosition"
-        type: "float3"
-      - name: "lightIntensity"
-        type: "float"
-        range:
-          min: 0.0
-          max: 10.0
+blocks: []
 
-textures:
-  - name: "albedoTexture"
-    binding: 0
-  - name: "normalMap"
-    binding: 1
+textures: []
 
-# Embedded GLSL source code, Vulkan-compatible
 vertex: |
-  #version 450
-  #extension GL_ARB_separate_shader_objects : enable
-  
-  layout(location = 0) in vec4 inPosition;  // Now a vec4 for homogeneous transformations
-  layout(location = 1) in vec3 inNormal;
-  layout(location = 2) in mat4 instanceModelMatrix;  // Model matrix from instancing
-  layout(location = 6) in mat4 instanceViewProjectionMatrix;  // View projection matrix from instancing
+  #version 450 core
+  layout(location = 0) in vec3 position;
 
-  layout(location = 0) out vec3 fragNormal;
-  
   void main() {
-      fragNormal = mat3(instanceModelMatrix) * inNormal;  // Transform normal by model matrix
-      gl_Position = instanceViewProjectionMatrix * instanceModelMatrix * inPosition;
+      gl_Position = vec4(position, 1.0);
   }
 
 fragment: |
-  #version 450
-  #extension GL_ARB_separate_shader_objects : enable
+  #version 450 core
+  layout(location = 0) out vec4 FragColor;
 
-  layout(location = 0) in vec3 fragNormal;
-  layout(location = 0) out vec4 outColor;
-
-  layout(binding = 0) uniform Material {
-      vec4 color;  // Moved color into a uniform block
-  };
-
-  layout(binding = 1) uniform Light {
-      vec3 lightPosition;
-      float lightIntensity;
-  };
-  
   void main() {
-      // Calculate lighting based on normal and light position
-      float lightFactor = max(dot(normalize(fragNormal), normalize(lightPosition)), 0.0) * lightIntensity;
-      outColor = color * vec4(lightFactor, lightFactor, lightFactor, 1.0);
+      FragColor = vec4(1.0, 0.0, 0.0, 1.0); // Solid red color
   }
 
 tessellation: null

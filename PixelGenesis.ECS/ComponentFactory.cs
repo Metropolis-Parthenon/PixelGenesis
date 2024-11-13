@@ -12,14 +12,11 @@ public sealed class ComponentFactory
         EntityManager = entityManager;
     }
 
-    Dictionary<Type, Func<Entity, Component>> ComponentFactories = new Dictionary<Type, Func<Entity, Component>>();
+    static Dictionary<Type, Func<Entity, Component>> ComponentFactories = new Dictionary<Type, Func<Entity, Component>>();
     
-    public void AddComponentFactory(Type type, Func<Entity, Component> factory)
+    public static void AddComponentFactory(Type type, Func<Entity, Component> factory)
     {
-        ComponentFactories.Add(type, factory);
-        Vector3 vector = new Vector3(0, 0, 0);
-        Vector3.Distance(vector, vector);
-        
+        ComponentFactories.Add(type, factory);       
     }
 
     public T CreateComponent<T>(Entity container) where T : Component

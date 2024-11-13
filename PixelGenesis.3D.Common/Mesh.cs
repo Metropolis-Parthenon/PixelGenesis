@@ -6,6 +6,8 @@ namespace PixelGenesis._3D.Common;
 
 public interface IMesh : IWritableAsset
 {
+    Guid Id { get; }
+    bool IsDirty { get; set; }
     ReadOnlyMemory<Vector3> Normals { get; }
     ReadOnlyMemory<Vector3> Vertices { get; }
     ReadOnlyMemory<uint> Triangles { get; }
@@ -40,6 +42,9 @@ public interface IMesh : IWritableAsset
 [ReadableAsset<Mesh, MeshFactory>]
 public sealed class Mesh : IMesh, IReadableAsset
 {
+    public bool IsDirty { get; set; }
+    public Guid Id { get; } = Guid.NewGuid();
+
     public ReadOnlyMemory<Vector3> Normals { get; }
 
     public ReadOnlyMemory<Vector3> Vertices { get; }
@@ -102,6 +107,10 @@ public sealed class Mesh : IMesh, IReadableAsset
 
 public sealed class MutableMesh : IMesh
 {
+    public Guid Id { get; } = Guid.NewGuid();
+    
+    public bool IsDirty { get; set; }
+
     public Memory<Vector3> MutableNormals;
     public ReadOnlyMemory<Vector3> Normals => MutableNormals;
 

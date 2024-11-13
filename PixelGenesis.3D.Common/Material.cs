@@ -7,35 +7,87 @@ namespace PixelGenesis._3D.Common;
 
 public class Material : IWritableAsset, IReadableAsset
 {
+    public Guid Id { get; } = Guid.NewGuid();
+
+    public bool IsDirty { get; set; }
+
     public string Reference { get; set; }
     public CompiledShader Shader { get; set; }
 
-    private Dictionary<int, Dictionary<int, object>> Parameters = new();
-    private Dictionary<int, Texture> Textures = new();
+    private Dictionary<int, object[]> Parameters = new();
+    private Dictionary<int, Texture?> Textures = new();
 
-    private Material(string reference, CompiledShader shader)
+    public Material(string reference, CompiledShader shader)
     {
         Reference = reference;
         Shader = shader;
         InitializeParametersFromShaderLayout();
     }
 
+    public Texture? GetTexture(int binding)
+    {
+        return Textures[binding];
+    }
+
+    public float GetParameterFloat(int blockBinding, int parameterIndex)
+    {
+        return Unsafe.Unbox<float>(GetParameter(blockBinding, parameterIndex));
+    }
+
+    public Vector2 GetParameterVector2(int blockBinding, int parameterIndex)
+    {
+        return Unsafe.Unbox<Vector2>(GetParameter(blockBinding, parameterIndex));
+    }
+
+    public Vector3 GetParameterVector3(int blockBinding, int parameterIndex)
+    {
+        return Unsafe.Unbox<Vector3>(GetParameter(blockBinding, parameterIndex));
+    }
+
+    public Vector4 GetParameterVector4(int blockBinding, int parameterIndex)
+    {
+        return Unsafe.Unbox<Vector4>(GetParameter(blockBinding, parameterIndex));
+    }
+
+    public Matrix4x4 GetParameterMatrix4x4(int blockBinding, int parameterIndex)
+    {
+        return Unsafe.Unbox<Matrix4x4>(GetParameter(blockBinding, parameterIndex));
+    }
+
+    public object GetParameter(int blockBinding, int parameterIndex)
+    {
+        ref var block = ref CollectionsMarshal.GetValueRefOrNullRef(Parameters, blockBinding);
+
+        if(Unsafe.IsNullRef(ref block))
+        {
+            throw new ArgumentException($"Invalid block binding: {blockBinding}");
+        }
+        
+        if(parameterIndex > block.Length)
+        {
+            throw new ArgumentException($"Invalid parameter index: {parameterIndex} in block {blockBinding}");
+        }
+
+        return block[parameterIndex];
+    }
+
     // Overloads for setting parameters of specific types
-    public void SetParameter(int blockBinding, int parameterIndex, float value) => SetParameterInternal(blockBinding, parameterIndex, value, Type.Float);
-    public void SetParameter(int blockBinding, int parameterIndex, Vector2 value) => SetParameterInternal(blockBinding, parameterIndex, value, Type.Float2);
-    public void SetParameter(int blockBinding, int parameterIndex, Vector3 value) => SetParameterInternal(blockBinding, parameterIndex, value, Type.Float3);
-    public void SetParameter(int blockBinding, int parameterIndex, Vector4 value) => SetParameterInternal(blockBinding, parameterIndex, value, Type.Float4);
-    public void SetParameter(int blockBinding, int parameterIndex, Matrix4x4 value) => SetParameterInternal(blockBinding, parameterIndex, value, Type.Mat4);
+    public void SetParameter(int blockBinding, int parameterIndex, float value) => SetParameter(blockBinding, parameterIndex, value, Type.Float);
+    public void SetParameter(int blockBinding, int parameterIndex, Vector2 value) => SetParameter(blockBinding, parameterIndex, value, Type.Float2);
+    public void SetParameter(int blockBinding, int parameterIndex, Vector3 value) => SetParameter(blockBinding, parameterIndex, value, Type.Float3);
+    public void SetParameter(int blockBinding, int parameterIndex, Vector4 value) => SetParameter(blockBinding, parameterIndex, value, Type.Float4);
+    public void SetParameter(int blockBinding, int parameterIndex, Matrix4x4 value) => SetParameter(blockBinding, parameterIndex, value, Type.Mat4);
 
     // Sets a texture based on binding
     public void SetTexture(int binding, Texture texture)
     {
         Textures[binding] = texture;
+        IsDirty = true;
     }
 
     // Internal method with type checking for setting a parameter
-    private void SetParameterInternal(int blockBinding, int parameterIndex, object value, Type expectedType)
-    {
+    public void SetParameter(int blockBinding, int parameterIndex, object value, Type expectedType)
+    {        
         // Retrieve reference to block dictionary
         ref var block = ref CollectionsMarshal.GetValueRefOrNullRef(Parameters, blockBinding);
         if (Unsafe.IsNullRef(ref block))
@@ -43,9 +95,7 @@ public class Material : IWritableAsset, IReadableAsset
             throw new ArgumentException($"Invalid block binding: {blockBinding}");
         }
 
-        // Retrieve reference to parameter value in the block dictionary
-        ref var parameterValue = ref CollectionsMarshal.GetValueRefOrNullRef(block, parameterIndex);
-        if (Unsafe.IsNullRef(ref parameterValue))
+        if(parameterIndex > block.Length)
         {
             throw new ArgumentException($"Invalid parameter index: {parameterIndex} in block {blockBinding}");
         }
@@ -57,7 +107,8 @@ public class Material : IWritableAsset, IReadableAsset
             throw new ArgumentException($"Type mismatch: Expected {actualType} for parameter at block {blockBinding}, index {parameterIndex}, but received {expectedType}.");
         }
 
-        parameterValue = value; // Assign the value if type matches
+        block[parameterIndex] = value; // Assign the value if type matches
+        IsDirty = true;
     }
 
     // Initializes parameters and textures based on the shader layout
@@ -65,15 +116,22 @@ public class Material : IWritableAsset, IReadableAsset
     {
         foreach (var block in Shader.Layout.Blocks)
         {
-            if (!Parameters.ContainsKey(block.Binding))
+            ref var parameters = ref CollectionsMarshal.GetValueRefOrAddDefault(Parameters, block.Binding, out var existed);
+
+            if (!existed)
             {
-                Parameters[block.Binding] = new Dictionary<int, object>();
+                parameters = new object[block.Parameters.Count];
             }
 
-            for (int i = 0; i < block.Parameters.Count; i++)
+            if(parameters is null)
+            {
+                throw new Exception("This should never be thrown");
+            }
+
+            for (int i = 0; i < parameters.Length; i++)
             {
                 var parameter = block.Parameters[i];
-                Parameters[block.Binding][i] = GetDefaultValue(parameter.Type);
+                parameters[i] = GetDefaultValue(parameter.Type);
             }
         }
 

@@ -35,7 +35,17 @@ public sealed partial class Entity
     {
         var component = GetComponent(type);
         EntityManager.RemoveComponentFromEntity(component);
-        Components.Remove(type);
+        Components.Remove(type.GUID);
+    }
+
+    public T AddComponentIfNotExist<T>() where T : Component
+    {
+        return EntityManager.ComponentFactory.CreateComponentIfNotExists<T>(this);
+    }
+
+    public Component AddComponentIfNotExist(Type type)
+    {
+        return EntityManager.ComponentFactory.CreateComponentIfNotExists(this, type);
     }
 
     public T AddComponent<T>() where T : Component
@@ -55,7 +65,7 @@ public sealed partial class Entity
 
     public Component GetComponent(Type type)
     {
-        if (Components.TryGetValue(type, out var component))
+        if (Components.TryGetValue(type.GUID, out var component))
         {
             return component;
         }
@@ -79,7 +89,7 @@ public sealed partial class Entity
 
 public sealed partial class Entity
 {
-    SortedList<Type, Component> Components = new SortedList<Type, Component>();
+    SortedList<Guid, Component> Components = new SortedList<Guid, Component>();
 
     internal void Clear()
     {
@@ -88,11 +98,12 @@ public sealed partial class Entity
 
     internal void AddComponent(Component component)
     {
-        Components.Add(component.GetType(), component);
+        Components.Add(component.GetType().GUID, component);
+        EntityManager.AddComponentToEntity(component);
     }
 
     internal bool TryGetComponent(Type type, [MaybeNullWhen(false)] out Component component)
     {
-        return Components.TryGetValue(type, out component);
+        return Components.TryGetValue(type.GUID, out component);
     }
 }

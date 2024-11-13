@@ -12,6 +12,7 @@ namespace PixelGenesis._3D.Common;
 [ReadableAsset<CompiledShader, Factory>]
 public sealed class CompiledShader : IReadableAsset, IWritableAsset
 {
+    public Guid Id { get; } = Guid.NewGuid();
     public string Reference { get; }
     public CompiledShaderDTO Layout { get; }
     public ReadOnlyMemory<byte> Vertex { get; }
@@ -309,6 +310,8 @@ public sealed class PGGLSLShaderSource : IReadableAsset, IWritableAsset
                 return new PGGLSLShaderSource(reference, null);
             }
             
+            stream.Dispose();
+
             return new PGGLSLShaderSource(reference, dto);
         }
     }

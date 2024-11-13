@@ -1,0 +1,30 @@
+blocks: []
+
+textures: []
+
+vertex: |
+  #version 450
+  layout(location = 0) in vec4 position;
+  layout(location = 1) in mat4 model;
+   
+
+  layout(binding = 0) uniform ViewProjection {
+      mat4 view;
+      mat4 projection;
+  } viewProjection;
+
+  void main() {  
+      gl_Position = viewProjection.projection * viewProjection.view * model * position;
+  }
+
+fragment: |
+  #version 450    
+  layout(location = 0) out vec4 fragColor;
+   
+
+  void main() {
+      fragColor = vec4(1,0,0,1); // Solid red color
+  }
+
+tessellation: null
+geometry: null

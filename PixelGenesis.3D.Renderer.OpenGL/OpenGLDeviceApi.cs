@@ -98,21 +98,32 @@ public class OpenGLDeviceApi : IDeviceApi
         return new GLVertexBuffer(data, GetUsageHint(bufferHint), this);
     }
 
-    static void SetVertexLayout(VertexBufferLayout layout)
+    static int SetVertexLayout(VertexBufferLayout layout, int startLayout, bool isInstanced = false)
     {
         var elements = layout.Elements;
-
         int offset = 0;
 
         for (int i = 0; i < elements.Length; i++)
         {
-            var element = elements[i];            
-            GL.VertexAttribPointer(i, element.Count, GetPointerType(element.Type), element.Normalized, layout.Stride, offset);
+            var element = elements[i];
+            int location = i + startLayout;
+
+            GL.VertexAttribPointer(location, element.Count, GetPointerType(element.Type), element.Normalized, layout.Stride, offset);
             ThrowOnGLError();
-            GL.EnableVertexAttribArray((uint)i);
+            GL.EnableVertexAttribArray(location);
             ThrowOnGLError();
+
+            // If it's an instanced attribute, set the divisor to 1
+            if (isInstanced)
+            {
+                GL.VertexAttribDivisor(location, 1);
+                ThrowOnGLError();
+            }
+
             offset += element.Count * element.Size;
         }
+
+        return elements.Length + startLayout;
     }
     public IInstanceBuffer GetInstanceBufferById(int id)
     {
@@ -178,56 +189,69 @@ public class OpenGLDeviceApi : IDeviceApi
         drawContext.ShaderProgram.Bind();
         drawContext.IndexBuffer.Bind();
         drawContext.VertexBuffer.Bind();
-        SetVertexLayout(drawContext.Layout);
+        SetVertexLayout(drawContext.Layout, 0);
 
-        if (drawContext.EnableBlend)
-        {
-            GL.Enable(EnableCap.Blend);
-            GL.BlendEquation((BlendEquationMode)drawContext.BlendEquation);
-            GL.BlendFunc((BlendingFactor)drawContext.BlendSFactor, (BlendingFactor)drawContext.BlendDFactor);
-        }
-        else
-        {
-            GL.Disable(EnableCap.Blend);
-        }
+        //if (drawContext.EnableBlend)
+        //{
+        //    GL.Enable(EnableCap.Blend);
+        //    ThrowOnGLError();
+        //    GL.BlendEquation((BlendEquationMode)drawContext.BlendEquation);
+        //    ThrowOnGLError();
+        //    GL.BlendFunc((BlendingFactor)drawContext.BlendSFactor, (BlendingFactor)drawContext.BlendDFactor);
+        //    ThrowOnGLError();
+        //}
+        //else
+        //{
+        //    GL.Disable(EnableCap.Blend);
+        //    ThrowOnGLError();
+        //}
 
-        if (drawContext.EnableDepthTest)
-        {
-            GL.Enable(EnableCap.DepthTest);
-        }
-        else
-        {
-            GL.Disable(EnableCap.DepthTest);
-        }
+        //if (drawContext.EnableDepthTest)
+        //{
+        //    GL.Enable(EnableCap.DepthTest);
+        //    ThrowOnGLError();
+        //}
+        //else
+        //{
+        //    GL.Disable(EnableCap.DepthTest);
+        //    ThrowOnGLError();
+        //}
 
-        if (drawContext.EnableCullFace)
-        {
-            GL.Enable(EnableCap.CullFace);
-        }
-        else
-        {
-            GL.Disable(EnableCap.CullFace);
-        }
+        //if (drawContext.EnableCullFace)
+        //{
+        //    GL.Enable(EnableCap.CullFace);
+        //    ThrowOnGLError();
+        //}
+        //else
+        //{
+        //    GL.Disable(EnableCap.CullFace);
+        //    ThrowOnGLError();
+        //}
 
-        if (drawContext.EnableScissorTest)
-        {
-            GL.Enable(EnableCap.ScissorTest);
-            GL.Scissor(drawContext.ScissorRect.X, drawContext.ScissorRect.Y, drawContext.ScissorRect.Width, drawContext.ScissorRect.Height);
-        }
-        else
-        {
-            GL.Disable(EnableCap.ScissorTest);
-        }
+        //if (drawContext.EnableScissorTest)
+        //{
+        //    GL.Enable(EnableCap.ScissorTest);
+        //    ThrowOnGLError();
+        //    GL.Scissor(drawContext.ScissorRect.X, drawContext.ScissorRect.Y, drawContext.ScissorRect.Width, drawContext.ScissorRect.Height);
+        //    ThrowOnGLError();
+        //}
+        //else
+        //{
+        //    GL.Disable(EnableCap.ScissorTest);
+        //    ThrowOnGLError();
+        //}
 
         var glIndexBuffer = (IGLIndexBuffer)drawContext.IndexBuffer;
 
         if (drawContext.BaseVertex is null)
         {
             GL.DrawElements(PrimitiveType.Triangles, drawContext.Lenght, glIndexBuffer.ElementsType, drawContext.Offset * glIndexBuffer.ElementSize);
+            ThrowOnGLError();
         }
         else
         {
             GL.DrawElementsBaseVertex(PrimitiveType.Triangles, drawContext.Lenght, glIndexBuffer.ElementsType, drawContext.Offset * glIndexBuffer.ElementSize, drawContext.BaseVertex.Value);
+            ThrowOnGLError();
         }
     }
 
@@ -236,56 +260,72 @@ public class OpenGLDeviceApi : IDeviceApi
         drawContext.ShaderProgram.Bind();
         drawContext.IndexBuffer.Bind();
         drawContext.VertexBuffer.Bind();
-        SetVertexLayout(drawContext.Layout);
+        var next = SetVertexLayout(drawContext.Layout, 0);
+
+        instanceBuffer.Bind();
+        SetVertexLayout(layout, next, true);
 
         if (drawContext.EnableBlend)
         {
             GL.Enable(EnableCap.Blend);
+            ThrowOnGLError();
             GL.BlendEquation((BlendEquationMode)drawContext.BlendEquation);
+            ThrowOnGLError();
             GL.BlendFunc((BlendingFactor)drawContext.BlendSFactor, (BlendingFactor)drawContext.BlendDFactor);
+            ThrowOnGLError();
         }
         else
         {
             GL.Disable(EnableCap.Blend);
+            ThrowOnGLError();
         }
 
         if (drawContext.EnableDepthTest)
         {
             GL.Enable(EnableCap.DepthTest);
+            ThrowOnGLError();
         }
         else
         {
             GL.Disable(EnableCap.DepthTest);
+            ThrowOnGLError();
         }
 
         if (drawContext.EnableCullFace)
         {
             GL.Enable(EnableCap.CullFace);
+            ThrowOnGLError();
         }
         else
         {
             GL.Disable(EnableCap.CullFace);
+            ThrowOnGLError();
         }
 
         if (drawContext.EnableScissorTest)
         {
             GL.Enable(EnableCap.ScissorTest);
+            ThrowOnGLError();
             GL.Scissor(drawContext.ScissorRect.X, drawContext.ScissorRect.Y, drawContext.ScissorRect.Width, drawContext.ScissorRect.Height);
+            ThrowOnGLError();
         }
         else
         {
             GL.Disable(EnableCap.ScissorTest);
+            ThrowOnGLError();
         }
 
         var glIndexBuffer = (IGLIndexBuffer)drawContext.IndexBuffer;
 
         if (drawContext.BaseVertex is null)
         {
-            GL.DrawArraysInstanced(PrimitiveType.Triangles, drawContext.Offset, drawContext.Lenght, instanceCount);            
+            GL.DrawArraysInstanced(PrimitiveType.Triangles, drawContext.Offset, drawContext.Lenght, instanceCount);
+            ThrowOnGLError();
         }
         else
         {
-            GL.DrawArraysInstancedBaseInstance(PrimitiveType.Triangles, drawContext.Offset, drawContext.Lenght, instanceCount, drawContext.BaseVertex.Value);            
+            GL.DrawElementsInstancedBaseVertex(PrimitiveType.Triangles, glIndexBuffer.Length, glIndexBuffer.ElementsType, drawContext.Offset * glIndexBuffer.ElementSize, instanceCount, drawContext.BaseVertex.Value);
+            ThrowOnGLError();
         }
     }
 
@@ -309,8 +349,8 @@ public class OpenGLDeviceApi : IDeviceApi
     internal static void ThrowOnGLError()
     {
         var error = GLCheckError();
-        //if (error is not ErrorCode.NoError)
-        //    throw new Exception($"OpenGL Error: {error}");
+        if (error is not ErrorCode.NoError)
+            throw new Exception($"OpenGL Error: {error}");
     }
 
     internal static ErrorCode GLCheckError()

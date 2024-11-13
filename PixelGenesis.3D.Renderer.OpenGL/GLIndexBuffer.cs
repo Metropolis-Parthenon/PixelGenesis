@@ -10,7 +10,7 @@ internal class GLIndexBuffer<T> : IGLIndexBuffer, IIndexBuffer<T> where T : unma
     int _id;
     public int Id => _id;
 
-    public int Lenght { get; }
+    public int Length { get; }
 
     public int Size { get; }
 
@@ -24,7 +24,7 @@ internal class GLIndexBuffer<T> : IGLIndexBuffer, IIndexBuffer<T> where T : unma
     {        
         _api = api;
 
-        Lenght = lenght;
+        Length = lenght;
         ElementsType = GetDrawElements();
 
         ElementSize = sizeof(T);
@@ -48,7 +48,11 @@ internal class GLIndexBuffer<T> : IGLIndexBuffer, IIndexBuffer<T> where T : unma
         fixed(T* pointer = data.Span)
             dataPointer = (IntPtr)pointer;
 
-        Lenght = data.Length;
+        Length = data.Length;
+        ElementsType = GetDrawElements();
+
+        ElementSize = sizeof(T);
+        Size = Length * ElementSize;
 
         GL.GenBuffers(1, out _id);
         OpenGLDeviceApi.ThrowOnGLError();
@@ -103,7 +107,7 @@ internal class GLIndexBuffer<T> : IGLIndexBuffer, IIndexBuffer<T> where T : unma
 
 internal interface IGLIndexBuffer : IIndexBuffer
 {
-    public int Lenght { get; }
+    public int Length { get; }
     public int Size { get; }
     public int ElementSize { get; }
     DrawElementsType ElementsType { get; }

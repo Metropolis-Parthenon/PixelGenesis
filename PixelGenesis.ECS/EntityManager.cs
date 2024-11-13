@@ -17,7 +17,7 @@ public sealed class EntityManager
 
     int currentId = 0;
 
-    internal EntityManager()
+    public EntityManager()
     {
         EntityPool = new DefaultObjectPoolProvider().Create(new EntityPoolPolicy(this));
         ComponentFactory = new ComponentFactory(this);

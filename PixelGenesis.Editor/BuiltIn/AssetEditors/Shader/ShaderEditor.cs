@@ -25,7 +25,7 @@ internal class ShaderEditor(IDeviceApi deviceApi, ICommandDispatcher commandDisp
 
         var source = new PGGLSLShaderSource.Factory().ReadAsset(filePath, File.OpenRead(filePath));
         
-        var renderer = new ShaderRenderer(source, deviceApi, commandDispatcher);
+        var renderer = new ShaderRenderer(source, deviceApi);
         OpenedShaders.Add(filePath, renderer);
     }
 
@@ -58,7 +58,7 @@ internal class ShaderEditor(IDeviceApi deviceApi, ICommandDispatcher commandDisp
         {
             using var fileStream = File.OpenRead(filePath);
             var source = new PGGLSLShaderSource.Factory().ReadAsset(filePath, fileStream);
-            renderer.OnSourceChanged(source);
+            //renderer.OnSourceChanged(source);
         }
 
         renderer.OnGui();

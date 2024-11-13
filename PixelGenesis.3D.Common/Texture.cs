@@ -6,6 +6,7 @@ namespace PixelGenesis._3D.Common;
 [ReadableAsset<Texture, Factory>]
 public class Texture : IWritableAsset, IReadableAsset
 {
+    public Guid Id { get; } = Guid.NewGuid();
     public string Reference { get; }
     public int Widht { get; }
     public int Height { get; }

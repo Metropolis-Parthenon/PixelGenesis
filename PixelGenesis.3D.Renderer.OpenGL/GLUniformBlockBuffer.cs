@@ -29,8 +29,18 @@ public class GLUniformBlockBuffer : IUniformBlockBuffer
 
     public unsafe void SetData<T>(T data, int index) where T : unmanaged
     {
-        Bind();        
+        Bind();
         GL.BufferSubData(BufferTarget.UniformBuffer, _offsets[index], sizeof(T), (IntPtr)Unsafe.AsPointer(ref data));
+        OpenGLDeviceApi.ThrowOnGLError();
+    }
+
+    public unsafe void SetData(ReadOnlySpan<byte> data, int index)
+    {
+        IntPtr dataPointer;
+        fixed (byte* pointer = data)
+            dataPointer = (IntPtr)pointer;
+        Bind();
+        GL.BufferSubData(BufferTarget.UniformBuffer, _offsets[index], data.Length, dataPointer);
         OpenGLDeviceApi.ThrowOnGLError();
     }
 
@@ -52,5 +62,4 @@ public class GLUniformBlockBuffer : IUniformBlockBuffer
         OpenGLDeviceApi.ThrowOnGLError();
         _api._uniformBlockBuffers.Remove(_id);
     }
-
 }

@@ -5,9 +5,9 @@ namespace PixelGenesis._3D.Common.Components;
 
 public sealed partial class Transform3DComponent : Component
 {
-    public Vector3 Position;
-    public Quaternion Rotation;
-    public Vector3 Scale;
+    public Vector3 Position = Vector3.Zero;
+    public Quaternion Rotation = Quaternion.Zero;
+    public Vector3 Scale = Vector3.One;
         
     public Matrix4x4 GetModelMatrix()
     {
