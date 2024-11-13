@@ -1,50 +1,66 @@
+# Shader configuration for a basic material with instancing (Vulkan-compatible)
 blocks:
-- binding: 0
-  parameters:
-  - name: Metallic
-    type: Float
-    range:
-      min: 0
-      max: 1  
-  - name: Albeado Color
-    type: Color4
+  - binding: 0
+    parameters:
+      - name: "color"
+        type: "color4"
+        range:
+          min: 0.0
+          max: 1.0
+  - binding: 1
+    parameters:
+      - name: "lightPosition"
+        type: "float3"
+      - name: "lightIntensity"
+        type: "float"
+        range:
+          min: 0.0
+          max: 10.0
 
-vertex: >
+textures:
+  - name: "albedoTexture"
+    binding: 0
+  - name: "normalMap"
+    binding: 1
+
+# Embedded GLSL source code, Vulkan-compatible
+vertex: |
   #version 450
+  #extension GL_ARB_separate_shader_objects : enable
+  
+  layout(location = 0) in vec4 inPosition;  // Now a vec4 for homogeneous transformations
+  layout(location = 1) in vec3 inNormal;
+  layout(location = 2) in mat4 instanceModelMatrix;  // Model matrix from instancing
+  layout(location = 6) in mat4 instanceViewProjectionMatrix;  // View projection matrix from instancing
 
-  layout(location = 0) in vec4 position;
-  layout(location = 1) in vec2 textCoord;
-
-  layout(location = 0) out vec2 v_TexCoord;
-
-  layout(binding = 0) uniform Projection {
-      mat4 u_MVP;
-  } projection;
-
-  void main()
-  {
-      gl_Position = projection.u_MVP * position;
-
-      // pass the texcoord to the fragment shader
-      v_TexCoord = textCoord;
+  layout(location = 0) out vec3 fragNormal;
+  
+  void main() {
+      fragNormal = mat3(instanceModelMatrix) * inNormal;  // Transform normal by model matrix
+      gl_Position = instanceViewProjectionMatrix * instanceModelMatrix * inPosition;
   }
 
-fragment: >
+fragment: |
   #version 450
+  #extension GL_ARB_separate_shader_objects : enable
 
-  layout(location = 0) in vec2 v_TexCoord;
+  layout(location = 0) in vec3 fragNormal;
+  layout(location = 0) out vec4 outColor;
 
-  layout(location = 0) out vec4 color;
+  layout(binding = 0) uniform Material {
+      vec4 color;  // Moved color into a uniform block
+  };
 
-  layout(binding = 0) uniform Material
-  {
-      vec4 u_Color;    
-  } material;
-
-  layout(binding = 0) uniform sampler2D u_Texture;
-
-  void main()
-  {
-      vec4 texColor = texture(u_Texture, v_TexCoord);
-      color = texColor;
+  layout(binding = 1) uniform Light {
+      vec3 lightPosition;
+      float lightIntensity;
+  };
+  
+  void main() {
+      // Calculate lighting based on normal and light position
+      float lightFactor = max(dot(normalize(fragNormal), normalize(lightPosition)), 0.0) * lightIntensity;
+      outColor = color * vec4(lightFactor, lightFactor, lightFactor, 1.0);
   }
+
+tessellation: null
+geometry: null

@@ -5,6 +5,7 @@ namespace PixelGenesis._3D.Renderer.DeviceApi.Abstractions;
 public interface IDeviceApi : IDisposable
 {
     IVertexBuffer GetVertexBufferById(int id);
+    IInstanceBuffer GetInstanceBufferById(int id);
     IIndexBuffer GetIndexBufferById(int id);
     IIndexBuffer<T> GetIndexBufferById<T>(int id) where T : unmanaged, IBinaryInteger<T>
     {
@@ -13,9 +14,13 @@ public interface IDeviceApi : IDisposable
     IUniformBlockBuffer GetUniformBlockBufferById(int id);    
     ITexture GetTextureById(int id);
     IShaderProgram GetShaderProgramById(int id);
+    IFrameBuffer GetFrameBufferById(int id);
 
-    public IVertexBuffer CreateVertexBuffer(int size, BufferHint bufferHint);
+    public IVertexBuffer CreateVertexBuffer(int size, BufferHint bufferHint);    
     public IVertexBuffer CreateVertexBuffer(ReadOnlyMemory<byte> data, BufferHint bufferHint);
+
+    public IInstanceBuffer CreateInstanceBuffer(int size, BufferHint bufferHint);
+    public IInstanceBuffer CreateInstanceBuffer(ReadOnlyMemory<byte> data, BufferHint bufferHint);
 
     public IIndexBuffer<T> CreateIndexBuffer<T>(int lenght, BufferHint bufferHint) where T : unmanaged, IBinaryInteger<T>;
     public IIndexBuffer<T> CreateIndexBuffer<T>(ReadOnlyMemory<T> data, BufferHint bufferHint) where T : unmanaged, IBinaryInteger<T>;
@@ -51,7 +56,11 @@ public interface IDeviceApi : IDisposable
         ReadOnlyMemory<byte> tessellationSpv,
         ReadOnlyMemory<byte> geometrySpv);
 
-    void DrawTriangles(DrawContext drawContext);    
+    public IFrameBuffer CreateFrameBuffer(int width, int height);
+
+    void DrawTriangles(DrawContext drawContext);
+
+    void DrawTriangles(DrawContext drawContext, int instanceCount, IInstanceBuffer instanceBuffer, VertexBufferLayout layout);
 }
 
 public enum BufferHint

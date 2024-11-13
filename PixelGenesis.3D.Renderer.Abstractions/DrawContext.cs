@@ -5,7 +5,7 @@ namespace PixelGenesis._3D.Renderer.DeviceApi.Abstractions;
 public class DrawContext
 {
     public IVertexBuffer VertexBuffer;
-    public VertexBufferLayout Layout;
+    public VertexBufferLayout Layout;    
     public IIndexBuffer IndexBuffer;
     public IShaderProgram ShaderProgram;
     public int Lenght;

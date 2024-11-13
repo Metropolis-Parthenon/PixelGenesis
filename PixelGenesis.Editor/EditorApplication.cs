@@ -47,7 +47,14 @@ internal sealed class EditorApplication(EditorWindow window, IHost host) : IHost
         builder.Services.AddSingleton<IEditionCommandDispatcher, EditionCommandDispatcher>();
         builder.Services.AddSingleton<ICommandDispatcher, CommandDispatcher>();
         builder.Services.AddSingleton<IDeviceApi, OpenGLDeviceApi>();
-        builder.Services.AddSingleton((sp) => new EditorWindow(1920, 1080, "Pixel Genesis Editor", sp.GetRequiredService<IDeviceApi>(), sp.GetRequiredKeyedService<PixelGenesisEditor>(default)));
+        builder.Services.AddSingleton((sp) => new EditorWindow(
+            1920, 
+            1080, 
+            "Pixel Genesis Editor", 
+            sp.GetRequiredService<IDeviceApi>(), 
+            sp.GetRequiredKeyedService<PixelGenesisEditor>(default),
+            sp.GetRequiredService<ICommandDispatcher>()
+        ));
 
         builder.Services.Scan(
             scan => 

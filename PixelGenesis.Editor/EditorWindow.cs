@@ -6,8 +6,11 @@ using ImGuiNET;
 using OpenTK.Mathematics;
 using PixelGenesis.Editor.GUI;
 using PixelGenesis._3D.Renderer.DeviceApi.Abstractions;
+using PixelGenesis.Editor.Core;
 
 namespace PixelGenesis.Editor;
+
+public record EditorWindowResized(int Width, int Height);
 
 internal class EditorWindow : GameWindow
 {
@@ -15,12 +18,15 @@ internal class EditorWindow : GameWindow
 
     IDeviceApi _deviceApi;
 
-    public EditorWindow(int width, int height, string title, IDeviceApi deviceApi, PixelGenesisEditor editorGui) : base(
+    ICommandDispatcher _commandDispatcher;
+
+    public EditorWindow(int width, int height, string title, IDeviceApi deviceApi, PixelGenesisEditor editorGui, ICommandDispatcher commandDispatcher) : base(
         GameWindowSettings.Default,
         new NativeWindowSettings() { ClientSize = (width, height), Title = title, WindowBorder = WindowBorder.Resizable }) 
     { 
         EditorGUI = editorGui;
         _deviceApi = deviceApi;
+        _commandDispatcher = commandDispatcher;
     }
 
     ImGuiPGController _controller;
@@ -77,6 +83,8 @@ internal class EditorWindow : GameWindow
     protected override void OnFramebufferResize(FramebufferResizeEventArgs e)
     {
         base.OnFramebufferResize(e);
+
+        _commandDispatcher.Dispatch(new EditorWindowResized(e.Width, e.Height));
 
         // update opengl viewport
         GL.Viewport(0, 0, e.Width, e.Height);

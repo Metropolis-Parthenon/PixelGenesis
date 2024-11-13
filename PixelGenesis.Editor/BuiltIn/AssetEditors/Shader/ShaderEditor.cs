@@ -6,13 +6,13 @@ using System.Numerics;
 
 namespace PixelGenesis.Editor.BuiltIn.AssetEditors.Shader;
 
-internal class ShaderEditor(IDeviceApi deviceApi) : IAssetEditor
+internal class ShaderEditor(IDeviceApi deviceApi, ICommandDispatcher commandDispatcher) : IAssetEditor
 {
     public string Name => "Shader Editor";
 
     public string FileExtension => ".pgs";
 
-    Dictionary<string, (FileSystemWatcher Watcher, ShaderRenderer Renderer)> OpenedShaders = new();
+    Dictionary<string, ShaderRenderer> OpenedShaders = new();
 
     public void OnOpenFile(string filePath)
     {
@@ -21,36 +21,18 @@ internal class ShaderEditor(IDeviceApi deviceApi) : IAssetEditor
             return;
         }
 
-        var watcher = new FileSystemWatcher();
-
-        watcher.Path = Path.GetDirectoryName(filePath);
-        watcher.Filter = Path.GetFileName(filePath);
-
-        watcher.NotifyFilter = NotifyFilters.LastAccess |
-                NotifyFilters.LastWrite | NotifyFilters.FileName | NotifyFilters.DirectoryName;
-
-        watcher.Changed += Watcher_Changed;
+        using var fileStream = File.OpenRead(filePath);
 
         var source = new PGGLSLShaderSource.Factory().ReadAsset(filePath, File.OpenRead(filePath));
         
-        var renderer = new ShaderRenderer(source, deviceApi);
-        OpenedShaders.Add(filePath, (watcher, renderer));
+        var renderer = new ShaderRenderer(source, deviceApi, commandDispatcher);
+        OpenedShaders.Add(filePath, renderer);
     }
 
-    private void Watcher_Changed(object sender, FileSystemEventArgs e)
-    {
-        if (OpenedShaders.TryGetValue(e.FullPath, out var shader))
-        {
-            using var fileStream = File.OpenRead(e.FullPath);
-            var source = new PGGLSLShaderSource.Factory().ReadAsset(e.FullPath, fileStream);
-            shader.Renderer.OnSourceChanged(source);            
-        }
-    }
     public void OnCloseFile(string filePath)
     {
-        var opened = OpenedShaders[filePath];
-        opened.Watcher.Dispose();
-        opened.Renderer.Dispose();
+        var renderer = OpenedShaders[filePath];
+        renderer.Dispose();
         OpenedShaders.Remove(filePath);
     }
 
@@ -64,17 +46,22 @@ internal class ShaderEditor(IDeviceApi deviceApi) : IAssetEditor
         return false;
     }
 
-
-
     public void OnGui(string filePath)
     {
-        if (!OpenedShaders.TryGetValue(filePath, out var opened))
+        if (!OpenedShaders.TryGetValue(filePath, out var renderer))
         {
             ImGui.Text("Failed to open shader");
             return;
         }
 
-        opened.Renderer.OnGui();
+        if(ImGui.Button("Reload"))
+        {
+            using var fileStream = File.OpenRead(filePath);
+            var source = new PGGLSLShaderSource.Factory().ReadAsset(filePath, fileStream);
+            renderer.OnSourceChanged(source);
+        }
+
+        renderer.OnGui();
     }
 
 }

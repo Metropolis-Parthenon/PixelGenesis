@@ -338,7 +338,6 @@ void main()
                 else
                 {
                     var tex = _deviceApi.GetTextureById((int)pcmd.TextureId);
-
                     tex.SetSlot(0);
                     tex.Bind();
 

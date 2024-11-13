@@ -7,10 +7,27 @@ namespace PixelGenesis._3D.Renderer.DeviceApi.OpenGL;
 public class OpenGLDeviceApi : IDeviceApi
 {
     internal Dictionary<int, IVertexBuffer> _vertexBuffers = new Dictionary<int, IVertexBuffer>();
+    internal Dictionary<int, IInstanceBuffer> _instanceBuffers = new Dictionary<int, IInstanceBuffer>();
     internal Dictionary<int, IIndexBuffer> _indexBuffers = new Dictionary<int, IIndexBuffer>();
     internal Dictionary<int, IUniformBlockBuffer> _uniformBlockBuffers = new Dictionary<int, IUniformBlockBuffer>();
     internal Dictionary<int, ITexture> _textures = new Dictionary<int, ITexture>();
     internal Dictionary<int, IShaderProgram> _shaderPrograms = new Dictionary<int, IShaderProgram>();
+    internal Dictionary<int, IFrameBuffer> _frameBuffers = new Dictionary<int, IFrameBuffer>();
+        
+    public IInstanceBuffer CreateInstanceBuffer(int size, BufferHint bufferHint)
+    {
+        return new GLInstanceBuffer(size, GetUsageHint(bufferHint), this);
+    }
+
+    public IInstanceBuffer CreateInstanceBuffer(ReadOnlyMemory<byte> data, BufferHint bufferHint)
+    {
+        return new GLInstanceBuffer(data, GetUsageHint(bufferHint), this);
+    }
+
+    public IFrameBuffer CreateFrameBuffer(int width, int height)
+    {
+        return new GLFrameBuffer(width, height, this);
+    }
 
     public IIndexBuffer<T> CreateIndexBuffer<T>(int lenght, BufferHint bufferHint) where T : unmanaged, IBinaryInteger<T>
     {
@@ -81,6 +98,81 @@ public class OpenGLDeviceApi : IDeviceApi
         return new GLVertexBuffer(data, GetUsageHint(bufferHint), this);
     }
 
+    static void SetVertexLayout(VertexBufferLayout layout)
+    {
+        var elements = layout.Elements;
+
+        int offset = 0;
+
+        for (int i = 0; i < elements.Length; i++)
+        {
+            var element = elements[i];            
+            GL.VertexAttribPointer(i, element.Count, GetPointerType(element.Type), element.Normalized, layout.Stride, offset);
+            ThrowOnGLError();
+            GL.EnableVertexAttribArray((uint)i);
+            ThrowOnGLError();
+            offset += element.Count * element.Size;
+        }
+    }
+    public IInstanceBuffer GetInstanceBufferById(int id)
+    {
+        return _instanceBuffers[id];
+    }
+
+    public IVertexBuffer GetVertexBufferById(int id)
+    {
+        return _vertexBuffers[id];
+    }
+
+    public IIndexBuffer GetIndexBufferById(int id)
+    {
+        return _indexBuffers[id];
+    }
+
+    public IUniformBlockBuffer GetUniformBlockBufferById(int id)
+    {
+        return _uniformBlockBuffers[id];
+    }
+
+    public ITexture GetTextureById(int id)
+    {
+        return _textures[id];
+    }
+
+    public IShaderProgram GetShaderProgramById(int id)
+    {
+        return _shaderPrograms[id];
+    }
+
+    public IFrameBuffer GetFrameBufferById(int id)
+    {
+        return _frameBuffers[id];
+    }
+
+    public void Dispose()
+    {
+        foreach(var obj in _vertexBuffers.Values)
+        {
+            obj.Dispose();
+        }
+
+        foreach(var obj in _indexBuffers.Values)
+        {
+            obj.Dispose();
+        }
+
+        foreach(var obj in _uniformBlockBuffers.Values)
+        {
+            obj.Dispose();
+        }
+
+        foreach(var obj in _textures.Values)
+        {
+            obj.Dispose();
+        }
+    }
+
+
     public void DrawTriangles(DrawContext drawContext)
     {
         drawContext.ShaderProgram.Bind();
@@ -88,7 +180,7 @@ public class OpenGLDeviceApi : IDeviceApi
         drawContext.VertexBuffer.Bind();
         SetVertexLayout(drawContext.Layout);
 
-        if(drawContext.EnableBlend)
+        if (drawContext.EnableBlend)
         {
             GL.Enable(EnableCap.Blend);
             GL.BlendEquation((BlendEquationMode)drawContext.BlendEquation);
@@ -129,81 +221,74 @@ public class OpenGLDeviceApi : IDeviceApi
 
         var glIndexBuffer = (IGLIndexBuffer)drawContext.IndexBuffer;
 
-        if(drawContext.BaseVertex is null)
+        if (drawContext.BaseVertex is null)
         {
             GL.DrawElements(PrimitiveType.Triangles, drawContext.Lenght, glIndexBuffer.ElementsType, drawContext.Offset * glIndexBuffer.ElementSize);
         }
         else
         {
-            GL.DrawElementsBaseVertex(PrimitiveType.Triangles, drawContext.Lenght, glIndexBuffer.ElementsType, drawContext.Offset * glIndexBuffer.ElementSize, drawContext.BaseVertex.Value);            
+            GL.DrawElementsBaseVertex(PrimitiveType.Triangles, drawContext.Lenght, glIndexBuffer.ElementsType, drawContext.Offset * glIndexBuffer.ElementSize, drawContext.BaseVertex.Value);
         }
     }
 
-    static void SetVertexLayout(VertexBufferLayout layout)
+    public void DrawTriangles(DrawContext drawContext, int instanceCount, IInstanceBuffer instanceBuffer, VertexBufferLayout layout)
     {
-        var elements = layout.Elements;
+        drawContext.ShaderProgram.Bind();
+        drawContext.IndexBuffer.Bind();
+        drawContext.VertexBuffer.Bind();
+        SetVertexLayout(drawContext.Layout);
 
-        int offset = 0;
-
-        for (int i = 0; i < elements.Length; i++)
+        if (drawContext.EnableBlend)
         {
-            var element = elements[i];            
-            GL.VertexAttribPointer(i, element.Count, GetPointerType(element.Type), element.Normalized, layout.Stride, offset);
-            ThrowOnGLError();
-            GL.EnableVertexAttribArray((uint)i);
-            ThrowOnGLError();
-            offset += element.Count * element.Size;
+            GL.Enable(EnableCap.Blend);
+            GL.BlendEquation((BlendEquationMode)drawContext.BlendEquation);
+            GL.BlendFunc((BlendingFactor)drawContext.BlendSFactor, (BlendingFactor)drawContext.BlendDFactor);
         }
-    }
-
-    public IVertexBuffer GetVertexBufferById(int id)
-    {
-        return _vertexBuffers[id];
-    }
-
-    public IIndexBuffer GetIndexBufferById(int id)
-    {
-        return _indexBuffers[id];
-    }
-
-    public IUniformBlockBuffer GetUniformBlockBufferById(int id)
-    {
-        return _uniformBlockBuffers[id];
-    }
-
-    public ITexture GetTextureById(int id)
-    {
-        return _textures[id];
-    }
-
-    public IShaderProgram GetShaderProgramById(int id)
-    {
-        return _shaderPrograms[id];
-    }
-
-    public void Dispose()
-    {
-        foreach(var obj in _vertexBuffers.Values)
+        else
         {
-            obj.Dispose();
+            GL.Disable(EnableCap.Blend);
         }
 
-        foreach(var obj in _indexBuffers.Values)
+        if (drawContext.EnableDepthTest)
         {
-            obj.Dispose();
+            GL.Enable(EnableCap.DepthTest);
+        }
+        else
+        {
+            GL.Disable(EnableCap.DepthTest);
         }
 
-        foreach(var obj in _uniformBlockBuffers.Values)
+        if (drawContext.EnableCullFace)
         {
-            obj.Dispose();
+            GL.Enable(EnableCap.CullFace);
+        }
+        else
+        {
+            GL.Disable(EnableCap.CullFace);
         }
 
-        foreach(var obj in _textures.Values)
+        if (drawContext.EnableScissorTest)
         {
-            obj.Dispose();
+            GL.Enable(EnableCap.ScissorTest);
+            GL.Scissor(drawContext.ScissorRect.X, drawContext.ScissorRect.Y, drawContext.ScissorRect.Width, drawContext.ScissorRect.Height);
+        }
+        else
+        {
+            GL.Disable(EnableCap.ScissorTest);
+        }
+
+        var glIndexBuffer = (IGLIndexBuffer)drawContext.IndexBuffer;
+
+        if (drawContext.BaseVertex is null)
+        {
+            GL.DrawArraysInstanced(PrimitiveType.Triangles, drawContext.Offset, drawContext.Lenght, instanceCount);            
+        }
+        else
+        {
+            GL.DrawArraysInstancedBaseInstance(PrimitiveType.Triangles, drawContext.Offset, drawContext.Lenght, instanceCount, drawContext.BaseVertex.Value);            
         }
     }
-            
+
     static VertexAttribPointerType GetPointerType(ShaderDataType type)
     {
         return type switch
@@ -224,8 +309,8 @@ public class OpenGLDeviceApi : IDeviceApi
     internal static void ThrowOnGLError()
     {
         var error = GLCheckError();
-        if (error is not ErrorCode.NoError)
-            throw new Exception($"OpenGL Error: {error}");
+        //if (error is not ErrorCode.NoError)
+        //    throw new Exception($"OpenGL Error: {error}");
     }
 
     internal static ErrorCode GLCheckError()
