@@ -20,12 +20,17 @@ public class PG3DRenderer(IDeviceApi deviceApi, IPGWindow pGWindow, EntityManage
     // we can use this buffer to send any data we want from the renderer to the shader
     // for now we are only sending the projection * view matrix
     // later we can send more data like light positions, time passed, etc
-    IUniformBlockBuffer DetailsBuffer = deviceApi.CreateUniformBlockBuffer<Matrix4x4>(BufferHint.Dynamic);
+    IUniformBlockBuffer DetailsBuffer;
 
     DrawContext drawContext = new DrawContext()
     {
-        
+        EnableDepthTest = true,
     };
+
+    public void Initialize()
+    {
+        DetailsBuffer = deviceApi.CreateUniformBlockBuffer<Matrix4x4>(BufferHint.Dynamic);
+    }
 
     public unsafe void Update()
     {
@@ -206,7 +211,10 @@ public class PG3DRenderer(IDeviceApi deviceApi, IPGWindow pGWindow, EntityManage
             return;
         }
 
-        var viewProjection = CameraComponent.GetProjectionMatrix(pGWindow.Width / pGWindow.Height) * CameraComponent.GetViewMatrix();
+        var projection = CameraComponent.GetProjectionMatrix(pGWindow.Width / pGWindow.Height);
+        var view = CameraComponent.GetViewMatrix();
+
+        var viewProjection = view * projection;
 
         DetailsBuffer.SetData(viewProjection, 0);
 
@@ -219,8 +227,9 @@ public class PG3DRenderer(IDeviceApi deviceApi, IPGWindow pGWindow, EntityManage
             drawContext.VertexBuffer = instancedObject.VertexBuffer;
             drawContext.IndexBuffer = instancedObject.IndexBuffer;
             drawContext.Layout = instancedObject.VertexBufferLayout;
+            drawContext.Lenght = instancedObject.Mesh.Triangles.Length;
 
-            var shaderProgram = CollectionsMarshal.GetValueRefOrAddDefault(DeviceShaders, instancedObject.Material.Shader.Id, out bool shaderProgramExisted);
+            ref var shaderProgram = ref CollectionsMarshal.GetValueRefOrAddDefault(DeviceShaders, instancedObject.Material.Shader.Id, out bool shaderProgramExisted);
             if(!shaderProgramExisted)
             {
                 var compiledShader = instancedObject.Material.Shader;

@@ -8,6 +8,7 @@ using OpenTK.Graphics.OpenGL4;
 using PixelGenesis._3D.Renderer;
 using PixelGenesis.ECS;
 using PixelGenesis._3D.Common.Components;
+using OpenTK.Windowing.GraphicsLibraryFramework;
 
 namespace Shader.Sandbox;
 
@@ -19,6 +20,8 @@ internal class RendererWindowTest : GameWindow, IPGWindow
     IDeviceApi deviceApi = new OpenGLDeviceApi();
     PG3DRenderer renderer;
     EntityManager entityManager;
+
+    PerspectiveCameraComponent PerspectiveCameraComponent;
 
     Material cubeMaterial = new Material(
         "shader.yaml",
@@ -95,14 +98,34 @@ internal class RendererWindowTest : GameWindow, IPGWindow
         var meshRendererComponent = cube.AddComponent<MeshRendererComponent>();
         meshRendererComponent.Mesh = cubeMesh;
         meshRendererComponent.Material = cubeMaterial;
-        
+        cube.GetComponent<Transform3DComponent>().Rotation = Quaternion.CreateFromYawPitchRoll((MathF.PI / 180f) * 45f, 0, 0f);
+
+        var offset = 0f;
+        for (var x = -2; x < 2; x++)
+        {
+            for (var y = -2; y < 2; y++)
+            {                
+                var clone = entityManager.Clone(cube, $"Cube{x}{y}");
+                clone.GetComponent<Transform3DComponent>().Position = new Vector3(x * 2f + offset, y * 2f + offset, 0f);
+            }
+        }
+
         //camera
         var camera = entityManager.Create("Camera");
-        var cameraComponent = camera.AddComponent<PerspectiveCameraComponent>();
+        PerspectiveCameraComponent = camera.AddComponent<PerspectiveCameraComponent>();
         camera.GetComponent<Transform3DComponent>().Position = new Vector3(0, 0, -5);
+
+
+
+
+
 
         var vao = GL.GenVertexArray();
         GL.BindVertexArray(vao);
+        renderer.Initialize();
+
+        GL.ClearColor(1f, 1f, 1f, 1f);
+
     }
 
     protected override void OnRenderFrame(FrameEventArgs args)
@@ -111,7 +134,7 @@ internal class RendererWindowTest : GameWindow, IPGWindow
 
         HandleInput((float)args.Time);
 
-        GL.Clear(ClearBufferMask.ColorBufferBit);
+        GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
         renderer.Update();
         renderer.Render();
@@ -122,6 +145,37 @@ internal class RendererWindowTest : GameWindow, IPGWindow
     void HandleInput(float deltaTime)
     {
         float speed = 2f;
+        var cameraTransform = PerspectiveCameraComponent.Entity.GetComponent<Transform3DComponent>();
+        if (KeyboardState.IsKeyDown(Keys.W))
+        {
+            cameraTransform.Position.Z += speed * deltaTime;
+        }
+
+        if (KeyboardState.IsKeyDown(Keys.S))
+        {
+            cameraTransform.Position.Z -= speed * deltaTime;
+        }
+
+        if (KeyboardState.IsKeyDown(Keys.A))
+        {
+            cameraTransform.Position.X += speed * deltaTime;
+        }
+
+        if (KeyboardState.IsKeyDown(Keys.D))
+        {
+            cameraTransform.Position.X -= speed * deltaTime;
+        }
+
+        if (KeyboardState.IsKeyDown(Keys.LeftShift))
+        {
+            cameraTransform.Position.Y += speed * deltaTime;
+        }
+
+        if (KeyboardState.IsKeyDown(Keys.LeftControl))
+        {
+            cameraTransform.Position.Y -= speed * deltaTime;
+        }
+
     }
 
     protected override void OnFramebufferResize(FramebufferResizeEventArgs e)
