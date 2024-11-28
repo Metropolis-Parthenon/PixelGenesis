@@ -6,7 +6,7 @@ namespace PixelGenesis._3D.Renderer.DeviceObjects;
 
 internal class DeviceRenderObjectManager(IDeviceApi deviceApi, PGScene scene) : IDisposable
 {
-    RendererDeviceLightSources lightSources = new RendererDeviceLightSources(deviceApi, scene);
+    RendererDeviceLightSources lightSources = new RendererDeviceLightSources(deviceApi, scene).Init();
         
     readonly SortedList<Guid, RefCounted<RendererDeviceTexture>> textureObjects = new();
     readonly SortedList<Guid, RefCounted<RendererDeviceMesh>> meshObjects = new();
@@ -20,6 +20,7 @@ internal class DeviceRenderObjectManager(IDeviceApi deviceApi, PGScene scene) : 
         if (!exists) 
         {
             result = new RendererDeviceInstanced3DObject(deviceApi, GetOrAddMesh(mesh), GetOrAddMaterial(material), lightSources, this);
+            result.Initialize();
         }
 
 #pragma warning disable CS8603 // Possible null reference return.
@@ -33,6 +34,7 @@ internal class DeviceRenderObjectManager(IDeviceApi deviceApi, PGScene scene) : 
         if (!exists)
         {
             result = new RefCounted<RendererDeviceMaterial>(new RendererDeviceMaterial(deviceApi, material, this));
+            result.Value.Initialize();
         }
 
 #pragma warning disable CS8603 // Possible null reference return.
@@ -47,6 +49,7 @@ internal class DeviceRenderObjectManager(IDeviceApi deviceApi, PGScene scene) : 
         if (!exists)
         {
             result = new RefCounted<RendererDeviceMesh>(new RendererDeviceMesh(deviceApi, mesh));
+            result.Value.Initialize();
         }
 
 #pragma warning disable CS8603 // Possible null reference return.
@@ -57,12 +60,32 @@ internal class DeviceRenderObjectManager(IDeviceApi deviceApi, PGScene scene) : 
 
     public RendererDeviceShader GetOrAddDeviceShader(CompiledShader compiledShader) 
     {
-           
+        ref var result = ref compiledShaderObjects.GetValueRefOrAddDefault(compiledShader.Id, out var exists);
+        if (!exists)
+        {
+            result = new RefCounted<RendererDeviceShader>(new RendererDeviceShader(deviceApi, compiledShader));
+            result.Value.Initialize();
+        }
+
+#pragma warning disable CS8603 // Possible null reference return.
+        result.Increase();
+        return result.Value;
+#pragma warning restore CS8603 // Possible null reference return.
     }
 
     public RendererDeviceTexture GetOrAddDeviceTexture(Texture texture) 
     {
-        
+        ref var result = ref textureObjects.GetValueRefOrAddDefault(texture.Id, out var exists);
+        if (!exists)
+        {
+            result = new RefCounted<RendererDeviceTexture>(new RendererDeviceTexture(deviceApi, texture));
+            result.Value.Initialize();
+        }
+
+#pragma warning disable CS8603 // Possible null reference return.
+        result.Increase();
+        return result.Value;
+#pragma warning restore CS8603 // Possible null reference return.
     }
 
     public Span<RendererDeviceInstanced3DObject> InstanceObjects => instancedObjects.ValuesAsSpan();
@@ -144,7 +167,7 @@ internal class DeviceRenderObjectManager(IDeviceApi deviceApi, PGScene scene) : 
         }
 
         // After update
-        lightSources.Update();
+        lightSources.AfterUpdate();
 
         for (var i = 0; i < textureObjectsSpan.Length; i++)
         {

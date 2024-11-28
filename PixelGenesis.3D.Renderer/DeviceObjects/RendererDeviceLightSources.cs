@@ -23,6 +23,12 @@ internal class RendererDeviceLightSources(IDeviceApi deviceApi, PGScene scene) :
     public int NumberOfPointLights => _lastPointLightsLength;
     public int NumberOfSpotLights => _lastSpotLightsLength;
 
+    public RendererDeviceLightSources Init()
+    {
+        Initialize();
+        return this;
+    }
+
     public unsafe void Initialize()
     {
         var directionalLightComponents = scene.GetComponents<DirectionalLightComponent>();
@@ -34,6 +40,10 @@ internal class RendererDeviceLightSources(IDeviceApi deviceApi, PGScene scene) :
         Span<DirLight> dirLights = stackalloc DirLight[directionalLightComponents.Length];
         Span<PointLight> pointLights = stackalloc PointLight[pointLightComponents.Length];
         Span<SpotLight> spotLights = stackalloc SpotLight[spotLightComponents.Length];
+
+        _lastDirLightsLength = dirLights.Length;
+        _lastPointLightsLength = pointLights.Length;
+        _lastSpotLightsLength = spotLights.Length;
 
         for (var i = 0; i < directionalLightComponents.Length; i++)
         {
@@ -75,21 +85,23 @@ internal class RendererDeviceLightSources(IDeviceApi deviceApi, PGScene scene) :
         // set light sources
         if (dirLights.Length > 0)
         {
-            LightSourceUniformBlock?.SetData(dirLights.AsBytes(), index);
+            LightSourceUniformBlock.SetData(dirLights.AsBytes(), index);
             index++;
         }
 
         if (pointLights.Length > 0)
         {
-            LightSourceUniformBlock?.SetData(pointLights.AsBytes(), index);
+            LightSourceUniformBlock.SetData(pointLights.AsBytes(), index);
             index++;
         }
 
         if (spotLights.Length > 0)
         {
-            LightSourceUniformBlock?.SetData(spotLights.AsBytes(), index);
+            LightSourceUniformBlock.SetData(spotLights.AsBytes(), index);
             index++;
         }
+
+        NumberOfLightChanged = false;
     }
 
     public void Update()
@@ -103,7 +115,7 @@ internal class RendererDeviceLightSources(IDeviceApi deviceApi, PGScene scene) :
             pointLightComponents.Length != _lastPointLightsLength ||
             spotLightComponents.Length != _lastSpotLightsLength)
         {
-            LightSourceUniformBlock.Dispose();
+            LightSourceUniformBlock?.Dispose();
             CreateBuffer(directionalLightComponents.Length, pointLightComponents.Length, spotLightComponents.Length);
         }
 

@@ -40,18 +40,18 @@ internal unsafe class RendererDeviceInstanced3DObject(
 
     public void Initialize()
     {
-        //currentInstanceBufferSize = Transforms.Count * sizeof(Matrix4x4);
+        //currentInstanceBufferSize = 50 * sizeof(Matrix4x4);
 
         //_instanceBuffer = deviceApi.CreateInstanceBuffer(currentInstanceBufferSize, BufferHint.Dynamic);
         //_instanceBufferLayout = new BufferLayout();
 
         //_modelMatrixes = new Matrix4x4[currentInstanceBufferSize / sizeof(Matrix4x4)];
 
-        //// mat4 model matrix
-        //_instanceBufferLayout.PushFloat(4, false);
-        //_instanceBufferLayout.PushFloat(4, false);
-        //_instanceBufferLayout.PushFloat(4, false);
-        //_instanceBufferLayout.PushFloat(4, false);
+        // mat4 model matrix
+        _instanceBufferLayout.PushFloat(4, false);
+        _instanceBufferLayout.PushFloat(4, false);
+        _instanceBufferLayout.PushFloat(4, false);
+        _instanceBufferLayout.PushFloat(4, false);
 
         //var transformsSpan = CollectionsMarshal.AsSpan(Transforms);
 
@@ -73,7 +73,7 @@ internal unsafe class RendererDeviceInstanced3DObject(
         if (material.IsTextureDirty ||
            lightSources.NumberOfLightChanged ||
            mesh.IsDirty)
-        {
+        {            
             CompileShader(lightSources.NumberOfDirLights, lightSources.NumberOfPointLights, lightSources.NumberOfSpotLights);
         }
     }
@@ -94,7 +94,14 @@ internal unsafe class RendererDeviceInstanced3DObject(
             out materialTextureBinding,
             out lightSourceBinding);
 
-        _deviceShader = manager.GetOrAddDeviceShader(compiledShader);
+        var deviceShader = manager.GetOrAddDeviceShader(compiledShader);
+
+        if (_deviceShader is not null)
+        {
+            manager.Return(_deviceShader);
+        }
+
+        _deviceShader = deviceShader;
     }
 
     void UpdateInstanceBufferData()
@@ -120,7 +127,7 @@ internal unsafe class RendererDeviceInstanced3DObject(
     void UpdateBuffersSize()
     {
         // resize device instance buffer
-        var instanceBufferSizeNeeded = Transforms.Count * sizeof(Matrix4x4);
+        var instanceBufferSizeNeeded = Transforms.Count * sizeof(Matrix4x4) + sizeof(Matrix4x4);
         if (instanceBufferSizeNeeded > currentInstanceBufferSize)
         {
             currentInstanceBufferSize = Math.Max(currentInstanceBufferSize * 2, instanceBufferSizeNeeded);
@@ -205,5 +212,7 @@ internal unsafe class RendererDeviceInstanced3DObject(
     public void Dispose()
     {
         _instanceBuffer?.Dispose();
+        manager.Return(Mesh);
+        manager.Return(Material);
     }
 }

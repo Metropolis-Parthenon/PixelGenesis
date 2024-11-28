@@ -223,7 +223,16 @@ public class GLShaderProgram : IShaderProgram
         // Frees all memory we allocated so far.
         spvc_context_destroy(context);
 
-        return GetString(result);
+        var source = GetString(result);
+
+#warning revisit this stupid thing here
+        // hack to re transpile until it gets it right
+        if(source.Length < 20)
+        {
+            source = CompileSpivToGLSL(bytecode);
+        }
+
+        return source;
     }
 
 

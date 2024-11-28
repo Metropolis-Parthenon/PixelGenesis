@@ -51,9 +51,13 @@ internal class RendererDeviceMaterial(IDeviceApi deviceApi, Material material, D
 
         SetUniformBufferValues();
 
+        materialTextures = new RendererDeviceTexture[Material.Shader.Layout.Textures.Count];
+
         SetTextures();
 
         Material.IsDirty = false;
+        IsDirty = false;
+        IsTextureDirty = false;
     }
 
     public unsafe void Update()
@@ -69,7 +73,7 @@ internal class RendererDeviceMaterial(IDeviceApi deviceApi, Material material, D
         }
 
         Material.IsDirty = false;
-        Material.IsDirty = false;
+        Material.IsTexturesDirty = false;
     }
 
     void SetTextures()
@@ -86,7 +90,15 @@ internal class RendererDeviceMaterial(IDeviceApi deviceApi, Material material, D
                 continue;
             }
 
+            var deviceTexture = manager.GetOrAddDeviceTexture(texture);
+
+            var oldTex = materialTextures[i];
             materialTextures[i] = manager.GetOrAddDeviceTexture(texture);
+
+            if(oldTex is not null)
+            {
+                manager.Return(oldTex);
+            }
         }
     }
 
@@ -375,6 +387,15 @@ internal class RendererDeviceMaterial(IDeviceApi deviceApi, Material material, D
             for (var i = 0; i < materialUniformBuffers.Length; i++)
             {
                 materialUniformBuffers[i].Dispose();
+            }
+        }
+
+        if(materialTextures is not null)
+        {
+            foreach (var texture in materialTextures)
+            {
+                if(texture is null) continue;
+                manager.Return(texture);
             }
         }
     }

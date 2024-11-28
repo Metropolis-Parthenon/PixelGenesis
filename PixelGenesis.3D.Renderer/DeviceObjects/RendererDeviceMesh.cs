@@ -38,7 +38,7 @@ internal class RendererDeviceMesh(IDeviceApi deviceApi, IMesh mesh) : IRendererD
     {
         CreateDeviceMesh();
         mesh.IsDirty = false;
-        IsDirty = true;
+        IsDirty = false;
     }
 
     public void Update()
