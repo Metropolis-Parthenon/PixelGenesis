@@ -132,7 +132,7 @@ internal class RendererWindowTest : GameWindow, IPGWindow
             Texture.FromImageFile(Path.Combine(basePath, "back.jpg"), ColorComponents.RedGreenBlue)
             ];
 
-        camera.GetComponent<Transform3DComponent>().Position = new Vector3(0, 0, -5);
+        camera.GetComponent<Transform3DComponent>().Position = new Vector3(0, 0, 5);
 
         var vao = GL.GenVertexArray();
         GL.BindVertexArray(vao);
@@ -169,22 +169,22 @@ internal class RendererWindowTest : GameWindow, IPGWindow
         var cameraTransform = PerspectiveCameraComponent.Entity.GetComponent<Transform3DComponent>();
         if (KeyboardState.IsKeyDown(Keys.W))
         {
-            cameraTransform.Position.Z += speed * deltaTime;
+            cameraTransform.Position.Z -= speed * deltaTime;
         }
 
         if (KeyboardState.IsKeyDown(Keys.S))
         {
-            cameraTransform.Position.Z -= speed * deltaTime;
+            cameraTransform.Position.Z += speed * deltaTime;
         }
 
         if (KeyboardState.IsKeyDown(Keys.A))
         {
-            cameraTransform.Position.X += speed * deltaTime;
+            cameraTransform.Position.X -= speed * deltaTime;
         }
 
         if (KeyboardState.IsKeyDown(Keys.D))
         {
-            cameraTransform.Position.X -= speed * deltaTime;
+            cameraTransform.Position.X += speed * deltaTime;
         }
 
         if (KeyboardState.IsKeyDown(Keys.LeftShift))

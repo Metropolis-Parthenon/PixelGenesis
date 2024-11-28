@@ -29,11 +29,11 @@ public sealed partial class PerspectiveCameraComponent(Transform3DComponent tran
     {
         var position = transform3D.Position;
         var rotation = transform3D.Rotation;
-
+                
         var forward = Vector3.Transform(Vector3.UnitZ, rotation);
         var up = Vector3.Transform(Vector3.UnitY, rotation);
 
-        return Matrix4x4.CreateLookAt(position, position + forward, up);
+        return Matrix4x4.CreateLookAt(position, position - forward, up);
     }
 
     public SkyboxRenderer? GetSkyboxRenderer(IDeviceApi deviceApi)
