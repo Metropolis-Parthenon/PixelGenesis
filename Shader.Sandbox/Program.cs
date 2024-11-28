@@ -4,7 +4,9 @@ using PixelGenesis.AssetImporter;
 using PixelGenesis.ECS;
 using Shader.Sandbox;
 
-ComponentInitializer.Initialize();
+PixelGenesis.ECS.ComponentInitializer.Initialize();
+PixelGenesis._3D.Common.Components.ComponentInitializer.Initialize();
+
 AssetManager.AddAssetLoaderFactory(new PGGLSLShaderSource.Factory(), ".pgshader");
 AssetManager.AddAssetLoaderFactory(new Material.Factory(), ".pgmat");
 AssetManager.AddAssetLoaderFactory(new Texture.Factory(), ".pgtex");

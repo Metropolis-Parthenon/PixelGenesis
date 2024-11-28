@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 
 namespace PixelGenesis.ECS.SourceGenerator;
@@ -45,7 +46,13 @@ public class ComponentFactoriesGenerator : IIncrementalGenerator
 
         generatedSource.AppendLine();
 
-        generatedSource.AppendLine("namespace PixelGenesis._3D.Common;");
+        var namespaces = distinctClasses.Select(x => GetNamespace(x));
+
+        var commonPrefix = new string(
+            namespaces.First().Substring(0, namespaces.Min(s => s.Length))
+            .TakeWhile((c, i) => namespaces.All(s => s[i] == c)).ToArray());
+
+        generatedSource.AppendLine($"namespace {commonPrefix};");
 
         generatedSource.AppendLine("public static class ComponentInitializer");
         generatedSource.AppendLine("{");

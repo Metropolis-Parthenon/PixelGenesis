@@ -21,6 +21,8 @@ public sealed partial class Entity : ISerializableObject, IEquatable<Entity>
 
     internal SortedList<int, Entity> _children = new SortedList<int, Entity>();
 
+    public readonly Transform3DComponent Transform;
+
     public Entity? Parent => _parent;
     public ReadOnlySpan<Entity> Children => _children.ValuesAsSpan();
     public ReadOnlySpan<Component> Components => _components.ValuesAsSpan();
@@ -31,8 +33,9 @@ public sealed partial class Entity : ISerializableObject, IEquatable<Entity>
 
     internal Entity(PGScene entityManager) 
     { 
-        EntityManager = entityManager;        
-    }    
+        EntityManager = entityManager;
+        Transform = AddComponent<Transform3DComponent>();
+    }
     
     public void RemoveComponent<T>()
     {

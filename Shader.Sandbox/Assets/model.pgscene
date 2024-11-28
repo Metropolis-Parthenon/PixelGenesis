@@ -480,7 +480,7 @@ ParentMap:
 - Item1: 79
   Item2: 0
 Components:
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 0
   Position:
     X: 0
@@ -495,7 +495,7 @@ Components:
     X: 1
     Y: 1
     Z: 1
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 1
   Position:
     X: 0
@@ -510,7 +510,7 @@ Components:
     X: 1
     Y: 1
     Z: 1
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 2
   Position:
     X: 0
@@ -525,7 +525,7 @@ Components:
     X: 1
     Y: 1
     Z: 1
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 3
   Position:
     X: 0
@@ -540,7 +540,7 @@ Components:
     X: 1
     Y: 1
     Z: 1
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 4
   Position:
     X: 0
@@ -555,7 +555,7 @@ Components:
     X: 1
     Y: 1
     Z: 1
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 5
   Position:
     X: 0
@@ -570,7 +570,7 @@ Components:
     X: 1
     Y: 1
     Z: 1
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 6
   Position:
     X: 0
@@ -585,7 +585,7 @@ Components:
     X: 1
     Y: 1
     Z: 1
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 7
   Position:
     X: 0
@@ -600,7 +600,7 @@ Components:
     X: 1
     Y: 1
     Z: 1
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 8
   Position:
     X: 0
@@ -615,7 +615,7 @@ Components:
     X: 1
     Y: 1
     Z: 1
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 9
   Position:
     X: 0
@@ -630,7 +630,7 @@ Components:
     X: 1
     Y: 1
     Z: 1
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 10
   Position:
     X: 0
@@ -645,7 +645,7 @@ Components:
     X: 1
     Y: 1
     Z: 1
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 11
   Position:
     X: 0
@@ -660,7 +660,7 @@ Components:
     X: 1
     Y: 1
     Z: 1
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 12
   Position:
     X: 0
@@ -675,7 +675,7 @@ Components:
     X: 1
     Y: 1
     Z: 1
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 13
   Position:
     X: 0
@@ -690,7 +690,7 @@ Components:
     X: 1
     Y: 1
     Z: 1
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 14
   Position:
     X: 0
@@ -705,7 +705,7 @@ Components:
     X: 1
     Y: 1
     Z: 1
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 15
   Position:
     X: 0
@@ -720,7 +720,7 @@ Components:
     X: 1
     Y: 1
     Z: 1
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 16
   Position:
     X: 0
@@ -735,7 +735,7 @@ Components:
     X: 1
     Y: 1
     Z: 1
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 17
   Position:
     X: 0
@@ -750,7 +750,7 @@ Components:
     X: 1
     Y: 1
     Z: 1
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 18
   Position:
     X: 0
@@ -765,7 +765,7 @@ Components:
     X: 1
     Y: 1
     Z: 1
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 19
   Position:
     X: 0
@@ -780,7 +780,7 @@ Components:
     X: 1
     Y: 1
     Z: 1
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 20
   Position:
     X: 0
@@ -795,7 +795,7 @@ Components:
     X: 1
     Y: 1
     Z: 1
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 21
   Position:
     X: 0
@@ -810,7 +810,7 @@ Components:
     X: 1
     Y: 1
     Z: 1
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 22
   Position:
     X: 0
@@ -825,7 +825,7 @@ Components:
     X: 1
     Y: 1
     Z: 1
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 23
   Position:
     X: 0
@@ -840,7 +840,7 @@ Components:
     X: 1
     Y: 1
     Z: 1
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 24
   Position:
     X: 0
@@ -855,7 +855,7 @@ Components:
     X: 1
     Y: 1
     Z: 1
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 25
   Position:
     X: 0
@@ -870,7 +870,7 @@ Components:
     X: 1
     Y: 1
     Z: 1
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 26
   Position:
     X: 0
@@ -885,7 +885,7 @@ Components:
     X: 1
     Y: 1
     Z: 1
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 27
   Position:
     X: 0
@@ -900,7 +900,7 @@ Components:
     X: 1
     Y: 1
     Z: 1
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 28
   Position:
     X: 0
@@ -915,7 +915,7 @@ Components:
     X: 1
     Y: 1
     Z: 1
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 29
   Position:
     X: 0
@@ -930,7 +930,7 @@ Components:
     X: 1
     Y: 1
     Z: 1
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 30
   Position:
     X: 0
@@ -945,7 +945,7 @@ Components:
     X: 1
     Y: 1
     Z: 1
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 31
   Position:
     X: 0
@@ -960,7 +960,7 @@ Components:
     X: 1
     Y: 1
     Z: 1
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 32
   Position:
     X: 0
@@ -975,7 +975,7 @@ Components:
     X: 1
     Y: 1
     Z: 1
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 33
   Position:
     X: 0
@@ -990,7 +990,7 @@ Components:
     X: 1
     Y: 1
     Z: 1
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 34
   Position:
     X: 0
@@ -1005,7 +1005,7 @@ Components:
     X: 1
     Y: 1
     Z: 1
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 35
   Position:
     X: 0
@@ -1020,7 +1020,7 @@ Components:
     X: 1
     Y: 1
     Z: 1
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 36
   Position:
     X: 0
@@ -1035,7 +1035,7 @@ Components:
     X: 1
     Y: 1
     Z: 1
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 37
   Position:
     X: 0
@@ -1050,7 +1050,7 @@ Components:
     X: 1
     Y: 1
     Z: 1
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 38
   Position:
     X: 0
@@ -1065,7 +1065,7 @@ Components:
     X: 1
     Y: 1
     Z: 1
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 39
   Position:
     X: 0
@@ -1080,7 +1080,7 @@ Components:
     X: 1
     Y: 1
     Z: 1
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 40
   Position:
     X: 0
@@ -1095,7 +1095,7 @@ Components:
     X: 1
     Y: 1
     Z: 1
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 41
   Position:
     X: 0
@@ -1110,7 +1110,7 @@ Components:
     X: 1
     Y: 1
     Z: 1
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 42
   Position:
     X: 0
@@ -1125,7 +1125,7 @@ Components:
     X: 1
     Y: 1
     Z: 1
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 43
   Position:
     X: 0
@@ -1140,7 +1140,7 @@ Components:
     X: 1
     Y: 1
     Z: 1
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 44
   Position:
     X: 0
@@ -1155,7 +1155,7 @@ Components:
     X: 1
     Y: 1
     Z: 1
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 45
   Position:
     X: 0
@@ -1170,7 +1170,7 @@ Components:
     X: 1
     Y: 1
     Z: 1
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 46
   Position:
     X: 0
@@ -1185,7 +1185,7 @@ Components:
     X: 1
     Y: 1
     Z: 1
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 47
   Position:
     X: 0
@@ -1200,7 +1200,7 @@ Components:
     X: 1
     Y: 1
     Z: 1
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 48
   Position:
     X: 0
@@ -1215,7 +1215,7 @@ Components:
     X: 1
     Y: 1
     Z: 1
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 49
   Position:
     X: 0
@@ -1230,7 +1230,7 @@ Components:
     X: 1
     Y: 1
     Z: 1
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 50
   Position:
     X: 0
@@ -1245,7 +1245,7 @@ Components:
     X: 1
     Y: 1
     Z: 1
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 51
   Position:
     X: 0
@@ -1260,7 +1260,7 @@ Components:
     X: 1
     Y: 1
     Z: 1
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 52
   Position:
     X: 0
@@ -1275,7 +1275,7 @@ Components:
     X: 1
     Y: 1
     Z: 1
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 53
   Position:
     X: 0
@@ -1290,7 +1290,7 @@ Components:
     X: 1
     Y: 1
     Z: 1
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 54
   Position:
     X: 0
@@ -1305,7 +1305,7 @@ Components:
     X: 1
     Y: 1
     Z: 1
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 55
   Position:
     X: 0
@@ -1320,7 +1320,7 @@ Components:
     X: 1
     Y: 1
     Z: 1
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 56
   Position:
     X: 0
@@ -1335,7 +1335,7 @@ Components:
     X: 1
     Y: 1
     Z: 1
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 57
   Position:
     X: 0
@@ -1350,7 +1350,7 @@ Components:
     X: 1
     Y: 1
     Z: 1
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 58
   Position:
     X: 0
@@ -1365,7 +1365,7 @@ Components:
     X: 1
     Y: 1
     Z: 1
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 59
   Position:
     X: 0
@@ -1380,7 +1380,7 @@ Components:
     X: 1
     Y: 1
     Z: 1
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 60
   Position:
     X: 0
@@ -1395,7 +1395,7 @@ Components:
     X: 1
     Y: 1
     Z: 1
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 61
   Position:
     X: 0
@@ -1410,7 +1410,7 @@ Components:
     X: 1
     Y: 1
     Z: 1
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 62
   Position:
     X: 0
@@ -1425,7 +1425,7 @@ Components:
     X: 1
     Y: 1
     Z: 1
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 63
   Position:
     X: 0
@@ -1440,7 +1440,7 @@ Components:
     X: 1
     Y: 1
     Z: 1
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 64
   Position:
     X: 0
@@ -1455,7 +1455,7 @@ Components:
     X: 1
     Y: 1
     Z: 1
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 65
   Position:
     X: 0
@@ -1470,7 +1470,7 @@ Components:
     X: 1
     Y: 1
     Z: 1
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 66
   Position:
     X: 0
@@ -1485,7 +1485,7 @@ Components:
     X: 1
     Y: 1
     Z: 1
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 67
   Position:
     X: 0
@@ -1500,7 +1500,7 @@ Components:
     X: 1
     Y: 1
     Z: 1
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 68
   Position:
     X: 0
@@ -1515,7 +1515,7 @@ Components:
     X: 1
     Y: 1
     Z: 1
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 69
   Position:
     X: 0
@@ -1530,7 +1530,7 @@ Components:
     X: 1
     Y: 1
     Z: 1
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 70
   Position:
     X: 0
@@ -1545,7 +1545,7 @@ Components:
     X: 1
     Y: 1
     Z: 1
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 71
   Position:
     X: 0
@@ -1560,7 +1560,7 @@ Components:
     X: 1
     Y: 1
     Z: 1
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 72
   Position:
     X: 0
@@ -1575,7 +1575,7 @@ Components:
     X: 1
     Y: 1
     Z: 1
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 73
   Position:
     X: 0
@@ -1590,7 +1590,7 @@ Components:
     X: 1
     Y: 1
     Z: 1
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 74
   Position:
     X: 0
@@ -1605,7 +1605,7 @@ Components:
     X: 1
     Y: 1
     Z: 1
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 75
   Position:
     X: 0
@@ -1620,7 +1620,7 @@ Components:
     X: 1
     Y: 1
     Z: 1
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 76
   Position:
     X: 0
@@ -1635,7 +1635,7 @@ Components:
     X: 1
     Y: 1
     Z: 1
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 77
   Position:
     X: 0
@@ -1650,7 +1650,7 @@ Components:
     X: 1
     Y: 1
     Z: 1
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 78
   Position:
     X: 0
@@ -1665,7 +1665,7 @@ Components:
     X: 1
     Y: 1
     Z: 1
-- __type: PixelGenesis._3D.Common.Components.Transform3DComponent
+- __type: PixelGenesis.ECS.Transform3DComponent
   __ownerIndex: 79
   Position:
     X: 0

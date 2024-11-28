@@ -1,13 +1,18 @@
 ﻿using PixelGenesis.ECS;
 using System.Numerics;
 
-namespace PixelGenesis._3D.Common.Components;
+namespace PixelGenesis.ECS;
 
 public sealed partial class Transform3DComponent : Component
 {
     public Vector3 Position = Vector3.Zero;
     public Quaternion Rotation = Quaternion.CreateFromYawPitchRoll(0,0,0);
     public Vector3 Scale = Vector3.One;
+
+    public Vector3 Forward => -Vector3.Transform(Vector3.UnitZ, Rotation);
+    public Vector3 Backward => -Vector3.Transform(Vector3.UnitZ, Rotation);
+
+    public Vector3 Up => Vector3.Transform(Vector3.UnitY, Rotation);
 
     Matrix4x4 _localModelMatrix;
     Matrix4x4 _worldModelMatrix;
@@ -34,11 +39,11 @@ public sealed partial class Transform3DComponent : Component
             else
             {
                 HasWorldChanged = false;
-            }            
+            }
         }
         else
         {
-            var parentTransform = entity.Parent.GetComponent<Transform3DComponent>();
+            var parentTransform = entity.Parent.Transform;
             if (HasLocalChanged || parentTransform.HasWorldChanged)
             {
                 _worldModelMatrix = parentTransform.GetModelMatrix() * _localModelMatrix;
@@ -53,7 +58,7 @@ public sealed partial class Transform3DComponent : Component
         for (var i = 0; i < Entity.Children.Length; i++)
         {
             var child = Entity.Children[i];
-            child.GetComponent<Transform3DComponent>().UpdateModelMatrix();
+            child.Transform.UpdateModelMatrix();
         }
     }
 

@@ -12,4 +12,12 @@
     <PackageReference Include="YamlDotNet" Version="16.2.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\PixelGenesis.ECS.SourceGenerator\PixelGenesis.ECS.SourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Transform3DComponent.cs" />
+  </ItemGroup>
+
 </Project>

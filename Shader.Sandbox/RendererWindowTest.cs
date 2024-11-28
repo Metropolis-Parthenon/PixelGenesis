@@ -66,17 +66,17 @@ internal class RendererWindowTest : GameWindow, IPGWindow
 
         var entity = entityManager.Entities[0];
 
-        //for (var i = 1; i <= 50; i++)
-        //{
-        //    var transform = entityManager.Clone(entity).GetComponent<Transform3DComponent>();
-        //    transform.Position.X = i * 4;
+        for (var i = 1; i <= 5000; i++)
+        {
+            var transform = entityManager.Clone(entity).GetComponent<Transform3DComponent>();
+            transform.Position.X = i * 4;
 
-        //    if(i % 10 is 0)
-        //    {
-        //        var lightTransform = entityManager.Clone(light).GetComponent<Transform3DComponent>();
-        //        lightTransform.Position.X = i * 4;
-        //    }
-        //}
+            if (i % 10 is 0)
+            {
+                var lightTransform = entityManager.Clone(light).GetComponent<Transform3DComponent>();
+                lightTransform.Position.X = i * 4;
+            }
+        }
 
         ////entityManager.Clone(light).GetComponent<Transform3DComponent>().Position = new Vector3(0, -1f, 0);
 

@@ -31,58 +31,24 @@ public class PG3DRenderer(IDeviceApi deviceApi, IPGWindow pGWindow, PGScene scen
     {
         EnableDepthTest = true,
     };
-
-    public void Initialize()
+        
+    public unsafe void Initialize()
     {
         DetailsBuffer = deviceApi.CreateUniformBlockBuffer<Matrix4x4, Vector3>(BufferHint.Dynamic);
-    }
 
-    HashSet<RendererDeviceInstanced3DObject> instancedObjectsToRemove = new(1000);
-
-    public unsafe void Update()
-    {
-        sw.Reset();
-        sw.Start();
-
-        //update all components
-        var allEntities = scene.Entities;
-        for(var i = 0; i < allEntities.Length; i++)
-        {
-            var entity = allEntities[i];
-            var components = entity.Components;
-            for(var j = 0; j < components.Length; j++)
-            {
-                var component = components[j];
-                if(component is IUpdate updateComponent)
-                {
-                    updateComponent.Update();
-                }
-                if(component is Transform3DComponent transform && transform.Entity.Parent is null)
-                {
-                    transform.UpdateModelMatrix();
-                }
-            }
-        }
+        UpdateComponents();
 
         var cameras = scene.GetComponents<PerspectiveCameraComponent>();
-        if(cameras.Length == 0)
+        if (cameras.Length == 0)
         {
             return;
         }
         // for now we use the first camera we find
         CameraComponent = Unsafe.As<PerspectiveCameraComponent>(cameras[0]);
 
-        instancedObjectsToRemove.Clear();
-        var instanceObjects = deviceObjectManager.InstanceObjects;
-        for(var i = 0; i < instanceObjects.Length; ++i)
-        {
-            instanceObjects[i].Transforms.Clear();
-            instancedObjectsToRemove.Add(instanceObjects[i]);
-        }
-
         var meshRendererComponents = scene.GetComponents<MeshRendererComponent>();
 
-        for(var i = 0; i < meshRendererComponents.Length; i++)
+        for (var i = 0; i < meshRendererComponents.Length; i++)
         {
             var meshRenderer = Unsafe.As<MeshRendererComponent>(meshRendererComponents[i]);
 
@@ -90,32 +56,59 @@ public class PG3DRenderer(IDeviceApi deviceApi, IPGWindow pGWindow, PGScene scen
             var material = meshRenderer.Material;
             var transform = meshRenderer.GetTransform();
 
-            if(mesh is null || material is null || transform is null)
+            if (mesh is null || material is null || transform is null)
             {
                 continue;
             }
 
-            var instancedObject = deviceObjectManager.GetOrAddInstanced3DObject(material, mesh);                       
+            var instancedObject = deviceObjectManager.GetOrAddInstanced3DObject(material, mesh);
 
-            instancedObject.Transforms.Add(transform);
-
-            instancedObjectsToRemove.Remove(instancedObject);
+            instancedObject.Transforms.Add(transform);            
         }
 
-        // remove unused instance objects
-        foreach (var key in instancedObjectsToRemove) 
-        {
-            deviceObjectManager.Destroy(key);
-        }
+    }
 
-        deviceObjectManager.Update();
+    public unsafe void Update()
+    {
+        sw.Reset();
+        sw.Start();
 
         sw.Stop();
         Metrics.UpdateTime = sw.Elapsed.TotalMilliseconds;
     }
 
+    bool jojoto = true;
+    void UpdateComponents()
+    {
+        if (jojoto)
+        {
+            jojoto = false;
+            //update all components
+            var allEntities = scene.Entities;
+            for (var i = 0; i < allEntities.Length; i++)
+            {
+                var entity = allEntities[i];
+                var components = entity.Components;
+                for (var j = 0; j < components.Length; j++)
+                {
+                    var component = components[j];
+                    if (component is IUpdate updateComponent)
+                    {
+                        updateComponent.Update();
+                    }
+                    if (component is Transform3DComponent transform && transform.Entity.Parent is null)
+                    {
+                        transform.UpdateModelMatrix();
+                    }
+                }
+            }
+        }
+    }
+
     public void Render()
     {
+        deviceObjectManager.Update();
+
         sw.Reset();
         sw.Start();
 
@@ -134,7 +127,7 @@ public class PG3DRenderer(IDeviceApi deviceApi, IPGWindow pGWindow, PGScene scen
 
         Metrics.DrawCalls = 0;
         var instancedObjects = deviceObjectManager.InstanceObjects;
-        for(var i = 0; i < instancedObjects.Length; ++i)
+        for (var i = 0; i < instancedObjects.Length; ++i)
         {
             var instancedObject = instancedObjects[i];
 
@@ -151,14 +144,14 @@ public class PG3DRenderer(IDeviceApi deviceApi, IPGWindow pGWindow, PGScene scen
 
     public void RenderSkybox(Matrix4x4 view, Matrix4x4 projection)
     {
-        if(CameraComponent is null)
+        if (CameraComponent is null)
         {
             return;
         }
-        
+
         var renderer = CameraComponent.GetSkyboxRenderer(deviceApi);
-        
-        if(renderer is null)
+
+        if (renderer is null)
         {
             return;
         }

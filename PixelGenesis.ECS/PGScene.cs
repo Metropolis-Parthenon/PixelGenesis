@@ -24,7 +24,7 @@ public sealed class PGScene : ISerializableObject, IAsset
     internal ComponentFactory ComponentFactory { get; }
 
     int currentId = 0;
-
+        
     public PGScene(Guid id, string? name = default)
     {
         Id = id;
