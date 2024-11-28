@@ -2,27 +2,29 @@
 
 namespace PixelGenesis._3D.Common;
 
-public sealed class PhysicMaterial : IWritableAsset, IReadableAsset
+public sealed class PhysicMaterial : IAsset
 {
-    public string Reference { get; }
-
+    public Guid Id { get; }
+    public string Name { get; }
     public float DynamicFriction { get; }
     public float StaticFriction { get; }
     public float Bounciness { get; }
     public CombineMode FrictionCombine { get; }
     public CombineMode BounceCombine { get; }
 
-    private PhysicMaterial(string reference, float dynamicFriction, float staticFriction, float bounciness, CombineMode frictionCombine, CombineMode bounceCombine)
+    private PhysicMaterial(Guid id, float dynamicFriction, float staticFriction, float bounciness, CombineMode frictionCombine, CombineMode bounceCombine, string? name = default)
     {
-        Reference = reference;
+        Id = id;
+        Name = name ?? $"{id}.pgpmat";
         DynamicFriction = dynamicFriction;
         StaticFriction = staticFriction;
         Bounciness = bounciness;
         FrictionCombine = frictionCombine;
         BounceCombine = bounceCombine;
+        Name = name;
     }
 
-    public void WriteToStream(Stream stream)
+    public void WriteToStream(AssetManager assetManager, Stream stream)
     {
         using var bw = new BinaryWriter(stream);
         bw.Write(DynamicFriction);
@@ -32,9 +34,9 @@ public sealed class PhysicMaterial : IWritableAsset, IReadableAsset
         bw.Write((int)BounceCombine);
     }
 
-    public class Factory : IReadableAssetFactory<PhysicMaterial>
+    public class Factory : IReadAssetFactory
     {
-        public PhysicMaterial ReadAsset(string reference, Stream stream)
+        public IAsset ReadAsset(Guid id, AssetManager assetManager, Stream stream)
         {
             using var br = new BinaryReader(stream);
             var dynamicFriction = br.ReadSingle();
@@ -43,7 +45,7 @@ public sealed class PhysicMaterial : IWritableAsset, IReadableAsset
             var frictionCombine = (CombineMode)br.ReadInt32();
             var bounceCombine = (CombineMode)br.ReadInt32();
 
-            return new PhysicMaterial(reference, dynamicFriction, staticFriction, bounciness, frictionCombine, bounceCombine);
+            return new PhysicMaterial(id, dynamicFriction, staticFriction, bounciness, frictionCombine, bounceCombine);
         }
     }
 }

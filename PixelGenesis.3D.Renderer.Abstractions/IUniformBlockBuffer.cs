@@ -9,5 +9,5 @@ namespace PixelGenesis._3D.Renderer.DeviceApi.Abstractions;
 public interface IUniformBlockBuffer : IDeviceObject
 {
     public void SetData<T>(T data, int index) where T : unmanaged;
-    public void SetData(ReadOnlySpan<byte> data, int index);
+    public void SetData(ReadOnlySpan<byte> data, int index);    
 }

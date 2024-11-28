@@ -1,31 +1,39 @@
-﻿using System.Collections.Immutable;
+﻿using CommunityToolkit.HighPerformance;
+using System.Collections;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+using YamlDotNet.Core;
+using YamlDotNet.Serialization;
 
 namespace PixelGenesis.ECS;
 
-public sealed partial class Entity
+public sealed partial class Entity : ISerializableObject, IEquatable<Entity>
 {
-    EntityManager EntityManager;
+    PGScene EntityManager;
 
+    public int Index => EntityManager.Entities.IndexOf(this);
+    public int Id { get; internal set; }
     public string Name { get; internal set; } = "";
 
+    internal Entity? _parent;
+
+    internal SortedList<int, Entity> _children = new SortedList<int, Entity>();
+
+    public Entity? Parent => _parent;
+    public ReadOnlySpan<Entity> Children => _children.ValuesAsSpan();
+    public ReadOnlySpan<Component> Components => _components.ValuesAsSpan();
+    
     public ImmutableArray<string> Tags { get; internal set; }
 
-    public bool IsDisabled {  get; set; }
+    public bool IsDisabled { get; set; }
 
-    internal Entity(EntityManager entityManager) 
+    internal Entity(PGScene entityManager) 
     { 
-        EntityManager = entityManager;
-    }
-
-    public int Id { get; internal set; }
+        EntityManager = entityManager;        
+    }    
     
-    public ReadOnlySpan<Component> GetComponents()
-    {        
-        return Components.ValuesAsSpan();
-    }
-
     public void RemoveComponent<T>()
     {
         RemoveComponent(typeof(T));
@@ -35,7 +43,7 @@ public sealed partial class Entity
     {
         var component = GetComponent(type);
         EntityManager.RemoveComponentFromEntity(component);
-        Components.Remove(type.GUID);
+        _components.Remove(type.GUID);
     }
 
     public T AddComponentIfNotExist<T>() where T : Component
@@ -65,7 +73,7 @@ public sealed partial class Entity
 
     public Component GetComponent(Type type)
     {
-        if (Components.TryGetValue(type.GUID, out var component))
+        if (_components.TryGetValue(type.GUID, out var component))
         {
             return component;
         }
@@ -85,25 +93,80 @@ public sealed partial class Entity
         return false;
     }
 
+    public void AddChild(Entity child)
+    {
+        EntityManager.SetEntityParent(this, child);
+    }
+
+    public IEnumerable<KeyValuePair<string, object>> GetSerializableValues()
+    {
+        yield return new(nameof(Name), Name);
+        yield return new(nameof(Tags), Tags);
+        yield return new(nameof(IsDisabled), IsDisabled);         
+    }
+
+    public void SetSerializableValues(IEnumerable<KeyValuePair<string, object?>> values)
+    {
+        foreach(var (key, value) in values)
+        {
+            if(value is null)
+            {
+                continue;
+            }
+
+            switch (key) 
+            { 
+                case nameof(Name):
+                    Name = (string)value;
+                    break;
+                case nameof(Tags):
+                    Tags = ((IEnumerable)value).Cast<string>().ToImmutableArray();
+                    break;
+                case nameof(IsDisabled):
+                    IsDisabled = (bool)value;
+                    break;                
+            }
+        }
+    }
+
+    public Type GetPropType(string key)
+    {
+        switch(key)
+        {
+            case nameof(Name):
+                return typeof(string);
+            case nameof(Tags):
+                return typeof(ImmutableArray<string>);
+            case nameof(IsDisabled):
+                return typeof(bool);            
+            default:
+                throw new InvalidDataException($"Entity does not have a property {key}");
+        }
+    }
+
+    public bool Equals(Entity? other)
+    {
+        return Id == other?.Id;
+    }
 }
 
 public sealed partial class Entity
 {
-    SortedList<Guid, Component> Components = new SortedList<Guid, Component>();
+    SortedList<Guid, Component> _components = new SortedList<Guid, Component>();
 
     internal void Clear()
     {
-        Components.Clear();
+        _components.Clear();
     }
 
     internal void AddComponent(Component component)
     {
-        Components.Add(component.GetType().GUID, component);
+        _components.Add(component.GetType().GUID, component);
         EntityManager.AddComponentToEntity(component);
     }
 
     internal bool TryGetComponent(Type type, [MaybeNullWhen(false)] out Component component)
     {
-        return Components.TryGetValue(type.GUID, out component);
+        return _components.TryGetValue(type.GUID, out component);
     }
 }

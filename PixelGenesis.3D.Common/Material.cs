@@ -2,112 +2,130 @@
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Runtime.Intrinsics.Arm;
+using System.Security.Cryptography;
+using System.Text;
+using YamlDotNet.Serialization.NamingConventions;
+using YamlDotNet.Serialization;
 
 namespace PixelGenesis._3D.Common;
 
-public class Material : IWritableAsset, IReadableAsset
+public class Material : IAsset
 {
     public Guid Id { get; } = Guid.NewGuid();
-
+    public string Name { get; }
     public bool IsDirty { get; set; }
+    public bool IsTexturesDirty {  get; set; }
+    public PGGLSLShaderSource Shader { get; set; }
 
-    public string Reference { get; set; }
-    public CompiledShader Shader { get; set; }
+    private Dictionary<string, Dictionary<string, object>> Parameters = new();
+    private Dictionary<string, Texture?> Textures = new();
 
-    private Dictionary<int, object[]> Parameters = new();
-    private Dictionary<int, Texture?> Textures = new();
-
-    public Material(string reference, CompiledShader shader)
+    public Material(Guid id, PGGLSLShaderSource shader, string? name = default)
     {
-        Reference = reference;
+        Id = id;
+        Name = name ?? $"{id}.pgmat";
         Shader = shader;
         InitializeParametersFromShaderLayout();
     }
 
-    public Texture? GetTexture(int binding)
+    public CompiledShader GetCompiledShader(
+        ReadOnlySpan<KeyValuePair<string, string>> defines, 
+        string vertexShaderPreCode,
+        string fragmentShaderPreCode,
+        string geometryShaderPreCode,
+        string tessallationShaderPreCode)
     {
-        return Textures[binding];
+        var result = Shader.CompiledShader(
+            defines, 
+            vertexShaderPreCode,
+            fragmentShaderPreCode,
+            geometryShaderPreCode,
+            tessallationShaderPreCode);
+
+        if(result.Shader is null)
+        {
+            throw new Exception(result.Error);
+        }
+
+        return result.Shader;
     }
 
-    public float GetParameterFloat(int blockBinding, int parameterIndex)
+    public Texture? GetTexture(string name)
     {
-        return Unsafe.Unbox<float>(GetParameter(blockBinding, parameterIndex));
+        return Textures[name];
     }
 
-    public Vector2 GetParameterVector2(int blockBinding, int parameterIndex)
+    public float GetParameterFloat(string blockName, string parameterName)
     {
-        return Unsafe.Unbox<Vector2>(GetParameter(blockBinding, parameterIndex));
+        return Unsafe.Unbox<float>(GetParameter(blockName, parameterName));
     }
 
-    public Vector3 GetParameterVector3(int blockBinding, int parameterIndex)
+    public Vector2 GetParameterVector2(string blockName, string parameterName)
     {
-        return Unsafe.Unbox<Vector3>(GetParameter(blockBinding, parameterIndex));
+        return Unsafe.Unbox<Vector2>(GetParameter(blockName, parameterName));
     }
 
-    public Vector4 GetParameterVector4(int blockBinding, int parameterIndex)
+    public Vector3 GetParameterVector3(string blockName, string parameterName)
     {
-        return Unsafe.Unbox<Vector4>(GetParameter(blockBinding, parameterIndex));
+        return Unsafe.Unbox<Vector3>(GetParameter(blockName, parameterName));
     }
 
-    public Matrix4x4 GetParameterMatrix4x4(int blockBinding, int parameterIndex)
+    public Vector4 GetParameterVector4(string blockName, string parameterName)
     {
-        return Unsafe.Unbox<Matrix4x4>(GetParameter(blockBinding, parameterIndex));
+        return Unsafe.Unbox<Vector4>(GetParameter(blockName, parameterName));
     }
 
-    public object GetParameter(int blockBinding, int parameterIndex)
+    public Matrix4x4 GetParameterMatrix4x4(string blockName, string parameterName)
     {
-        ref var block = ref CollectionsMarshal.GetValueRefOrNullRef(Parameters, blockBinding);
+        return Unsafe.Unbox<Matrix4x4>(GetParameter(blockName, parameterName));
+    }
+
+    public object GetParameter(string blockName, string parameterName)
+    {
+        ref var block = ref CollectionsMarshal.GetValueRefOrNullRef(Parameters, blockName);
 
         if(Unsafe.IsNullRef(ref block))
         {
-            throw new ArgumentException($"Invalid block binding: {blockBinding}");
+            throw new ArgumentException($"Invalid block binding: {blockName}");
         }
-        
-        if(parameterIndex > block.Length)
-        {
-            throw new ArgumentException($"Invalid parameter index: {parameterIndex} in block {blockBinding}");
-        }
-
-        return block[parameterIndex];
+                
+        return block[parameterName];
     }
 
     // Overloads for setting parameters of specific types
-    public void SetParameter(int blockBinding, int parameterIndex, float value) => SetParameter(blockBinding, parameterIndex, value, Type.Float);
-    public void SetParameter(int blockBinding, int parameterIndex, Vector2 value) => SetParameter(blockBinding, parameterIndex, value, Type.Float2);
-    public void SetParameter(int blockBinding, int parameterIndex, Vector3 value) => SetParameter(blockBinding, parameterIndex, value, Type.Float3);
-    public void SetParameter(int blockBinding, int parameterIndex, Vector4 value) => SetParameter(blockBinding, parameterIndex, value, Type.Float4);
-    public void SetParameter(int blockBinding, int parameterIndex, Matrix4x4 value) => SetParameter(blockBinding, parameterIndex, value, Type.Mat4);
+    public void SetParameter(string blockBinding, string parameterIndex, float value) => SetParameter(blockBinding, parameterIndex, value, Type.Float);
+    public void SetParameter(string blockBinding, string parameterIndex, Vector2 value) => SetParameter(blockBinding, parameterIndex, value, Type.Float2);
+    public void SetParameter(string blockBinding, string parameterIndex, Vector3 value) => SetParameter(blockBinding, parameterIndex, value, Type.Float3);
+    public void SetParameter(string blockBinding, string parameterIndex, Vector4 value) => SetParameter(blockBinding, parameterIndex, value, Type.Float4);
+    public void SetParameter(string blockBinding, string parameterIndex, Matrix4x4 value) => SetParameter(blockBinding, parameterIndex, value, Type.Mat4);
 
     // Sets a texture based on binding
-    public void SetTexture(int binding, Texture texture)
+    public void SetTexture(string name, Texture texture)
     {
-        Textures[binding] = texture;
-        IsDirty = true;
+        Textures[name] = texture;
+        IsTexturesDirty = true;
     }
 
     // Internal method with type checking for setting a parameter
-    public void SetParameter(int blockBinding, int parameterIndex, object value, Type expectedType)
+    public void SetParameter(string blockName, string parameterName, object value, Type expectedType)
     {        
         // Retrieve reference to block dictionary
-        ref var block = ref CollectionsMarshal.GetValueRefOrNullRef(Parameters, blockBinding);
+        ref var block = ref CollectionsMarshal.GetValueRefOrNullRef(Parameters, blockName);
         if (Unsafe.IsNullRef(ref block))
         {
-            throw new ArgumentException($"Invalid block binding: {blockBinding}");
+            throw new ArgumentException($"Invalid block binding: {blockName}");
         }
-
-        if(parameterIndex > block.Length)
-        {
-            throw new ArgumentException($"Invalid parameter index: {parameterIndex} in block {blockBinding}");
-        }
-
+        
+#warning TODO: verify type from material layout in a way that is no fucking slow
         // Validate type using the shader layout
-        var actualType = Shader.Layout.Blocks[blockBinding].Parameters[parameterIndex].Type;
-        if (actualType != expectedType)
-        {
-            throw new ArgumentException($"Type mismatch: Expected {actualType} for parameter at block {blockBinding}, index {parameterIndex}, but received {expectedType}.");
-        }
+        //var actualType = Shader.Layout.Blocks[blockBinding].Parameters[parameterIndex].Type;
+        //if (actualType != expectedType)
+        //{
+        //    throw new ArgumentException($"Type mismatch: Expected {actualType} for parameter at block {blockBinding}, index {parameterIndex}, but received {expectedType}.");
+        //}
 
-        block[parameterIndex] = value; // Assign the value if type matches
+        block[parameterName] = value; // Assign the value if type matches
         IsDirty = true;
     }
 
@@ -116,11 +134,11 @@ public class Material : IWritableAsset, IReadableAsset
     {
         foreach (var block in Shader.Layout.Blocks)
         {
-            ref var parameters = ref CollectionsMarshal.GetValueRefOrAddDefault(Parameters, block.Binding, out var existed);
+            ref var parameters = ref CollectionsMarshal.GetValueRefOrAddDefault(Parameters, block.Name, out var existed);
 
             if (!existed)
             {
-                parameters = new object[block.Parameters.Count];
+                parameters = new Dictionary<string, object>();
             }
 
             if(parameters is null)
@@ -128,16 +146,16 @@ public class Material : IWritableAsset, IReadableAsset
                 throw new Exception("This should never be thrown");
             }
 
-            for (int i = 0; i < parameters.Length; i++)
+            for (int i = 0; i < block.Parameters.Count; ++i)
             {
                 var parameter = block.Parameters[i];
-                parameters[i] = GetDefaultValue(parameter.Type);
+                parameters[parameter.Name] = GetDefaultValue(parameter.Type);
             }
         }
 
         foreach (var texture in Shader.Layout.Textures)
         {
-            Textures[texture.Binding] = null; // Placeholder for textures to be assigned later
+            Textures[texture.Name] = null; // Placeholder for textures to be assigned later
         }
     }
 
@@ -156,22 +174,151 @@ public class Material : IWritableAsset, IReadableAsset
         };
     }
 
-    public void WriteToStream(Stream stream)
+
+    static ISerializer _serializer
+        = new SerializerBuilder()
+        .WithNamingConvention(CamelCaseNamingConvention.Instance)
+        .Build();
+
+    public void WriteToStream(AssetManager assetManager, Stream stream)
     {
-        using var textWriter = new StreamWriter(stream);
-        textWriter.WriteLine(Shader.Reference);
+        var dto = new MaterialDTO();
+
+        dto.ShaderReference = Shader.Id;
+
+        dto.TextureReferences = new();
+        foreach(var (textureName, texture) in Textures)
+        {
+            if(texture is null)
+            {
+                continue;
+            }
+
+            dto.TextureReferences[textureName] = texture.Id;
+        }
+
+        dto.Blocks = new();
+        foreach(var (blockName, parameters) in Parameters)
+        {
+            ref var paramsDTO = ref CollectionsMarshal.GetValueRefOrAddDefault(dto.Blocks, blockName, out var exists);
+            if (!exists)
+            {
+                paramsDTO = new();
+            }
+
+            foreach(var (paramName, paramValue) in parameters)
+            {
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+                paramsDTO[paramName] = paramValue;
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
+            }
+        }
+
+        using var writer = new StreamWriter(stream);
+        _serializer.Serialize(writer, dto);
     }
 
     // Factory for reading and creating materials from assets
-    public class Factory : IReadableAssetFactory<Material>
+    public class Factory : IReadAssetFactory
     {
-        public Material ReadAsset(string reference, Stream stream)
-        {
-            using var textReader = new StreamReader(stream);
-            var shaderReference = textReader.ReadLine() ?? throw new InvalidOperationException();
-            var shader = AssetReader.ReadAsset<CompiledShader, CompiledShader.Factory>(shaderReference);
+        static IDeserializer _deserializer
+            = new DeserializerBuilder()
+            .WithNamingConvention(CamelCaseNamingConvention.Instance)
+            .Build();
 
-            return new Material(reference, shader);
+        public IAsset ReadAsset(Guid id, AssetManager assetManager, Stream stream)
+        {
+            // read the dto
+            var dto = _deserializer.Deserialize<MaterialDTO>(new StreamReader(stream));
+
+            var shader = assetManager.LoadAsset<PGGLSLShaderSource>(dto.ShaderReference);
+            var material = new Material(id, shader);
+
+            foreach(var (textureName, textureId) in dto.TextureReferences)
+            {
+                material.SetTexture(textureName, assetManager.LoadAsset<Texture>(textureId));
+            }
+
+            foreach(var (block, parameters) in dto.Blocks)
+            {
+                foreach(var (paramName, paramValue) in parameters)
+                {
+                    var convertedParam = paramValue switch
+                    {
+                        string val => float.Parse(val),
+                        Dictionary<object, object> val => DictToVector(val),                        
+                        _ => throw new NotImplementedException()
+                    };
+
+                    material.SetParameter(block, paramName, convertedParam, convertedParam switch
+                    {
+                        float => Type.Float,
+                        Vector2 => Type.Float2,
+                        Vector3 => Type.Float3,
+                        Vector4 => Type.Float4,
+                        Matrix4x4 => Type.Mat4,
+                        _ => throw new NotImplementedException()
+                    });
+                }
+            }
+
+            return material;
+        }
+
+        static object DictToVector(Dictionary<object, object> dict)
+        {
+            if (dict.Count == 2)
+            {
+                return new Vector2(GetFloatVal(dict, "x"), GetFloatVal(dict, "y"));
+            }
+
+            if(dict.Count == 3)
+            {
+                return new Vector3(GetFloatVal(dict, "x"), GetFloatVal(dict, "y"), GetFloatVal(dict, "z"));
+            }
+
+            if (dict.Count == 4)
+            {
+                return new Vector4(GetFloatVal(dict, "x"), GetFloatVal(dict, "y"), GetFloatVal(dict, "z"), GetFloatVal(dict, "w"));
+            }
+
+            if(dict.Count == 16)
+            {
+                return new Matrix4x4(
+                    GetFloatVal(dict, "m11"),
+                    GetFloatVal(dict, "m12"),
+                    GetFloatVal(dict, "m13"),
+                    GetFloatVal(dict, "m14"),
+                    GetFloatVal(dict, "m21"),
+                    GetFloatVal(dict, "m22"),
+                    GetFloatVal(dict, "m23"),
+                    GetFloatVal(dict, "m24"),
+                    GetFloatVal(dict, "m31"),
+                    GetFloatVal(dict, "m32"),
+                    GetFloatVal(dict, "m33"),
+                    GetFloatVal(dict, "m34"),
+                    GetFloatVal(dict, "m41"),
+                    GetFloatVal(dict, "m42"),
+                    GetFloatVal(dict, "m43"),
+                    GetFloatVal(dict, "m44")
+                    );
+            }
+
+            throw new NotImplementedException();
+        }
+
+        static float GetFloatVal(Dictionary<object, object> dict, string name)
+        {
+            return float.Parse((string)dict[name]);
         }
     }
+}
+
+
+file class MaterialDTO
+{
+    public Guid ShaderReference { get; set; }
+    public Dictionary<string, Guid> TextureReferences { get; set; }
+    public Dictionary<string, Dictionary<string, object>> Blocks { get; set; }
+
 }

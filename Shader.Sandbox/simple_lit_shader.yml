@@ -1,0 +1,135 @@
+blocks:
+    - name: material
+      parameters:
+        - name: ambient
+          type: Float3
+        - name: diffuse
+          type: Float3
+        - name: specular
+          type: Float3
+        - name: shininess
+          type: Float
+          range:
+              min: 0
+              max: 1
+
+textures:
+    - name: diffuseMap      
+    - name: specularMap
+  
+vertex:
+    source: |        
+        layout(location = 0) out vec3 fragNormal;
+                        
+        layout(location = 1) out vec3 fragPos;
+
+        layout(binding = 0) uniform Details {
+            mat4 viewProjection;
+            vec3 cameraPosition;
+        } details;
+
+        void main() {
+            fragPos = vec3(model * vec4(position, 1));
+
+        #ifdef HAS_NORMALS
+            fragNormal = mat3(transpose(inverse(model))) * normal;
+        #else
+            fragNormal = mat3(transpose(inverse(model))) * vec3(1,1,1);
+        #endif
+            
+            gl_Position = details.viewProjection * model * vec4(position, 1);
+        }
+  
+
+
+fragment:
+    source: |
+      layout(location = 0) out vec4 fragColor;
+      
+      layout(location = 0) in vec3 fragNormal;
+      
+      layout(location = 1) in vec3 fragPos;
+
+      #ifdef DIR_LIGHTS_LENGHT
+      void CalcDirLight(DirLight light, vec3 normal, vec3 viewDir)
+      {
+         vec3 lightDir = normalize(-light.direction);
+         // diffuse shading
+         float diff = max(dot(normal, lightDir), 0.0);
+         // specular shading
+         vec3 reflectDir = reflect(-lightDir, normal);
+         float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
+         // combine results
+      #ifdef TEXTURE_diffuseMap
+         vec3 ambient  = vec3(texture(diffuseMap, TexCoords)) * material.ambient.xyz;
+         vec3 diffuse  = light.color * diff * vec3(texture(diffuseMap, TexCoords)) * material.diffuse.xyz;
+      #else
+         vec3 ambient  = material.ambient;
+         vec3 diffuse  = light.color * diff * material.diffuse;
+      #endif
+      #ifdef TEXTURE_specularMap
+         vec3 specular = light.color * spec * vec3(texture(specularMap, TexCoords)) * material.specular.xyz;
+      #else
+         vec3 specular = light.color * spec * material.specular.xyz;
+      #endif
+         return (ambient + diffuse + specular);
+      }
+      #endif
+
+      #ifdef POINT_LIGHTS_LENGHT
+      vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
+      {
+          vec3 lightDir = normalize(light.position - fragPos);
+          // diffuse shading
+          float diff = max(dot(normal, lightDir), 0.0);
+          // specular shading
+          vec3 reflectDir = reflect(-lightDir, normal);
+          float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
+          // attenuation
+          float distance    = length(light.position - fragPos);
+          float attenuation = 1.0 / (1.0f + 0.09f * distance + 0.032f * (distance * distance));
+          // combine results
+      #ifdef TEXTURE_diffuseMap
+         vec3 ambient  = vec3(texture(diffuseMap, TexCoords)) * material.ambient;
+         vec3 diffuse  = light.color * diff * vec3(texture(diffuseMap, TexCoords)) * material.diffuse.xyz;
+      #else
+         vec3 ambient  = material.ambient.xyz;
+         vec3 diffuse  = light.color * diff * material.diffuse.xyz;
+      #endif
+      #ifdef TEXTURE_specularMap
+         vec3 specular = light.color * spec * vec3(texture(specularMap, TexCoords)) * material.specular.xyz;
+      #else
+         vec3 specular = light.color * spec * material.specular.xyz;
+      #endif    
+          ambient  *= attenuation;
+          diffuse  *= attenuation;
+          specular *= attenuation;
+          return (ambient + diffuse + specular);
+      }
+      #endif
+
+      void main() {
+        
+        // properties
+        vec3 norm = normalize(fragNormal);
+        vec3 viewDir = normalize(details.cameraPosition - fragPos);
+
+        vec3 result;
+
+      #ifdef DIR_LIGHTS_LENGHT
+        // phase 1: Directional lighting
+        for(int i = 0; i < NUMBER_DIRECTIONAL_LIGHTS; i++)            
+            result += CalcDirLight(lightSources.dirLights[i], norm, viewDir);
+      #endif
+
+      #ifdef POINT_LIGHTS_LENGHT
+        // phase 2: Point lights
+        for(int i = 0; i < POINT_LIGHTS_LENGHT; i++)
+            result += CalcPointLight(lightSources.pointLights[i], norm, fragPos, viewDir);
+      #endif
+        // phase 3: Spot light
+        //result += CalcSpotLight(spotLight, norm, fragPos, viewDir);
+    
+        fragColor = vec4(result, 1.0);
+      }
+      

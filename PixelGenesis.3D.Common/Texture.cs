@@ -1,39 +1,56 @@
 ﻿using PixelGenesis._3D.Renderer.DeviceApi.Abstractions;
 using PixelGenesis.ECS;
+using StbImageSharp;
 
 namespace PixelGenesis._3D.Common;
 
-[ReadableAsset<Texture, Factory>]
-public class Texture : IWritableAsset, IReadableAsset
+public class Texture : IAsset
 {
-    public Guid Id { get; } = Guid.NewGuid();
-    public string Reference { get; }
-    public int Widht { get; }
+    public Guid Id { get; }
+    public string Name { get; }
+    public int Width { get; }
     public int Height { get; }
     public PGPixelFormat PixelFormat { get; }
     public ReadOnlyMemory<byte> Data { get; }
 
-    public Texture(int width, int height, ReadOnlyMemory<byte> data, PGPixelFormat pGPixelFormat, string reference)
+    public Texture(Guid id, int width, int height, ReadOnlyMemory<byte> data, PGPixelFormat pGPixelFormat, string? name = default)
     {
-        Widht = width;
+        Id = id;
+        Name = name ?? $"{id}.pgtex";
+        Width = width;
         Height = height;
         Data = data;
-        Reference = reference;
     }   
 
-    public void WriteToStream(Stream stream)
+    public void WriteToStream(AssetManager assetManager, Stream stream)
     {
         var bw = new BinaryWriter(stream);
         bw.Write((int)PixelFormat);
-        bw.Write(Widht);
+        bw.Write(Width);
         bw.Write(Height);
         bw.Write(Data.Length);
         bw.Write(Data.Span);
     }
 
-    public class Factory : IReadableAssetFactory<Texture>
+    public static Texture FromImageFile(string file, ColorComponents colorComponents, string? name = default)
     {
-        public Texture ReadAsset(string reference, Stream stream)
+        //StbImage.stbi_set_flip_vertically_on_load(1);
+
+        using var fileStream = File.OpenRead(file);
+
+        var image = ImageResult.FromStream(fileStream, colorComponents);
+
+        return new Texture(Guid.NewGuid(), image.Width, image.Height, image.Data, image.Comp switch
+        {
+            ColorComponents.RedGreenBlue => PGPixelFormat.Rgb,
+            ColorComponents.RedGreenBlueAlpha => PGPixelFormat.Rgba,
+            _ => throw new NotImplementedException()
+        }, name);
+    }
+
+    public class Factory : IReadAssetFactory
+    {
+        public IAsset ReadAsset(Guid id, AssetManager assetManager, Stream stream)
         {
             var br = new BinaryReader(stream);
             var pixelFormat = (PGPixelFormat)br.ReadInt32();
@@ -42,7 +59,7 @@ public class Texture : IWritableAsset, IReadableAsset
             var length = br.ReadInt32();
             var data = br.ReadBytes(length);
 
-            return new Texture(width, height, data, pixelFormat, reference);
+            return new Texture(id, width, height, data, pixelFormat);
         }
     }
 }

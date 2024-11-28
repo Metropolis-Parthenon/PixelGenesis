@@ -82,7 +82,7 @@ public class ShaderRenderer : IDisposable
         _vertexBuffer.Bind();
         _indexBuffer.Bind();
 
-        var layout = new VertexBufferLayout();
+        var layout = new BufferLayout();
         layout.PushFloat(3, false);
         Console.WriteLine("Drawing triangle...");
         _deviceApi.DrawTriangles(new DrawContext

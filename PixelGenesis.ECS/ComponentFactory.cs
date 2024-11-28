@@ -4,15 +4,11 @@ using System.Runtime.CompilerServices;
 namespace PixelGenesis.ECS;
 
 public sealed class ComponentFactory
-{
-    EntityManager EntityManager;
-
-    internal ComponentFactory(EntityManager entityManager)
-    {
-        EntityManager = entityManager;
-    }
-
+{        
     static Dictionary<Type, Func<Entity, Component>> ComponentFactories = new Dictionary<Type, Func<Entity, Component>>();
+    
+    static internal IEnumerable<KeyValuePair<string, Type>> ComponentsTypeNames 
+        => ComponentFactories.Keys.Select(x => new KeyValuePair<string, Type>(x.FullName ?? x.Name, x));
     
     public static void AddComponentFactory(Type type, Func<Entity, Component> factory)
     {
@@ -62,6 +58,7 @@ public sealed class ComponentFactory
 
         component = factory(container);
         container.AddComponent(component);
+        component._entity = container;
 
         return component;
     }

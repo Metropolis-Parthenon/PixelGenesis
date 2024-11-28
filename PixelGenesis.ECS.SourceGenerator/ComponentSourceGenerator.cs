@@ -5,6 +5,7 @@ using Microsoft.CodeAnalysis.Text;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -36,14 +37,13 @@ public class ComponentSourceGenerator : IIncrementalGenerator
             // nothing to do yet
             return;
         }
-
+                
         var distinctClasses = classes.Distinct();
 
         var generatedSource = new StringBuilder();
 
         generatedSource.AppendLine("using PixelGenesis.ECS;");
-        generatedSource.AppendLine("using System.Numerics;");
-
+        
         generatedSource.AppendLine();
 
         foreach (var @class in distinctClasses)
@@ -53,6 +53,8 @@ public class ComponentSourceGenerator : IIncrementalGenerator
                 continue;
             }
            
+            var semanticModel = compilation.GetSemanticModel(@class.SyntaxTree);
+
             var namespaceDeclaration = GetNamespace(@class);
             generatedSource.AppendLine($"namespace {namespaceDeclaration}");
             generatedSource.AppendLine("{");
@@ -101,18 +103,54 @@ public class ComponentSourceGenerator : IIncrementalGenerator
             {
                 var fieldName = field.Declaration.Variables.First().Identifier.Text;
             generatedSource.AppendLine($"                     case nameof({fieldName}):");
-            generatedSource.AppendLine($"                        {fieldName} = ({field.Declaration.Type})kvp.Value;");
+            generatedSource.AppendLine($"                        {fieldName} = ({GetTypeFullName(semanticModel, field.Declaration.Type)})kvp.Value;");
             generatedSource.AppendLine("                      break;");
             }
             generatedSource.AppendLine("                }");
             generatedSource.AppendLine("            }");
             generatedSource.AppendLine("        }");
 
+
+            generatedSource.AppendLine("        public override System.Type GetPropType(string key)");
+            generatedSource.AppendLine("        {");            
+            generatedSource.AppendLine("            switch(key)");
+            generatedSource.AppendLine("            {");
+            foreach (var field in publicFields)
+            {
+                var fieldName = field.Declaration.Variables.First().Identifier.Text;
+            generatedSource.AppendLine($"               case nameof({fieldName}):");
+            generatedSource.AppendLine($"                   return typeof({GetTypeFullName(semanticModel, field.Declaration.Type)});");            
+            }
+            generatedSource.AppendLine("                default: throw new System.InvalidOperationException();");
+            generatedSource.AppendLine("            }");            
+            generatedSource.AppendLine("        }");
+
+            generatedSource.AppendLine("       public override int GetOwnerIndex()");
+            generatedSource.AppendLine("       {");
+            generatedSource.AppendLine($"           return Entity.Index;");
+            generatedSource.AppendLine("       }");
+
             generatedSource.AppendLine("    }");
             generatedSource.AppendLine("}");
         }
-
         context.AddSource("Components.g.cs", SourceText.From(generatedSource.ToString(), Encoding.UTF8));
+    }
+
+    static string GetTypeFullName(SemanticModel semanticModel, TypeSyntax typeSyntax)
+    {        
+        var typeSymbol = semanticModel.GetSymbolInfo(typeSyntax).Symbol;
+                
+        if(typeSymbol is null)
+        {            
+            return "";
+        }
+
+        if(typeSymbol.Kind is SymbolKind.ArrayType && typeSymbol is IArrayTypeSymbol arr)
+        {
+            return $"{arr.ElementType.Name}[]";
+        }
+
+        return $"{typeSymbol.ContainingNamespace}.{typeSymbol.Name}";
     }
 
     static bool IsComponentClass(SyntaxNode syntaxNode)
@@ -180,34 +218,7 @@ public class ComponentSourceGenerator : IIncrementalGenerator
     }
 }
 
-//public sealed partial class CapsuleRendererComponent : Component
-//{
-//    public override void CopyToAnother(Component component)
-//    {
-//        var other = (CapsuleRendererComponent)component;
-//        other.Radius = Radius;
-//        other.Height = Height;
-//    }
-
-//    public override IEnumerable<KeyValuePair<string, object>> GetSerializableValues()
-//    {
-//        yield return new KeyValuePair<string, object>(nameof(Radius), Radius);
-//        yield return new KeyValuePair<string, object>(nameof(Height), Height);
-//    }
-
-//    public override void SetSerializableValues(IEnumerable<KeyValuePair<string, object>> values)
-//    {
-//        foreach (var kvp in values)
-//        {
-//            switch (kvp.Key)
-//            {
-//                case nameof(Radius):
-//                    Radius = (float)kvp.Value;
-//                    break;
-//                case nameof(Height):
-//                    Height = (float)kvp.Value;
-//                    break;
-//            }
-//        }
-//    }
-//}
+    //public override System.Type GetPropType(string key)
+    //{
+    //    throw new NotImplementedException();
+    //}

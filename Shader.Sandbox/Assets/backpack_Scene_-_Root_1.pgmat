@@ -1,0 +1,19 @@
+shaderReference: be3be984-3df0-4c20-8dca-7e958c20b190
+textureReferences:
+  diffuseMap: 8dd0d177-8519-46b9-810c-1e1bd0613d4d
+  specularMap: c61f83d8-5189-4bf1-aa65-af74bb0762e5
+blocks:
+  material:
+    ambient:
+      x: 1
+      y: 1
+      z: 1
+    diffuse:
+      x: 0.8
+      y: 0.8
+      z: 0.8
+    specular:
+      x: 0.5
+      y: 0.5
+      z: 0.5
+    shininess: 225

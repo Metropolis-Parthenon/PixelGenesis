@@ -28,7 +28,7 @@ public static class PGCollectionHelpers
         return backingValueArray.AsSpan().Slice(0, list.Count);
     }
 
-    public static ref V? GetValueRefOrAddDefault<K, V>(this SortedList<K, V?> list, K key, out bool existed) where K : notnull
+    public static ref V? GetValueRefOrAddDefault<K, V>(this SortedList<K, V> list, K key, out bool existed) where K : notnull
     {
         var keys = list.KeysAsSpan();
         var comparer = SortedListAccessor<K,V>.GetComparer(list);
@@ -38,7 +38,7 @@ public static class PGCollectionHelpers
         existed = true;
         if (index < 0)
         {
-            // this part needs to be optimized later
+#warning this part needs to be optimized so it does not do 2 fucking binary search
             existed = false;
             var value = default(V);            
             list.Add(key, value);

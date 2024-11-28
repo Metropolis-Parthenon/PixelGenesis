@@ -2,7 +2,7 @@
 
 namespace PixelGenesis._3D.Renderer.DeviceApi.Abstractions;
 
-public class VertexBufferLayout
+public class BufferLayout
 {
     public struct LayoutElement
     {
@@ -38,6 +38,11 @@ public class VertexBufferLayout
         _elements.Add(new LayoutElement { Count = count, Type = ShaderDataType.Byte, Normalized = normalize, Size = size });
         Stride += size * count;
     }
+    public void Clear()
+    {
+        _elements.Clear();
+    }
+
 }
 
 public enum ShaderDataType

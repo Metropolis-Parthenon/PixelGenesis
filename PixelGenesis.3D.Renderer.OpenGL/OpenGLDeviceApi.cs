@@ -11,6 +11,7 @@ public class OpenGLDeviceApi : IDeviceApi
     internal Dictionary<int, IIndexBuffer> _indexBuffers = new Dictionary<int, IIndexBuffer>();
     internal Dictionary<int, IUniformBlockBuffer> _uniformBlockBuffers = new Dictionary<int, IUniformBlockBuffer>();
     internal Dictionary<int, ITexture> _textures = new Dictionary<int, ITexture>();
+    internal Dictionary<int, ICubemapTexture> _cubemaps = new Dictionary<int, ICubemapTexture>();
     internal Dictionary<int, IShaderProgram> _shaderPrograms = new Dictionary<int, IShaderProgram>();
     internal Dictionary<int, IFrameBuffer> _frameBuffers = new Dictionary<int, IFrameBuffer>();
         
@@ -54,6 +55,7 @@ public class OpenGLDeviceApi : IDeviceApi
         {
             PGPixelFormat.Rgba => PixelFormat.Rgba,
             PGPixelFormat.Bgra => PixelFormat.Bgra,
+            PGPixelFormat.Rgb => PixelFormat.Rgb,
             _ => throw new NotImplementedException()
         };
 
@@ -61,6 +63,7 @@ public class OpenGLDeviceApi : IDeviceApi
         {
             PGInternalPixelFormat.Rgba => PixelInternalFormat.Rgba,
             PGInternalPixelFormat.Rgba8 => PixelInternalFormat.Rgba8,
+            PGInternalPixelFormat.Rgb => PixelInternalFormat.Rgb,
             _ => throw new NotImplementedException()
         };
 
@@ -73,19 +76,42 @@ public class OpenGLDeviceApi : IDeviceApi
         return new GLTexture(width, height, data, glPixelFormat, glInternalPixelFormat, glPixelType, this);
     }
 
+    public ICubemapTexture CreateCubemapTexture(
+        ReadOnlySpan<(int Width, int Height)> dimensions,
+        ReadOnlySpan<ReadOnlyMemory<byte>> data, 
+        PGPixelFormat pixelFormat,
+        PGInternalPixelFormat internalPixelFormat,
+        PGPixelType pixelType)
+    {
+        var glPixelFormat = pixelFormat switch
+        {
+            PGPixelFormat.Rgba => PixelFormat.Rgba,
+            PGPixelFormat.Bgra => PixelFormat.Bgra,
+            PGPixelFormat.Rgb => PixelFormat.Rgb,
+            _ => throw new NotImplementedException()
+        };
+
+        var glInternalPixelFormat = internalPixelFormat switch
+        {
+            PGInternalPixelFormat.Rgba => PixelInternalFormat.Rgba,
+            PGInternalPixelFormat.Rgba8 => PixelInternalFormat.Rgba8,
+            PGInternalPixelFormat.Rgb => PixelInternalFormat.Rgb,
+            _ => throw new NotImplementedException()
+        };
+
+        var glPixelType = pixelType switch
+        {
+            PGPixelType.UnsignedByte => PixelType.UnsignedByte,
+            _ => throw new NotImplementedException()
+        };
+
+        return new GLCubemapTexture(dimensions, data, glInternalPixelFormat, glPixelFormat, glPixelType, this);
+    }
+
+
     public IUniformBlockBuffer CreateUniformBlockBuffer(int[] uniformSizes, BufferHint hint)
     {
-        var sum = 0;
-        var offsets = new int[uniformSizes.Length];
-        var currentOffset = 0;
-        for(int i = 0; i < uniformSizes.Length; i++)
-        {
-            sum += uniformSizes[i];
-            offsets[i] = currentOffset;
-            currentOffset += uniformSizes[i];
-        }
-
-        return new GLUniformBlockBuffer(sum, offsets, GetUsageHint(hint), this);
+        return new GLUniformBlockBuffer(uniformSizes, GetUsageHint(hint), this);
     }
 
     public IVertexBuffer CreateVertexBuffer(int size, BufferHint bufferHint)
@@ -98,7 +124,7 @@ public class OpenGLDeviceApi : IDeviceApi
         return new GLVertexBuffer(data, GetUsageHint(bufferHint), this);
     }
 
-    static int SetVertexLayout(VertexBufferLayout layout, int startLayout, bool isInstanced = false)
+    static int SetVertexLayout(BufferLayout layout, int startLayout, bool isInstanced = false)
     {
         var elements = layout.Elements;
         int offset = 0;
@@ -150,6 +176,11 @@ public class OpenGLDeviceApi : IDeviceApi
         return _textures[id];
     }
 
+    public ICubemapTexture GetCubemapTextureById(int id)
+    {
+        return _cubemaps[id];
+    }
+
     public IShaderProgram GetShaderProgramById(int id)
     {
         return _shaderPrograms[id];
@@ -191,55 +222,7 @@ public class OpenGLDeviceApi : IDeviceApi
         drawContext.VertexBuffer.Bind();
         SetVertexLayout(drawContext.Layout, 0);
 
-        //if (drawContext.EnableBlend)
-        //{
-        //    GL.Enable(EnableCap.Blend);
-        //    ThrowOnGLError();
-        //    GL.BlendEquation((BlendEquationMode)drawContext.BlendEquation);
-        //    ThrowOnGLError();
-        //    GL.BlendFunc((BlendingFactor)drawContext.BlendSFactor, (BlendingFactor)drawContext.BlendDFactor);
-        //    ThrowOnGLError();
-        //}
-        //else
-        //{
-        //    GL.Disable(EnableCap.Blend);
-        //    ThrowOnGLError();
-        //}
-
-        //if (drawContext.EnableDepthTest)
-        //{
-        //    GL.Enable(EnableCap.DepthTest);
-        //    ThrowOnGLError();
-        //}
-        //else
-        //{
-        //    GL.Disable(EnableCap.DepthTest);
-        //    ThrowOnGLError();
-        //}
-
-        //if (drawContext.EnableCullFace)
-        //{
-        //    GL.Enable(EnableCap.CullFace);
-        //    ThrowOnGLError();
-        //}
-        //else
-        //{
-        //    GL.Disable(EnableCap.CullFace);
-        //    ThrowOnGLError();
-        //}
-
-        //if (drawContext.EnableScissorTest)
-        //{
-        //    GL.Enable(EnableCap.ScissorTest);
-        //    ThrowOnGLError();
-        //    GL.Scissor(drawContext.ScissorRect.X, drawContext.ScissorRect.Y, drawContext.ScissorRect.Width, drawContext.ScissorRect.Height);
-        //    ThrowOnGLError();
-        //}
-        //else
-        //{
-        //    GL.Disable(EnableCap.ScissorTest);
-        //    ThrowOnGLError();
-        //}
+        SetContext(drawContext);
 
         var glIndexBuffer = (IGLIndexBuffer)drawContext.IndexBuffer;
 
@@ -255,7 +238,7 @@ public class OpenGLDeviceApi : IDeviceApi
         }
     }
 
-    public void DrawTriangles(DrawContext drawContext, int instanceCount, IInstanceBuffer instanceBuffer, VertexBufferLayout layout)
+    public void DrawTriangles(DrawContext drawContext, int instanceCount, IInstanceBuffer instanceBuffer, BufferLayout layout)
     {
         drawContext.ShaderProgram.Bind();
         drawContext.IndexBuffer.Bind();
@@ -264,6 +247,25 @@ public class OpenGLDeviceApi : IDeviceApi
 
         instanceBuffer.Bind();
         SetVertexLayout(layout, next, true);
+
+        SetContext(drawContext);
+
+        var glIndexBuffer = (IGLIndexBuffer)drawContext.IndexBuffer;
+
+        if (drawContext.BaseVertex is null)
+        {
+            GL.DrawElementsInstanced(PrimitiveType.Triangles, glIndexBuffer.Length, glIndexBuffer.ElementsType, 0, instanceCount);
+            ThrowOnGLError();
+        }
+        else
+        {
+            GL.DrawElementsInstancedBaseVertex(PrimitiveType.Triangles, glIndexBuffer.Length, glIndexBuffer.ElementsType, drawContext.Offset * glIndexBuffer.ElementSize, instanceCount, drawContext.BaseVertex.Value);
+            ThrowOnGLError();
+        }
+    }
+
+    static void SetContext(DrawContext drawContext)
+    {
 
         if (drawContext.EnableBlend)
         {
@@ -315,18 +317,8 @@ public class OpenGLDeviceApi : IDeviceApi
             ThrowOnGLError();
         }
 
-        var glIndexBuffer = (IGLIndexBuffer)drawContext.IndexBuffer;
-
-        if (drawContext.BaseVertex is null)
-        {
-            GL.DrawArraysInstanced(PrimitiveType.Triangles, drawContext.Offset, drawContext.Lenght, instanceCount);
-            ThrowOnGLError();
-        }
-        else
-        {
-            GL.DrawElementsInstancedBaseVertex(PrimitiveType.Triangles, glIndexBuffer.Length, glIndexBuffer.ElementsType, drawContext.Offset * glIndexBuffer.ElementSize, instanceCount, drawContext.BaseVertex.Value);
-            ThrowOnGLError();
-        }
+        GL.DepthMask(drawContext.DepthMask);
+        GL.DepthFunc((DepthFunction)drawContext.DepthFunc);
     }
 
     static VertexAttribPointerType GetPointerType(ShaderDataType type)

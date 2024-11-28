@@ -15,6 +15,7 @@ public interface IDeviceApi : IDisposable
     ITexture GetTextureById(int id);
     IShaderProgram GetShaderProgramById(int id);
     IFrameBuffer GetFrameBufferById(int id);
+    ICubemapTexture GetCubemapTextureById(int id);
 
     public IVertexBuffer CreateVertexBuffer(int size, BufferHint bufferHint);    
     public IVertexBuffer CreateVertexBuffer(ReadOnlyMemory<byte> data, BufferHint bufferHint);
@@ -26,6 +27,9 @@ public interface IDeviceApi : IDisposable
     public IIndexBuffer<T> CreateIndexBuffer<T>(ReadOnlyMemory<T> data, BufferHint bufferHint) where T : unmanaged, IBinaryInteger<T>;
 
     public ITexture CreateTexture(int width, int height, ReadOnlyMemory<byte> data, PGPixelFormat pixelFormat, PGInternalPixelFormat internalPixelFormat, PGPixelType pixelType);
+
+    public ICubemapTexture CreateCubemapTexture(ReadOnlySpan<(int Width, int Height)> dimensions ,ReadOnlySpan<ReadOnlyMemory<byte>> data, PGPixelFormat pixelFormat, PGInternalPixelFormat internalPixelFormat, PGPixelType pixelType);
+
 
     public IUniformBlockBuffer CreateUniformBlockBuffer(int[] uniformSizes, BufferHint hint);
 
@@ -60,7 +64,7 @@ public interface IDeviceApi : IDisposable
 
     void DrawTriangles(DrawContext drawContext);
 
-    void DrawTriangles(DrawContext drawContext, int instanceCount, IInstanceBuffer instanceBuffer, VertexBufferLayout layout);
+    void DrawTriangles(DrawContext drawContext, int instanceCount, IInstanceBuffer instanceBuffer, BufferLayout layout);
 }
 
 public enum BufferHint

@@ -19,12 +19,41 @@
     <ProjectReference Include="..\PixelGenesis.3D.Renderer.Abstractions\PixelGenesis.3D.Renderer.DeviceApi.Abstractions.csproj" />
     <ProjectReference Include="..\PixelGenesis.3D.Renderer.OpenGL\PixelGenesis.3D.Renderer.DeviceApi.OpenGL.csproj" />
     <ProjectReference Include="..\PixelGenesis.3D.Renderer\PixelGenesis.3D.Renderer.csproj" />
+    <ProjectReference Include="..\PixelGenesis.AssetImporter\PixelGenesis.AssetImporter.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Assets\simple_lit_shader.pgshader">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="shader.yaml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="simple_lit_shader.yml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="skybox\back.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="skybox\bottom.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="skybox\front.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="skybox\left.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="skybox\right.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="skybox\top.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Survival_Backpack_PG\" />
   </ItemGroup>
 
 </Project>

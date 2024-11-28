@@ -13,8 +13,18 @@ public class GLUniformBlockBuffer : IUniformBlockBuffer
 
     int[] _offsets;
 
-    public GLUniformBlockBuffer(int size, int[] offsets, BufferUsageHint hint, OpenGLDeviceApi api)
+    public GLUniformBlockBuffer(int[] uniformSizes, BufferUsageHint hint, OpenGLDeviceApi api)
     {
+        var size = 0;
+        var offsets = new int[uniformSizes.Length];
+        var currentOffset = 0;
+        for (int i = 0; i < uniformSizes.Length; i++)
+        {
+            size += uniformSizes[i];
+            offsets[i] = currentOffset;
+            currentOffset += uniformSizes[i];
+        }
+
         GL.GenBuffers(1, out _id);
         OpenGLDeviceApi.ThrowOnGLError();
         GL.BindBuffer(BufferTarget.UniformBuffer, _id);
@@ -62,4 +72,5 @@ public class GLUniformBlockBuffer : IUniformBlockBuffer
         OpenGLDeviceApi.ThrowOnGLError();
         _api._uniformBlockBuffers.Remove(_id);
     }
+
 }

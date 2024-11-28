@@ -1,35 +1,32 @@
 ﻿namespace PixelGenesis.ECS;
 
-public interface IWritableAsset
+public interface IAsset
 {
-    public void WriteToStream(Stream stream);    
-}
-
-public interface IReadableAsset
-{
-    public string Reference { get; }
+    public Guid Id { get; }
+    public string Name { get; }
+    public void WriteToStream(AssetManager assetManager, Stream stream);
 }
 
 [AttributeUsage(AttributeTargets.Class)]
-public class ReadableAssetAttribute<T, F> : Attribute where T : IReadableAsset where F : IReadableAssetFactory<T>;
+public class ReadableAssetAttribute<T, F> : Attribute where T : IAsset where F : IReadAssetFactory;
 
-public interface IReadableAssetFactory<T> where T : IReadableAsset
+public interface IReadAssetFactory
 {
-    public T ReadAsset(string reference, Stream stream);
+    public IAsset ReadAsset(Guid id, AssetManager assetManager, Stream stream);
 }
 
-public static class AssetReader
-{
-    public static string RootPath { get; set; } = Path.Combine(Directory.GetCurrentDirectory(), "Assets");
+//public static class AssetReader
+//{
+//    public static string RootPath { get; set; } = Path.Combine(Directory.GetCurrentDirectory(), "Assets");
 
-    public static T ReadAsset<T, F>(string reference) where T : IReadableAsset where F : IReadableAssetFactory<T>, new()
-    {     
-        var path = Path.Combine(RootPath, reference);
-        using var stream = File.OpenRead(path);
+//    public static T ReadAsset<T, F>(string reference) where T : IReadableAsset where F : IReadableAssetFactory<T>, new()
+//    {     
+//        var path = Path.Combine(RootPath, reference);
+//        using var stream = File.OpenRead(path);
 
-        var factory = new F();
+//        var factory = new F();
 
-        return factory.ReadAsset(reference, stream);
-    }
+//        return factory.ReadAsset(reference, stream);
+//    }
 
-}
+//}

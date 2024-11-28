@@ -9,13 +9,20 @@ public abstract class Component : ISerializableObject
     public Entity Entity => _entity;
     public abstract void CopyToAnother(Component component);
     public abstract IEnumerable<KeyValuePair<string, object>> GetSerializableValues();
-    public abstract void SetSerializableValues(IEnumerable<KeyValuePair<string, object>> values);
+    public abstract void SetSerializableValues(IEnumerable<KeyValuePair<string, object?>> values);
+    public abstract int GetOwnerIndex();
+    public abstract Type GetPropType(string key);
 }
 
 public interface ISerializableObject
-{    
+{
     IEnumerable<KeyValuePair<string, object>> GetSerializableValues();
-    public void SetSerializableValues(IEnumerable<KeyValuePair<string, object>> values);
+    public void SetSerializableValues(IEnumerable<KeyValuePair<string, object?>> values);
+    public Type GetPropType(string key);
+    public int GetOwnerIndex()
+    {
+        return -1;
+    }
 }
 
 public interface IAwake

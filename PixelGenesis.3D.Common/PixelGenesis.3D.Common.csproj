@@ -11,6 +11,7 @@
   <ItemGroup>
     <PackageReference Include="FbxParser" Version="2.0.0" />
     <PackageReference Include="Microsoft.Extensions.ObjectPool" Version="9.0.0" />
+    <PackageReference Include="StbImageSharp" Version="2.30.15" />
     <PackageReference Include="YamlDotNet" Version="16.2.0" />
   </ItemGroup>
 
@@ -18,6 +19,10 @@
     <ProjectReference Include="..\PixelGenesis.3D.Renderer.Abstractions\PixelGenesis.3D.Renderer.DeviceApi.Abstractions.csproj" />
     <ProjectReference Include="..\PixelGenesis.ECS.SourceGenerator\PixelGenesis.ECS.SourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     <ProjectReference Include="..\PixelGenesis.ECS\PixelGenesis.ECS.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Assets\" />
   </ItemGroup>
 
 </Project>

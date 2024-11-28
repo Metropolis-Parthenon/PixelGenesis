@@ -8,13 +8,15 @@ public interface ITexture : IDeviceObject
 public enum PGPixelFormat
 {
     Rgba,
-    Bgra
+    Bgra,
+    Rgb
 }
 
 public enum PGInternalPixelFormat
 {
     Rgba,
-    Rgba8
+    Rgba8,
+    Rgb
 }
 
 public enum PGPixelType
@@ -22,3 +24,7 @@ public enum PGPixelType
     UnsignedByte
 }
 
+public interface ICubemapTexture : IDeviceObject
+{
+    void SetSlot(int slot);
+}

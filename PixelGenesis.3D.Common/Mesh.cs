@@ -4,9 +4,8 @@ using System.Numerics;
 
 namespace PixelGenesis._3D.Common;
 
-public interface IMesh : IWritableAsset
-{
-    Guid Id { get; }
+public interface IMesh : IAsset
+{    
     bool IsDirty { get; set; }
     ReadOnlyMemory<Vector3> Normals { get; }
     ReadOnlyMemory<Vector3> Vertices { get; }
@@ -15,6 +14,12 @@ public interface IMesh : IWritableAsset
     ReadOnlyMemory<Vector4> Tangents { get; }
     ReadOnlyMemory<Vector2> UV1 { get; }
     ReadOnlyMemory<Vector2> UV2 { get; }
+    ReadOnlyMemory<Vector2> UV3 { get; }
+    ReadOnlyMemory<Vector2> UV4 { get; }
+    ReadOnlyMemory<Vector2> UV5 { get; }
+    ReadOnlyMemory<Vector2> UV6 { get; }
+    ReadOnlyMemory<Vector2> UV7 { get; }
+    ReadOnlyMemory<Vector2> UV8 { get; }
 
     internal static void WriteMeshToStream(Stream stream, IMesh mesh)
     {
@@ -27,6 +32,12 @@ public interface IMesh : IWritableAsset
         WriteMemory(bw, mesh.Tangents);
         WriteMemory(bw, mesh.UV1);
         WriteMemory(bw, mesh.UV2);
+        WriteMemory(bw, mesh.UV3);
+        WriteMemory(bw, mesh.UV4);
+        WriteMemory(bw, mesh.UV5);
+        WriteMemory(bw, mesh.UV6);
+        WriteMemory(bw, mesh.UV7);
+        WriteMemory(bw, mesh.UV8);
     }
 
     private static void WriteMemory<T>(BinaryWriter bw, ReadOnlyMemory<T> memory) where T : unmanaged
@@ -39,12 +50,11 @@ public interface IMesh : IWritableAsset
     IMesh Clone();   
 }
 
-[ReadableAsset<Mesh, MeshFactory>]
-public sealed class Mesh : IMesh, IReadableAsset
+public sealed class Mesh : IMesh
 {
-    public bool IsDirty { get; set; }
-    public Guid Id { get; } = Guid.NewGuid();
-
+    public Guid Id { get; }
+    public string Name { get; }
+    public bool IsDirty { get; set; }    
     public ReadOnlyMemory<Vector3> Normals { get; }
 
     public ReadOnlyMemory<Vector3> Vertices { get; }
@@ -58,12 +68,23 @@ public sealed class Mesh : IMesh, IReadableAsset
     public ReadOnlyMemory<Vector2> UV1 { get; }
 
     public ReadOnlyMemory<Vector2> UV2 { get; }
+        
+    public ReadOnlyMemory<Vector2> UV3 { get; }
 
-    public string Reference { get; }
+    public ReadOnlyMemory<Vector2> UV4 { get; }
 
-    private Mesh(string reference, Stream stream)
+    public ReadOnlyMemory<Vector2> UV5 { get; }
+
+    public ReadOnlyMemory<Vector2> UV6 { get; }
+
+    public ReadOnlyMemory<Vector2> UV7 { get; }
+
+    public ReadOnlyMemory<Vector2> UV8 { get; }
+
+    private Mesh(Guid id, Stream stream, string? name = default)
     {
-        Reference = reference;
+        Id = id;
+        Name = name ?? $"{id}.pgmesh";
 
         using var br = new BinaryReader(stream);
         
@@ -74,6 +95,12 @@ public sealed class Mesh : IMesh, IReadableAsset
         Tangents = ReadMemory<Vector4>(br);
         UV1 = ReadMemory<Vector2>(br);
         UV2 = ReadMemory<Vector2>(br);
+        UV3 = ReadMemory<Vector2>(br);
+        UV4 = ReadMemory<Vector2>(br);
+        UV5 = ReadMemory<Vector2>(br);
+        UV6 = ReadMemory<Vector2>(br);
+        UV7 = ReadMemory<Vector2>(br);
+        UV8 = ReadMemory<Vector2>(br);
     }
 
     static ReadOnlyMemory<T> ReadMemory<T>(BinaryReader br) where T : unmanaged
@@ -91,26 +118,32 @@ public sealed class Mesh : IMesh, IReadableAsset
         return this;
     }
 
-    public void WriteToStream(Stream stream)
+    public void WriteToStream(AssetManager assetManager, Stream stream)
     {
         IMesh.WriteMeshToStream(stream, this);
     }
 
-    public class MeshFactory : IReadableAssetFactory<Mesh>
+    public class MeshFactory : IReadAssetFactory
     {
-        public Mesh ReadAsset(string reference, Stream stream)
+        public IAsset ReadAsset(Guid id, AssetManager assetManager, Stream stream)
         {
-            return new Mesh(reference, stream);
+            return new Mesh(id, stream);
         }
     }
 }
 
 public sealed class MutableMesh : IMesh
 {
-    public Guid Id { get; } = Guid.NewGuid();
-    
-    public bool IsDirty { get; set; }
+    public Guid Id { get; }
+    public string Name { get; }
 
+    public MutableMesh(Guid id, string? name = default)
+    {
+        Id = id;
+        Name = name ?? $"{id}.pgmesh";
+    }
+
+    public bool IsDirty { get; set; }
     public Memory<Vector3> MutableNormals;
     public ReadOnlyMemory<Vector3> Normals => MutableNormals;
 
@@ -133,9 +166,27 @@ public sealed class MutableMesh : IMesh
     public Memory<Vector2> MutableUV2;
     public ReadOnlyMemory<Vector2> UV2 => MutableUV2;
 
+    public Memory<Vector2> MutableUV3;
+    public ReadOnlyMemory<Vector2> UV3 => MutableUV3;
+
+    public Memory<Vector2> MutableUV4;
+    public ReadOnlyMemory<Vector2> UV4 => MutableUV4;
+
+    public Memory<Vector2> MutableUV5;
+    public ReadOnlyMemory<Vector2> UV5 => MutableUV5;
+
+    public Memory<Vector2> MutableUV6;
+    public ReadOnlyMemory<Vector2> UV6 => MutableUV6;
+
+    public Memory<Vector2> MutableUV7;
+    public ReadOnlyMemory<Vector2> UV7 => MutableUV7;
+
+    public Memory<Vector2> MutableUV8;
+    public ReadOnlyMemory<Vector2> UV8 => MutableUV8;
+
     public IMesh Clone()
     {
-        var result = new MutableMesh();
+        var result = new MutableMesh(Guid.NewGuid());
         result.MutableNormals = MutableNormals.ToArray();
         result.MutableVertices = MutableVertices.ToArray();
         result.MutableTriangles = MutableTriangles.ToArray();
@@ -143,11 +194,18 @@ public sealed class MutableMesh : IMesh
         result.MutableTangents = MutableTangents.ToArray();
         result.MutableUV1 = MutableUV1.ToArray();
         result.MutableUV2 = MutableUV2.ToArray();
+        result.MutableUV3 = MutableUV3.ToArray();
+        result.MutableUV4 = MutableUV4.ToArray();
+        result.MutableUV5 = MutableUV5.ToArray();
+        result.MutableUV6 = MutableUV6.ToArray();
+        result.MutableUV7 = MutableUV7.ToArray();
+        result.MutableUV8 = MutableUV8.ToArray();
+
 
         return result;
     }
 
-    public void WriteToStream(Stream stream)
+    public void WriteToStream(AssetManager assetManager, Stream stream)
     {
         IMesh.WriteMeshToStream(stream, this);
     }

@@ -2,31 +2,70 @@ blocks: []
 
 textures: []
 
-vertex: |
-  #version 450
-  layout(location = 0) in vec4 position;
-  layout(location = 1) in mat4 model;
+vertex:
+    source: |
+        #ifdef HAS_NORMALS
+        layout(location = 0) out vec3 fragNormal;
+        #endif
+                
+        layout(location = 1) out vec3 fragPosition;
+
+        layout(binding = 0) uniform Details {
+            mat4 viewProjection;
+            vec3 cameraPosition;
+        } details;
+
+        void main() {
+            fragPosition = vec3(model * vec4(position, 1));
+
+        #ifdef HAS_NORMALS
+            fragNormal = mat3(transpose(inverse(model))) * normal;
+        #endif
+            
+            gl_Position = details.viewProjection * model * vec4(position, 1);
+        }
   
-  layout(location = 0) out vec4 color;
 
-  layout(binding = 0) uniform Details {
-      mat4 viewProjection;      
-  } details;
 
-  void main() {  
-      gl_Position = details.viewProjection * model * position;
-      color = position;
-  }
+fragment:
+    source: |
+      layout(location = 0) out vec4 fragColor;
+        
+      #ifdef HAS_NORMALS
+      layout(location = 0) in vec3 fragNormal;
+      #endif
 
-fragment: |
-  #version 450    
-  layout(location = 0) out vec4 fragColor;
-  
-  layout(location = 0) in vec4 color;
+      layout(location = 1) in vec3 fragPosition;
 
-  void main() {
-      fragColor = vec4(color.xyz, 1);
-  }
+      void main() {
+              
+          vec3 lightPos = vec3(0, 0, -3);
+          vec3 lightColor = vec3(1.0, 1.0, 1.0);
+          vec3 objectColor = vec3(1.0f, 0.5f, 0.31f);
 
-tessellation: null
-geometry: null
+          // ambient light calculation
+          float ambientLoightStrehgth = 0.1;
+      
+          vec3 ambient = ambientLoightStrehgth * lightColor;
+          
+      #ifdef HAS_NORMALS
+          //diffuse light calculation
+          vec3 norm = normalize(fragNormal);
+          vec3 lightDir = normalize(lightPos - fragPosition); 
+          float diff = max(dot(norm, lightDir), 0.0);
+          vec3 diffuse = diff * lightColor;
+
+          //specular light calculation
+          float specularStrength = 0.5;
+          vec3 viewDir = normalize(details.cameraPosition - fragPosition);
+          vec3 reflectDir = reflect(-lightDir, norm); 
+          float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
+          vec3 specular = specularStrength * spec * lightColor;
+
+          vec3 result = (ambient + diffuse + specular) * objectColor;
+      #else
+          vec3 result = ambient;
+      #endif
+
+          fragColor = vec4(result, 1);
+      }

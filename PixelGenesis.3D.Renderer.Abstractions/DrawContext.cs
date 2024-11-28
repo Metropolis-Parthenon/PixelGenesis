@@ -5,23 +5,37 @@ namespace PixelGenesis._3D.Renderer.DeviceApi.Abstractions;
 public class DrawContext
 {
     public IVertexBuffer VertexBuffer;
-    public VertexBufferLayout Layout;    
+    public BufferLayout Layout;    
     public IIndexBuffer IndexBuffer;
     public IShaderProgram ShaderProgram;
     public int Lenght;
     public int Offset;
     public int? BaseVertex;
     public bool EnableBlend = true;
-    public GPBlendEquation BlendEquation = GPBlendEquation.Add;
+    public PGBlendEquation BlendEquation = PGBlendEquation.Add;
     public PGBlendingFactor BlendSFactor = PGBlendingFactor.SrcAlpha;
     public PGBlendingFactor BlendDFactor = PGBlendingFactor.OneMinusSrcAlpha;
-    public bool EnableDepthTest = false;
+    public bool EnableDepthTest = true;
     public bool EnableCullFace = false;
     public bool EnableScissorTest = false;
+    public bool DepthMask = true;
+    public PGDepthFunc DepthFunc = PGDepthFunc.Less;
     public Rectangle ScissorRect;
 }
 
-public enum GPBlendEquation
+public enum PGDepthFunc
+{
+    Never = 512,
+    Less,
+    Equal,
+    Lequal,
+    Greater,
+    Notequal,
+    Gequal,
+    Always
+}
+
+public enum PGBlendEquation
 {
     Add = 32774,
     Subtract = 32778,

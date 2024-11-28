@@ -21,11 +21,11 @@ public class ImGuiPGController : IDisposable
 
     IUniformBlockBuffer _projectionuniformBlockBuffer;
 
-    VertexBufferLayout _layout;
+    BufferLayout _layout;
     DrawContext _drawContext = new DrawContext()
     {
         EnableBlend = true,
-        BlendEquation = GPBlendEquation.Add,
+        BlendEquation = PGBlendEquation.Add,
         BlendSFactor = PGBlendingFactor.SrcAlpha,
         BlendDFactor = PGBlendingFactor.OneMinusSrcAlpha,
         EnableDepthTest = false,
@@ -140,7 +140,7 @@ void main()
             ReadOnlyMemory<byte>.Empty,
             ReadOnlyMemory<byte>.Empty);
 
-        _layout = new VertexBufferLayout();
+        _layout = new BufferLayout();
         _layout.PushFloat(2, false);
         _layout.PushFloat(2, false);
         _layout.PushByte(4, true);
