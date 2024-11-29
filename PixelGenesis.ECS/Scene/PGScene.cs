@@ -1,14 +1,14 @@
 ﻿using CommunityToolkit.HighPerformance.Buffers;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.ObjectPool;
-using System.Collections;
+using PixelGenesis.ECS.AssetManagement;
+using PixelGenesis.ECS.Components;
+using PixelGenesis.ECS.Serialization;
 using System.Collections.Immutable;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using YamlDotNet.Core;
-using YamlDotNet.Core.Events;
 using YamlDotNet.Serialization;
 
-namespace PixelGenesis.ECS;
+namespace PixelGenesis.ECS.Scene;
 
 public sealed class PGScene : ISerializableObject, IAsset
 {
@@ -21,16 +21,22 @@ public sealed class PGScene : ISerializableObject, IAsset
 
     Dictionary<Type, List<Component>> Components = new Dictionary<Type, List<Component>>();
 
-    internal ComponentFactory ComponentFactory { get; }
+    internal ComponentsFactory ComponentFactory { get; }
+    public IServiceProvider Provider;
 
     int currentId = 0;
-        
-    public PGScene(Guid id, string? name = default)
+
+    public PGScene(
+        Guid id, 
+        ComponentsFactory componentsFactory,
+        IServiceProvider provider,
+        string? name = default)
     {
         Id = id;
         Name = name ?? $"{id}.pgscene";
         EntityPool = new DefaultObjectPoolProvider().Create(new EntityPoolPolicy(this));
-        ComponentFactory = new ComponentFactory();
+        ComponentFactory = componentsFactory;
+        Provider = provider;
     }
 
     internal int GetNextId()
@@ -64,7 +70,7 @@ public sealed class PGScene : ISerializableObject, IAsset
         newEntity.Name = StringPool.Shared.GetOrAdd($"{entity.Name}-{newEntity.Id}");
         newEntity.Tags = entity.Tags;
 
-        if(parent is null)
+        if (parent is null)
         {
             SetEntityParent(newEntity, entity.Parent);
         }
@@ -72,9 +78,9 @@ public sealed class PGScene : ISerializableObject, IAsset
         {
             SetEntityParent(newEntity, parent);
         }
-        
 
-        foreach(var child in entity.Children)
+
+        foreach (var child in entity.Children)
         {
             Clone(child, newEntity);
         }
@@ -194,7 +200,7 @@ public sealed class PGScene : ISerializableObject, IAsset
     }
 
     public IEnumerable<KeyValuePair<string, object>> GetSerializableValues()
-    {        
+    {
         yield return new("Entities", _entities);
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
         yield return new("ParentMap", _entities.Where(x => x.Parent is not null).Select(x => (x.Index, x.Parent.Index)));
@@ -205,14 +211,14 @@ public sealed class PGScene : ISerializableObject, IAsset
     public void SetSerializableValues(IEnumerable<KeyValuePair<string, object?>> values)
     {
         // We only care for the parent map here
-        foreach (var (key, value) in values) 
-        { 
-            if(key is not "ParentMap" || value is null)
+        foreach (var (key, value) in values)
+        {
+            if (key is not "ParentMap" || value is null)
             {
                 continue;
             }
 
-            foreach(var (index, parentIndex) in (IEnumerable<(int, int)>)value)
+            foreach (var (index, parentIndex) in (IEnumerable<(int, int)>)value)
             {
                 SetEntityParent(_entities[index], _entities[parentIndex]);
             }
@@ -230,22 +236,10 @@ public sealed class PGScene : ISerializableObject, IAsset
         };
     }
 
-    public void WriteToStream(AssetManager assetManager, Stream stream)
+    public void WriteToStream(IAssetManager assetManager, Stream stream)
     {
-        var factories = ComponentFactory.ComponentsTypeNames.ToDictionary(x => x.Key, x =>
-        {
-            var type = x.Value;
-            return new Func<int, ISerializableObject>((int ownerIndex) => _entities[ownerIndex].AddComponentIfNotExist(type));
-        });
-
-        // entity
-        factories.Add(typeof(Entity).FullName ?? string.Empty, (_) =>
-        {
-            return Create("");
-        });
-
         var serializer = new SerializerBuilder()
-            .WithTypeConverter(new SerializableObjectYamlConverter(assetManager, factories, ""))
+            .WithTypeConverter(new SerializableObjectYamlConverter(assetManager, (_,_) => { throw new Exception(); }, ""))
             .WithTypeConverter(PGStructYamlConverter.Instance)
             .DisableAliases() // don't use anchors and aliases (references to identical objects)            
             .Build();
@@ -255,26 +249,33 @@ public sealed class PGScene : ISerializableObject, IAsset
         writer.Write(yamlStr);
     }
 
-    public class PGSceneFactory : IReadAssetFactory
+    public class PGSceneFactory(
+        ComponentsFactory componentsFactory,
+        IServiceProvider provider
+        ) : IReadAssetFactory
     {
-        public IAsset ReadAsset(Guid id, AssetManager assetManager, Stream stream)
+        public IAsset ReadAsset(Guid id, IAssetManager assetManager, Stream stream)
         {
-            var scene = new PGScene(id);
+            var scene = new PGScene(id, componentsFactory, provider);
 
-            var factories = ComponentFactory.ComponentsTypeNames.ToDictionary(x => x.Key, x =>
-            {
-                var type = x.Value;
-                return new Func<int, ISerializableObject>((int ownerIndex) => scene._entities[ownerIndex].AddComponentIfNotExist(type));
+            var factories = new Func<Type, int, ISerializableObject>((Type type, int ownerIndex) => {
+                if (type.IsAssignableTo(typeof(Component)))
+                {
+                    return scene._entities[ownerIndex].AddComponentIfNotExist(type);
+                }
+
+                if (type == typeof(Entity))
+                {
+                    return scene.Create("");
+                }
+
+                if(type == typeof(PGScene))
+                {
+                    return scene;
+                }
+
+                throw new InvalidDataException($"Type factory for type {type.FullName} not found.");
             });
-
-            // entity
-            factories.Add(typeof(Entity).FullName ?? string.Empty, (_) =>
-            {
-                return scene.Create("");
-            });
-
-            // scene
-            factories.Add(typeof(PGScene).FullName ?? string.Empty, (_) => scene);
 
             var deserializer = new DeserializerBuilder()
                 .WithTypeConverter(new SerializableObjectYamlConverter(assetManager, factories, ""))

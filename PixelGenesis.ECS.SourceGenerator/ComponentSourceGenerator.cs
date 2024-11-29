@@ -42,7 +42,7 @@ public class ComponentSourceGenerator : IIncrementalGenerator
 
         var generatedSource = new StringBuilder();
 
-        generatedSource.AppendLine("using PixelGenesis.ECS;");
+        generatedSource.AppendLine("using PixelGenesis.ECS.Components;");
         
         generatedSource.AppendLine();
 
@@ -131,8 +131,42 @@ public class ComponentSourceGenerator : IIncrementalGenerator
             generatedSource.AppendLine("       }");
 
             generatedSource.AppendLine("    }");
+
+            StringBuilder constructorParameters = new StringBuilder();
+            if (@class.ParameterList is not null)
+            {                
+                bool isFirst = true;
+                foreach (var item in @class.ParameterList.Parameters)
+                {
+                    if (item.Type is null)
+                    {
+                        continue;
+                    }
+
+                    if (!isFirst)
+                    {
+                        constructorParameters.Append(", ");
+                    }
+                    isFirst = false;
+                    constructorParameters.Append($"resolver.Resolve<{GetTypeFullName(semanticModel, item.Type)}>()");
+                }
+            }
+
+            generatedSource.AppendLine($"    public class {@class.Identifier.Text}Factory : IComponentFactory");
+            generatedSource.AppendLine("    {");
+            generatedSource.AppendLine("        public Component CreateComponent(ComponentDependencyResolver resolver)");
+            generatedSource.AppendLine("        {");
+            generatedSource.AppendLine($"            return new {@class.Identifier.Text}({constructorParameters});");
+            generatedSource.AppendLine("        }");
+            generatedSource.AppendLine("    }");
+
+
+
             generatedSource.AppendLine("}");
         }
+
+
+
         context.AddSource("Components.g.cs", SourceText.From(generatedSource.ToString(), Encoding.UTF8));
     }
 
@@ -218,7 +252,11 @@ public class ComponentSourceGenerator : IIncrementalGenerator
     }
 }
 
-    //public override System.Type GetPropType(string key)
-    //{
-    //    throw new NotImplementedException();
-    //}
+
+//public class Transform3DComponentFactory : IComponentFactory
+//{
+//    public Component CreateComponent(ComponentDependencyResolver resolver)
+//    {
+//        return new Transform3DComponent(resolver.Resolve<Transform3DComponent>());
+//    }
+//}

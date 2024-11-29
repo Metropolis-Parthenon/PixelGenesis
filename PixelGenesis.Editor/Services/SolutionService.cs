@@ -51,7 +51,7 @@ internal sealed class SolutionService
 
         EntryProject = Solution.Projects.FirstOrDefault(p => p.Name == config.entryProject);
         EditorProject = Solution.Projects.FirstOrDefault(p => p.Name == config.editorProject);
-
+                
         commandDispatcher.Dispatch(new SolutionOpened());
     }
 

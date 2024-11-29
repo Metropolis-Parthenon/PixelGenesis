@@ -5,6 +5,8 @@ using PixelGenesis._3D.Common.Components.Lighting;
 using PixelGenesis._3D.Renderer.DeviceApi.Abstractions;
 using PixelGenesis._3D.Renderer.DeviceObjects;
 using PixelGenesis.ECS;
+using PixelGenesis.ECS.Components;
+using PixelGenesis.ECS.Scene;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Numerics;

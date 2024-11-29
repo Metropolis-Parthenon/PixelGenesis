@@ -1,11 +1,11 @@
 ﻿using CommunityToolkit.HighPerformance;
+using PixelGenesis.ECS.Components;
+using PixelGenesis.ECS.Helpers;
+using PixelGenesis.ECS.Scene;
 using System.Collections;
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using YamlDotNet.Core;
-using YamlDotNet.Serialization;
 
 namespace PixelGenesis.ECS;
 
@@ -105,7 +105,7 @@ public sealed partial class Entity : ISerializableObject, IEquatable<Entity>
     {
         yield return new(nameof(Name), Name);
         yield return new(nameof(Tags), Tags);
-        yield return new(nameof(IsDisabled), IsDisabled);         
+        yield return new(nameof(IsDisabled), IsDisabled);
     }
 
     public void SetSerializableValues(IEnumerable<KeyValuePair<string, object?>> values)

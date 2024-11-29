@@ -8,7 +8,7 @@ using YamlDotNet.Core;
 using YamlDotNet.Core.Events;
 using YamlDotNet.Serialization;
 
-namespace PixelGenesis.ECS;
+namespace PixelGenesis.ECS.Serialization;
 
 public sealed class PGStructYamlConverter : IYamlTypeConverter
 {
@@ -24,15 +24,15 @@ public sealed class PGStructYamlConverter : IYamlTypeConverter
 
         var instance = Activator.CreateInstance(type);
 
-        while(!parser.Accept<MappingEnd>(out _))
+        while (!parser.Accept<MappingEnd>(out _))
         {
             var name = parser.Consume<Scalar>().Value;
             var field = fields.FirstOrDefault(f => f.Name == name);
-            if(field is null)
+            if (field is null)
             {
                 continue;
             }
-            
+
             field.SetValue(instance, rootDeserializer(field.FieldType));
         }
 
@@ -45,8 +45,8 @@ public sealed class PGStructYamlConverter : IYamlTypeConverter
         var fields = type.GetFields();
 
         emitter.Emit(new MappingStart());
-        foreach (var field in fields) 
-        { 
+        foreach (var field in fields)
+        {
             var fieldValue = field.GetValue(value);
             emitter.Emit(new Scalar(field.Name));
             serializer(fieldValue);

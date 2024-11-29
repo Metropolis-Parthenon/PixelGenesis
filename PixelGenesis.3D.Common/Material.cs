@@ -1,5 +1,4 @@
-﻿using PixelGenesis.ECS;
-using System.Numerics;
+﻿using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Runtime.Intrinsics.Arm;
@@ -7,6 +6,7 @@ using System.Security.Cryptography;
 using System.Text;
 using YamlDotNet.Serialization.NamingConventions;
 using YamlDotNet.Serialization;
+using PixelGenesis.ECS.AssetManagement;
 
 namespace PixelGenesis._3D.Common;
 
@@ -180,7 +180,7 @@ public class Material : IAsset
         .WithNamingConvention(CamelCaseNamingConvention.Instance)
         .Build();
 
-    public void WriteToStream(AssetManager assetManager, Stream stream)
+    public void WriteToStream(IAssetManager assetManager, Stream stream)
     {
         var dto = new MaterialDTO();
 
@@ -226,7 +226,7 @@ public class Material : IAsset
             .WithNamingConvention(CamelCaseNamingConvention.Instance)
             .Build();
 
-        public IAsset ReadAsset(Guid id, AssetManager assetManager, Stream stream)
+        public IAsset ReadAsset(Guid id, IAssetManager assetManager, Stream stream)
         {
             // read the dto
             var dto = _deserializer.Deserialize<MaterialDTO>(new StreamReader(stream));

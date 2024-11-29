@@ -1,4 +1,4 @@
-﻿namespace PixelGenesis.ECS;
+﻿namespace PixelGenesis.ECS.Components;
 
 public abstract class Component : ISerializableObject
 {
@@ -39,7 +39,7 @@ public interface IReset
 }
 public interface IStart
 {
-   void Start();
+    void Start();
 }
 public interface IFixedUpdate
 {

@@ -1,4 +1,4 @@
-﻿using PixelGenesis.ECS;
+﻿using PixelGenesis.ECS.Components;
 
 namespace PixelGenesis._3D.Common.Components;
 

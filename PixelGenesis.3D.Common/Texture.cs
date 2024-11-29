@@ -1,5 +1,5 @@
 ﻿using PixelGenesis._3D.Renderer.DeviceApi.Abstractions;
-using PixelGenesis.ECS;
+using PixelGenesis.ECS.AssetManagement;
 using StbImageSharp;
 
 namespace PixelGenesis._3D.Common;
@@ -22,7 +22,7 @@ public class Texture : IAsset
         Data = data;
     }   
 
-    public void WriteToStream(AssetManager assetManager, Stream stream)
+    public void WriteToStream(IAssetManager assetManager, Stream stream)
     {
         var bw = new BinaryWriter(stream);
         bw.Write((int)PixelFormat);
@@ -50,7 +50,7 @@ public class Texture : IAsset
 
     public class Factory : IReadAssetFactory
     {
-        public IAsset ReadAsset(Guid id, AssetManager assetManager, Stream stream)
+        public IAsset ReadAsset(Guid id, IAssetManager assetManager, Stream stream)
         {
             var br = new BinaryReader(stream);
             var pixelFormat = (PGPixelFormat)br.ReadInt32();

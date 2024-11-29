@@ -25,10 +25,6 @@ internal sealed class SaveService(ICommandDispatcher commandDispatcher)
     }
 }
 
-public class SaveCurrentCommand
-{
-}
+public class SaveCurrentCommand { }
 
-public class SaveAllCommand
-{
-}
+public class SaveAllCommand { }

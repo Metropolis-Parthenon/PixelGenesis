@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 
-namespace PixelGenesis.ECS;
+namespace PixelGenesis.ECS.Helpers;
 
 internal static class SortedListAccessor<TKey, TValue> where TKey : notnull
 {
@@ -15,15 +15,15 @@ internal static class SortedListAccessor<TKey, TValue> where TKey : notnull
 }
 
 public static class PGCollectionHelpers
-{    
+{
     public static Span<K> KeysAsSpan<K, V>(this SortedList<K, V> list) where K : notnull
     {
-        var backingValueArray = SortedListAccessor<K,V>.GetKeysArray(list);
+        var backingValueArray = SortedListAccessor<K, V>.GetKeysArray(list);
         return backingValueArray.AsSpan().Slice(0, list.Count);
     }
 
-    public static Span<V> ValuesAsSpan<K,V>(this SortedList<K,V> list) where K : notnull
-    {        
+    public static Span<V> ValuesAsSpan<K, V>(this SortedList<K, V> list) where K : notnull
+    {
         var backingValueArray = SortedListAccessor<K, V>.GetValuesArray(list);
         return backingValueArray.AsSpan().Slice(0, list.Count);
     }
@@ -31,7 +31,7 @@ public static class PGCollectionHelpers
     public static ref V? GetValueRefOrAddDefault<K, V>(this SortedList<K, V> list, K key, out bool existed) where K : notnull
     {
         var keys = list.KeysAsSpan();
-        var comparer = SortedListAccessor<K,V>.GetComparer(list);
+        var comparer = SortedListAccessor<K, V>.GetComparer(list);
 
         var index = keys.BinarySearch(key, comparer);
 
@@ -40,13 +40,13 @@ public static class PGCollectionHelpers
         {
 #warning this part needs to be optimized so it does not do 2 fucking binary search
             existed = false;
-            var value = default(V);            
+            var value = default(V);
             list.Add(key, value);
             keys = list.KeysAsSpan();
             index = keys.BinarySearch(key, comparer);
         }
 
-        var values = list.ValuesAsSpan();        
+        var values = list.ValuesAsSpan();
         return ref values[index];
     }
 

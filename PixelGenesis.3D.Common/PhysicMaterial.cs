@@ -1,4 +1,4 @@
-﻿using PixelGenesis.ECS;
+﻿using PixelGenesis.ECS.AssetManagement;
 
 namespace PixelGenesis._3D.Common;
 
@@ -24,7 +24,7 @@ public sealed class PhysicMaterial : IAsset
         Name = name;
     }
 
-    public void WriteToStream(AssetManager assetManager, Stream stream)
+    public void WriteToStream(IAssetManager assetManager, Stream stream)
     {
         using var bw = new BinaryWriter(stream);
         bw.Write(DynamicFriction);
@@ -36,7 +36,7 @@ public sealed class PhysicMaterial : IAsset
 
     public class Factory : IReadAssetFactory
     {
-        public IAsset ReadAsset(Guid id, AssetManager assetManager, Stream stream)
+        public IAsset ReadAsset(Guid id, IAssetManager assetManager, Stream stream)
         {
             using var br = new BinaryReader(stream);
             var dynamicFriction = br.ReadSingle();

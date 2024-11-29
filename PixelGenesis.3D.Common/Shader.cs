@@ -1,5 +1,5 @@
 ﻿using PixelGenesis._3D.Renderer.DeviceApi.Abstractions;
-using PixelGenesis.ECS;
+using PixelGenesis.ECS.AssetManagement;
 using System.Diagnostics;
 using System.Formats.Tar;
 using System.IO;
@@ -174,7 +174,7 @@ public sealed class PGGLSLShaderSource : IAsset
         }
     }
 
-    public void WriteToStream(AssetManager assetManager, Stream stream)
+    public void WriteToStream(IAssetManager assetManager, Stream stream)
     {
         using var tw = new StreamWriter(stream);
         _serializer.Serialize(tw, Layout);
@@ -187,7 +187,7 @@ public sealed class PGGLSLShaderSource : IAsset
             .WithNamingConvention(CamelCaseNamingConvention.Instance)
             .Build();
 
-        public IAsset ReadAsset(Guid id, AssetManager assetManager, Stream stream)
+        public IAsset ReadAsset(Guid id, IAssetManager assetManager, Stream stream)
         {
             ShaderSourceDTO dto;
             dto = _deserializer.Deserialize<ShaderSourceDTO>(new StreamReader(stream));                   

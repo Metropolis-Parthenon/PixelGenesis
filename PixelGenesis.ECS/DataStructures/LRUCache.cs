@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PixelGenesis.ECS;
+namespace PixelGenesis.ECS.DataStructures;
 
 public sealed class LRUCache<K, T>(int capacity, IEqualityComparer<K>? comparer = default, Action<T>? onDestroy = default) : IEnumerable<KeyValuePair<K, T>> where K : notnull
 {

@@ -1,7 +1,7 @@
-shaderReference: be3be984-3df0-4c20-8dca-7e958c20b190
+shaderReference: c12f8e84-1077-404c-873f-af930807f036
 textureReferences:
-  diffuseMap: 8dd0d177-8519-46b9-810c-1e1bd0613d4d
-  specularMap: c61f83d8-5189-4bf1-aa65-af74bb0762e5
+  diffuseMap: 3b6710b1-815e-4b97-bc3e-95eb36d9103c
+  specularMap: a917baec-410b-4044-872e-9e6c9ba94564
 blocks:
   material:
     ambient:

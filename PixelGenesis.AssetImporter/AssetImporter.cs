@@ -1,22 +1,26 @@
 ﻿using Assimp;
 using CommunityToolkit.HighPerformance;
+using Microsoft.Extensions.DependencyInjection;
 using PixelGenesis._3D.Common;
 using PixelGenesis._3D.Common.Components;
 using PixelGenesis._3D.Renderer.DeviceApi.Abstractions;
 using PixelGenesis.ECS;
+using PixelGenesis.ECS.AssetManagement;
+using PixelGenesis.ECS.Components;
+using PixelGenesis.ECS.Scene;
 using System.Numerics;
 using System.Runtime.InteropServices;
 
 namespace PixelGenesis.AssetImporter;
 
 
-public class AssetImporter(AssetManager assetManager, Guid pbrShaderId, Guid nonPBRShaderId)
+public class AssetImporter(IAssetManager assetManager, IKeyedServiceProvider provider, ComponentsFactory factory, Guid pbrShaderId, Guid nonPBRShaderId)
 {
     public PGScene Import(string file, string outputRelativeFile)
     {
         var outputFolder = Path.GetDirectoryName(outputRelativeFile) ?? throw new Exception();
         var fileNamePrefix = Path.GetFileNameWithoutExtension(file);
-        var pgScene = new PGScene(Guid.NewGuid(), Path.GetFileName(outputRelativeFile));
+        var pgScene = new PGScene(Guid.NewGuid(), factory, provider, Path.GetFileName(outputRelativeFile));
 
         var context = new AssimpContext();
 
@@ -41,7 +45,7 @@ public class AssetImporter(AssetManager assetManager, Guid pbrShaderId, Guid non
             pgScene.SetEntityParent(entity, parent);
         }
 
-        var transform = entity.AddComponent<Transform3DComponent>();
+        var transform = entity.Transform;
 
         // set transformation
         node.Transform.Decompose(out var scaling, out var rotation, out var translation);

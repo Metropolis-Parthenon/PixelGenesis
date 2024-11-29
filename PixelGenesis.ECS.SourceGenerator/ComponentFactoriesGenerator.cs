@@ -5,6 +5,7 @@ using Microsoft.CodeAnalysis.Text;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.ComponentModel;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
@@ -43,6 +44,8 @@ public class ComponentFactoriesGenerator : IIncrementalGenerator
         var generatedSource = new StringBuilder();
 
         generatedSource.AppendLine("using PixelGenesis.ECS;");
+        generatedSource.AppendLine("using PixelGenesis.ECS.Components;");        
+        generatedSource.AppendLine("using Microsoft.Extensions.DependencyInjection;");
 
         generatedSource.AppendLine();
 
@@ -54,9 +57,9 @@ public class ComponentFactoriesGenerator : IIncrementalGenerator
 
         generatedSource.AppendLine($"namespace {commonPrefix};");
 
-        generatedSource.AppendLine("public static class ComponentInitializer");
+        generatedSource.AppendLine("public static class ServiceCollectionComponentFactoriesExtensions");
         generatedSource.AppendLine("{");
-        generatedSource.AppendLine("    public static void Initialize()");
+        generatedSource.AppendLine("    public static void AddComponentFactories(this IServiceCollection services)");
         generatedSource.AppendLine("    {");
             
         foreach(var @class in distinctClasses)
@@ -67,30 +70,8 @@ public class ComponentFactoriesGenerator : IIncrementalGenerator
             }
 
             var classFullName = $"{GetNamespace(@class)}.{@class.Identifier.Text}";
-
-
-            StringBuilder constructorParameters = new StringBuilder();
-            if(@class.ParameterList is not null)
-            {
-                var semanticModel = compilation.GetSemanticModel(@class.SyntaxTree);
-                bool isFirst = true;
-                foreach (var item in @class.ParameterList.Parameters)
-                {
-                    if(item.Type is null)
-                    {
-                        continue;
-                    }
-
-                    if (!isFirst)
-                    {
-                        constructorParameters.Append(", ");
-                    }
-                    isFirst = false;
-                    constructorParameters.Append($"entity.AddComponentIfNotExist<{GetTypeFullName(semanticModel, item.Type)}>()");
-                }
-            }
-
-            generatedSource.AppendLine($"       ComponentFactory.AddComponentFactory(typeof({classFullName}), entity => new {classFullName}({constructorParameters}));");
+            
+        generatedSource.AppendLine($"           services.AddPixelGenesisComponentFactory<{classFullName}, {classFullName}Factory>();");
 
         }
 
@@ -99,25 +80,6 @@ public class ComponentFactoriesGenerator : IIncrementalGenerator
 
         context.AddSource("ComponentInitializer.g.cs", SourceText.From(generatedSource.ToString(), Encoding.UTF8));
     }
-
-
-    static string GetTypeFullName(SemanticModel semanticModel, TypeSyntax typeSyntax)
-    {
-        var typeSymbol = semanticModel.GetSymbolInfo(typeSyntax).Symbol;
-
-        if (typeSymbol is null)
-        {
-            return "";
-        }
-
-        if (typeSymbol.Kind is SymbolKind.ArrayType && typeSymbol is IArrayTypeSymbol arr)
-        {
-            return $"{arr.ElementType.Name}[]";
-        }
-
-        return $"{typeSymbol.ContainingNamespace}.{typeSymbol.Name}";
-    }
-
 
     static bool IsComponentClass(SyntaxNode syntaxNode)
         => syntaxNode is ClassDeclarationSyntax classDeclarationSyntax
@@ -188,17 +150,10 @@ public class ComponentFactoriesGenerator : IIncrementalGenerator
 }
 
 
-//public static class ComponentInitializer
+//public static class ServiceCollectionExtensions
 //{
-//    public static void Initialize()
+//    public static void AddComponentFactories(this IServiceCollection services)
 //    {
-//        ComponentFactory.AddComponentFactory(typeof(Transform3DComponent), entity => new Transform3DComponent());
-//        ComponentFactory.AddComponentFactory(typeof(MeshRendererComponent), entity => new MeshRendererComponent(entity.AddComponentIfNotExist<Transform3DComponent>()));
-//        ComponentFactory.AddComponentFactory(typeof(CubeRendererComponent), entity => new CubeRendererComponent(entity.AddComponentIfNotExist<MeshRendererComponent>()));
-//        ComponentFactory.AddComponentFactory(typeof(SphereRendererComponent), entity => new SphereRendererComponent(entity.AddComponentIfNotExist<MeshRendererComponent>()));
-//        ComponentFactory.AddComponentFactory(typeof(PerspectiveCameraComponent), entity => new PerspectiveCameraComponent(entity.AddComponentIfNotExist<Transform3DComponent>()));
-//        ComponentFactory.AddComponentFactory(typeof(DirectionalLightComponent), entity => new DirectionalLightComponent(entity.AddComponentIfNotExist<Transform3DComponent>()));
-//        ComponentFactory.AddComponentFactory(typeof(PointLightComponent), entity => new PointLightComponent(entity.AddComponentIfNotExist<Transform3DComponent>()));
-//        ComponentFactory.AddComponentFactory(typeof(SpotLightComponent), entity => new SpotLightComponent(entity.AddComponentIfNotExist<Transform3DComponent>()));
+//        services.AddPixelGenesisComponentFactory<Transform3DComponent, Transform3DComponentFactory>();
 //    }
 //}

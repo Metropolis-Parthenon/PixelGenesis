@@ -1,4 +1,4 @@
-﻿using PixelGenesis.ECS;
+﻿using PixelGenesis.ECS.Components;
 using System.Numerics;
 
 namespace PixelGenesis.ECS;

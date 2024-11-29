@@ -1,31 +1,19 @@
-﻿using System.Runtime.CompilerServices;
+﻿using Microsoft.Extensions.DependencyInjection;
+using PixelGenesis.ECS.DataStructures;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using System.Text;
-using static PixelGenesis.ECS.PGScene;
 
-namespace PixelGenesis.ECS;
+namespace PixelGenesis.ECS.AssetManagement;
 
-public class AssetManager(string projectPath)
+public class AssetManager(string projectPath, IServiceProvider keyedServiceProvider) : IAssetManager
 {
     const string ReferenceFileName = "Project.pgproj";
-    
+
     public string ProjectPath => projectPath;
 
     Dictionary<Guid, string> AssetsRelativePath = new();
     LRUCache<Guid, IAsset> InMemoryAssets = new(100);
     bool isIntilialized = false;
-
-    static Dictionary<string, IReadAssetFactory> AssetFactories = new();
-
-    static AssetManager()
-    {
-        AddAssetLoaderFactory(new PGSceneFactory(), ".pgscene");
-    }
-
-    public static void AddAssetLoaderFactory(IReadAssetFactory factory, string fileExtension)
-    {
-        AssetFactories.Add(fileExtension, factory);
-    }
 
     public T LoadAsset<T>(Guid id) where T : class, IAsset
     {
@@ -40,17 +28,19 @@ public class AssetManager(string projectPath)
             var assetRelativePath = AssetsRelativePath[id];
             var assetAbsolutePath = Path.Combine(projectPath, assetRelativePath);
             var extension = Path.GetExtension(assetRelativePath);
-            var factory = AssetFactories[extension];
+
+            var factory = keyedServiceProvider.GetRequiredKeyedService<IReadAssetFactory>(extension);
+
             using var fileStream = File.OpenRead(assetAbsolutePath);
             return factory.ReadAsset(id, this, fileStream);
         });
 
         return asset;
     }
-        
+
     public void SaveOrCreateInPath(IAsset asset, string path)
     {
-        if(AssetsRelativePath.TryGetValue(asset.Id, out var existingPath))
+        if (AssetsRelativePath.TryGetValue(asset.Id, out var existingPath))
         {
             SaveAsset(asset, existingPath);
             return;
@@ -71,7 +61,7 @@ public class AssetManager(string projectPath)
 
         var containingFolder = Path.GetDirectoryName(absolutePath);
 
-        if(!Directory.Exists(containingFolder))
+        if (!Directory.Exists(containingFolder))
         {
             Directory.CreateDirectory(containingFolder ?? "");
         }
@@ -81,7 +71,7 @@ public class AssetManager(string projectPath)
         asset.WriteToStream(this, fileStream);
 
         ref var savedPath = ref CollectionsMarshal.GetValueRefOrAddDefault(AssetsRelativePath, asset.Id, out var exists);
-        if(!exists)
+        if (!exists)
         {
             savedPath = relativePath;
             SaveAssetReferences();
@@ -91,8 +81,8 @@ public class AssetManager(string projectPath)
     public Guid AddAssetFromFile(string relativePath)
     {
         var mapping = AssetsRelativePath.FirstOrDefault(x => x.Value == relativePath);
-        if (mapping.Value is not null) 
-        { 
+        if (mapping.Value is not null)
+        {
             return mapping.Key;
         }
 
@@ -104,7 +94,7 @@ public class AssetManager(string projectPath)
 
     void InitializeIfNotInitialized()
     {
-        if(isIntilialized)
+        if (isIntilialized)
         {
             return;
         }
@@ -118,7 +108,7 @@ public class AssetManager(string projectPath)
 
         var reader = new StringReader(File.ReadAllText(path));
 
-        while(reader.Peek() > 0)
+        while (reader.Peek() > 0)
         {
             AssetsRelativePath.Add(Guid.Parse(reader.ReadLine() ?? throw new InvalidDataException()), reader.ReadLine() ?? throw new InvalidDataException());
         }
@@ -130,13 +120,14 @@ public class AssetManager(string projectPath)
     {
         InitializeIfNotInitialized();
 
-        using var writer = new StringWriter();        
-        foreach(var (id, path) in AssetsRelativePath)
+        using var writer = new StringWriter();
+        foreach (var (id, path) in AssetsRelativePath)
         {
             writer.WriteLine(id);
             writer.WriteLine(path);
-        }        
+        }
 
         File.WriteAllText(Path.Combine(projectPath, ReferenceFileName), writer.ToString());
     }
 }
+

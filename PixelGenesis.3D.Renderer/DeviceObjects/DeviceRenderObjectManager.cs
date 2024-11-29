@@ -1,6 +1,7 @@
 ﻿using PixelGenesis._3D.Common;
 using PixelGenesis._3D.Renderer.DeviceApi.Abstractions;
-using PixelGenesis.ECS;
+using PixelGenesis.ECS.Helpers;
+using PixelGenesis.ECS.Scene;
 
 namespace PixelGenesis._3D.Renderer.DeviceObjects;
 

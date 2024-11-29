@@ -1,54 +1,62 @@
-﻿using System.Collections;
+﻿using PixelGenesis.ECS.AssetManagement;
+using PixelGenesis.ECS.Components;
+using System.Collections;
 using System.Runtime.CompilerServices;
 using YamlDotNet.Core;
 using YamlDotNet.Core.Events;
 using YamlDotNet.Serialization;
 
-namespace PixelGenesis.ECS;
+namespace PixelGenesis.ECS.Serialization;
 
 public class SerializableObjectYamlConverter(
-    AssetManager assetManager, 
-    IReadOnlyDictionary<string, Func<int, ISerializableObject>> factories,
+    IAssetManager assetManager,
+    Func<Type, int, ISerializableObject> factories,
     string newAssetsRelativePath) : IYamlTypeConverter
 {
     const string AssetTag = "!PGAsset";
 
     public bool Accepts(Type type) => type.IsAssignableTo(typeof(ISerializableObject));
-    
+
     public object? ReadYaml(IParser parser, Type type, ObjectDeserializer rootDeserializer)
     {
         var mappingStart = parser.Consume<MappingStart>();
         int ownerIndex = -1;
-        
+
         var key = parser.Consume<Scalar>().Value;
-        if(key is not "__type")
+        if (key is not "__type")
         {
             throw new InvalidDataException("the first property must be __type");
         }
         var typeName = parser.Consume<Scalar>().Value;
 
-        if(parser.Current is Scalar scalar && scalar.Value is "__ownerIndex")
+        var realType = Type.GetType(typeName);
+        if (realType is null) 
+        {
+            throw new InvalidDataException($"Cannot find type: {realType}.");
+        }
+
+        if (parser.Current is Scalar scalar && scalar.Value is "__ownerIndex")
         {
             parser.MoveNext();
             ownerIndex = int.Parse(parser.Consume<Scalar>().Value);
         }
 
-        var result = factories[typeName](ownerIndex);
+        var result = factories(realType, ownerIndex);
 
         result.SetSerializableValues(EnumerateObjectValues(result, parser, rootDeserializer));
 
         return result;
     }
-        
+
     IEnumerable<KeyValuePair<string, object?>> EnumerateObjectValues(ISerializableObject obj, IParser parser, ObjectDeserializer rootDeserializer)
     {
-        while(!parser.Accept<MappingEnd>(out _))
+        while (!parser.Accept<MappingEnd>(out _))
         {
             var key = parser.Consume<Scalar>().Value;
 
             var value = parser.Current;
 
-            if (value is Scalar scalar && scalar.Tag == AssetTag) 
+            if (value is Scalar scalar && scalar.Tag == AssetTag)
             {
                 var assetId = Guid.Parse(scalar.Value);
                 var asset = assetManager.LoadAsset(assetId);
@@ -113,7 +121,7 @@ public class SerializableObjectYamlConverter(
     public void WriteYaml(IEmitter emitter, object? value, Type type, ObjectSerializer serializer)
     {
         var serializableObject = Unsafe.As<ISerializableObject>(value);
-        if(serializableObject is null)
+        if (serializableObject is null)
         {
             throw new InvalidOperationException("Attempted to serialize an object that does not implement ISearializableObject");
         }
@@ -128,9 +136,9 @@ public class SerializableObjectYamlConverter(
         emitter.Emit(new MappingStart(AnchorName.Empty, TagName.Empty, true, MappingStyle.Block));
 
         emitter.Emit(new Scalar("__type"));
-        emitter.Emit(new Scalar(obj.GetType().FullName ?? obj.GetType().Name));
+        emitter.Emit(new Scalar(obj.GetType().AssemblyQualifiedName ?? obj.GetType().Name));
 
-        if (ownerIndex > -1) 
+        if (ownerIndex > -1)
         {
             emitter.Emit(new Scalar("__ownerIndex"));
             emitter.Emit(new Scalar(ownerIndex.ToString()));
@@ -152,7 +160,7 @@ public class SerializableObjectYamlConverter(
             //    continue;
             //}
 
-            if(val is IAsset asset)
+            if (val is IAsset asset)
             {
                 assetManager.SaveOrCreateInPath(asset, asset.Name);
                 emitter.Emit(new Scalar(AnchorName.Empty, AssetTag, Path.Combine(newAssetsRelativePath, asset.Id.ToString()), ScalarStyle.Any, false, false));

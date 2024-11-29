@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.HighPerformance;
 using PixelGenesis._3D.Common.Components.Lighting;
 using PixelGenesis._3D.Renderer.DeviceApi.Abstractions;
-using PixelGenesis.ECS;
+using PixelGenesis.ECS.Scene;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;

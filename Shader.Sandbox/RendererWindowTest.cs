@@ -9,19 +9,20 @@ using PixelGenesis._3D.Renderer;
 using PixelGenesis.ECS;
 using PixelGenesis._3D.Common.Components;
 using OpenTK.Windowing.GraphicsLibraryFramework;
-using PixelGenesis._3D.Common.Geometry;
 using StbImageSharp;
 using PixelGenesis._3D.Common.Components.Lighting;
+using PixelGenesis.ECS.AssetManagement;
+using PixelGenesis.ECS.Scene;
 
 namespace Shader.Sandbox;
 
 
 internal class RendererWindowTest : GameWindow, IPGWindow
 {
-    AssetManager assetManager;
+    IAssetManager assetManager;
     Guid sceneId;
 
-    public RendererWindowTest(int width, int height, string title, AssetManager assetManager, Guid sceneId) : base(SetSettings(GameWindowSettings.Default), new NativeWindowSettings() { ClientSize = (width, height), Title = title }) 
+    public RendererWindowTest(int width, int height, string title, IAssetManager assetManager, Guid sceneId) : base(SetSettings(GameWindowSettings.Default), new NativeWindowSettings() { ClientSize = (width, height), Title = title }) 
     {
         this.assetManager = assetManager;
         this.sceneId = sceneId;
@@ -32,8 +33,6 @@ internal class RendererWindowTest : GameWindow, IPGWindow
         settings.UpdateFrequency = 60;
         return settings;
     }
-
-    const string bunnyMeshFile = "C:\\Users\\thesk\\OneDrive\\Documents\\Projects\\GameEngine\\PixelGenesis\\Shader.Sandbox\\buddha.pgmesh";
 
     IDeviceApi deviceApi = new OpenGLDeviceApi();
     PG3DRenderer renderer;
@@ -66,7 +65,7 @@ internal class RendererWindowTest : GameWindow, IPGWindow
 
         var entity = entityManager.Entities[0];
 
-        for (var i = 1; i <= 5000; i++)
+        for (var i = 1; i <= 100; i++)
         {
             var transform = entityManager.Clone(entity).GetComponent<Transform3DComponent>();
             transform.Position.X = i * 4;

@@ -1,5 +1,5 @@
 ﻿using CommunityToolkit.HighPerformance;
-using PixelGenesis.ECS;
+using PixelGenesis.ECS.AssetManagement;
 using System.Numerics;
 
 namespace PixelGenesis._3D.Common;
@@ -118,14 +118,14 @@ public sealed class Mesh : IMesh
         return this;
     }
 
-    public void WriteToStream(AssetManager assetManager, Stream stream)
+    public void WriteToStream(IAssetManager assetManager, Stream stream)
     {
         IMesh.WriteMeshToStream(stream, this);
     }
 
-    public class MeshFactory : IReadAssetFactory
+    public class Factory : IReadAssetFactory
     {
-        public IAsset ReadAsset(Guid id, AssetManager assetManager, Stream stream)
+        public IAsset ReadAsset(Guid id, IAssetManager assetManager, Stream stream)
         {
             return new Mesh(id, stream);
         }
@@ -205,7 +205,7 @@ public sealed class MutableMesh : IMesh
         return result;
     }
 
-    public void WriteToStream(AssetManager assetManager, Stream stream)
+    public void WriteToStream(IAssetManager assetManager, Stream stream)
     {
         IMesh.WriteMeshToStream(stream, this);
     }

@@ -1,4 +1,4 @@
-﻿using PixelGenesis.ECS;
+﻿using PixelGenesis.ECS.Components;
 using System;
 using System.Collections.Generic;
 using System.Linq;
