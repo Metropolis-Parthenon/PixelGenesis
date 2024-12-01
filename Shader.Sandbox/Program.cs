@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using PixelGenesis._3D.Common;
-using PixelGenesis._3D.Common.Components;
 using PixelGenesis.AssetImporter;
 using PixelGenesis.ECS;
 using PixelGenesis.ECS.AssetManagement;
@@ -16,11 +15,7 @@ services.AddSingleton<IAssetManager>(
     provider));
 
 PixelGenesis._3D.Common.Components.ServiceCollectionComponentFactoriesExtensions.AddComponentFactories(services);
-
-services.AddPixelGenesisReadAssetFactory<PGGLSLShaderSource.Factory>(".pgshader");
-services.AddPixelGenesisReadAssetFactory< Material.Factory> (".pgmat");
-services.AddPixelGenesisReadAssetFactory<Texture.Factory>(".pgtex");
-services.AddPixelGenesisReadAssetFactory<Mesh.Factory>(".pgmesh");
+services.Add3DAssetsFactories();
 
 //var outputPath = "C:\\Users\\thesk\\OneDrive\\Documents\\Projects\\GameEngine\\PixelGenesis\\Shader.Sandbox\\Survival_Backpack_PG\\";
 

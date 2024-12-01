@@ -110,6 +110,7 @@ internal class RendererDeviceLightSources(IDeviceApi deviceApi, PGScene scene) :
         var pointLightComponents = scene.GetComponents<PointLightComponent>();
         var spotLightComponents = scene.GetComponents<SpotLightComponent>();
 
+        bool bufferChanged = false;
         if(
             directionalLightComponents.Length != _lastDirLightsLength ||
             pointLightComponents.Length != _lastPointLightsLength ||
@@ -117,6 +118,7 @@ internal class RendererDeviceLightSources(IDeviceApi deviceApi, PGScene scene) :
         {
             LightSourceUniformBlock?.Dispose();
             CreateBuffer(directionalLightComponents.Length, pointLightComponents.Length, spotLightComponents.Length);
+            bufferChanged = true;
         }
 
 
@@ -173,7 +175,7 @@ internal class RendererDeviceLightSources(IDeviceApi deviceApi, PGScene scene) :
         // set light sources
         if (dirLights.Length > 0)
         {
-            if(dirLightsChanged)
+            if(dirLightsChanged || bufferChanged)
             {
                 LightSourceUniformBlock?.SetData(dirLights.AsBytes(), index);
             }
@@ -183,7 +185,7 @@ internal class RendererDeviceLightSources(IDeviceApi deviceApi, PGScene scene) :
 
         if (pointLights.Length > 0)
         {
-            if (pointLightsChanged) 
+            if (pointLightsChanged || bufferChanged) 
             {
                 LightSourceUniformBlock?.SetData(pointLights.AsBytes(), index);
             }
@@ -193,7 +195,7 @@ internal class RendererDeviceLightSources(IDeviceApi deviceApi, PGScene scene) :
 
         if (spotLights.Length > 0)
         {
-            if(spotLightChanged)
+            if(spotLightChanged || bufferChanged)
             {
                 LightSourceUniformBlock?.SetData(spotLights.AsBytes(), index);
             }

@@ -13,6 +13,9 @@ using StbImageSharp;
 using PixelGenesis._3D.Common.Components.Lighting;
 using PixelGenesis.ECS.AssetManagement;
 using PixelGenesis.ECS.Scene;
+using PixelGenesis._3D.Renderer.DrawPipeline;
+using Assimp;
+using static Assimp.Metadata;
 
 namespace Shader.Sandbox;
 
@@ -35,8 +38,8 @@ internal class RendererWindowTest : GameWindow, IPGWindow
     }
 
     IDeviceApi deviceApi = new OpenGLDeviceApi();
-    PG3DRenderer renderer;
-    PGScene entityManager;
+    ForwardRenderer renderer;
+    PGScene scene;
 
     PerspectiveCameraComponent PerspectiveCameraComponent;
 
@@ -44,12 +47,16 @@ internal class RendererWindowTest : GameWindow, IPGWindow
 
     public float Height => Size.Y;
 
+    Entity light;
+    Entity original;
+    int index = 1;
+
     protected override void OnLoad()
     {
         base.OnLoad();
 
-        entityManager = assetManager.LoadAsset<PGScene>(sceneId); //new PGScene(Guid.NewGuid());
-        renderer = new PG3DRenderer(deviceApi, this, entityManager);
+        scene = assetManager.LoadAsset<PGScene>(sceneId); //new PGScene(Guid.NewGuid());
+        renderer = new ForwardRenderer(scene, deviceApi, this);
 
         // setup scene
 
@@ -57,25 +64,13 @@ internal class RendererWindowTest : GameWindow, IPGWindow
         //var chromeMat = ChromeMaterial();
         //var jadeMat = JadeMaterial();
 
-        var light = entityManager.Create("PointLight");
+        light = scene.Create("PointLight");
         var pointLightComponent = light.AddComponent<PointLightComponent>();
         pointLightComponent.Color = new Vector3(1, 1, 1);
         pointLightComponent.Intensity = 1f;
         pointLightComponent.Transform.Position = new Vector3(0, 0, -1);
 
-        var entity = entityManager.Entities[0];
-
-        for (var i = 1; i <= 100; i++)
-        {
-            var transform = entityManager.Clone(entity).GetComponent<Transform3DComponent>();
-            transform.Position.X = i * 4;
-
-            if (i % 10 is 0)
-            {
-                var lightTransform = entityManager.Clone(light).GetComponent<Transform3DComponent>();
-                lightTransform.Position.X = i * 4;
-            }
-        }
+        original = scene.Entities[0];        
 
         ////entityManager.Clone(light).GetComponent<Transform3DComponent>().Position = new Vector3(0, -1f, 0);
 
@@ -118,7 +113,7 @@ internal class RendererWindowTest : GameWindow, IPGWindow
         //}
 
         //camera
-        var camera = entityManager.Create("Camera");
+        var camera = scene.Create("Camera");
         PerspectiveCameraComponent = camera.AddComponent<PerspectiveCameraComponent>();
         // skybox
         var basePath = Path.Combine(Directory.GetCurrentDirectory(), "skybox");
@@ -141,6 +136,7 @@ internal class RendererWindowTest : GameWindow, IPGWindow
 
     }
 
+    float timePassed;
     protected override void OnRenderFrame(FrameEventArgs args)
     {        
         base.OnRenderFrame(args);
@@ -150,14 +146,32 @@ internal class RendererWindowTest : GameWindow, IPGWindow
         GL.ClearColor(0.5f, 0.5f, 0.5f, 1.0f);
         GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
+        if (timePassed >= 1f)
+        {
+            var transform = scene.Clone(original).GetComponent<Transform3DComponent>();
+            transform.Position.X = index * 4;
+
+            if (index % 10 is 0)
+            {
+                var lightTransform = scene.Clone(light).GetComponent<Transform3DComponent>();
+                lightTransform.Position.X = index * 4;
+            }
+            timePassed = 0f;
+            index++;
+        }
+        timePassed += (float)args.Time;
+        
+
+        
+
         renderer.Update();
-        renderer.Render();
+        renderer.Draw();
 
         Console.Clear();
         Console.WriteLine($"FPS: {1d / args.Time}");
-        Console.WriteLine($"Update: {renderer.Metrics.UpdateTime}");
-        Console.WriteLine($"Render: {renderer.Metrics.RenderTime}");
-        Console.WriteLine($"Draw Calls: {renderer.Metrics.DrawCalls}");
+        //Console.WriteLine($"Update: {renderer.Metrics.UpdateTime}");
+        //Console.WriteLine($"Render: {renderer.Metrics.RenderTime}");
+        //Console.WriteLine($"Draw Calls: {renderer.Metrics.DrawCalls}");
 
         SwapBuffers();
     }

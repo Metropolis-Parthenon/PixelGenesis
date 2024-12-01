@@ -1,10 +1,9 @@
 ﻿using CommunityToolkit.HighPerformance;
-using PixelGenesis._3D.Common.Components;
-using PixelGenesis._3D.Common;
 using PixelGenesis._3D.Renderer.DeviceApi.Abstractions;
 using System.Numerics;
 using System.Runtime.InteropServices;
 using PixelGenesis.ECS;
+using PixelGenesis.ECS.Helpers;
 
 namespace PixelGenesis._3D.Renderer.DeviceObjects;
 
@@ -15,6 +14,8 @@ internal unsafe class RendererDeviceInstanced3DObject(
     RendererDeviceLightSources lightSources,
     DeviceRenderObjectManager manager) : IRendererDeviceObject
 {
+    int lasTransformCount = 0;
+
     int currentInstanceBufferSize = 0;
     IInstanceBuffer? _instanceBuffer;
     public IInstanceBuffer InstanceBuffer => _instanceBuffer ?? throw new ArgumentNullException(nameof(_instanceBuffer));
@@ -35,40 +36,27 @@ internal unsafe class RendererDeviceInstanced3DObject(
 
     ShaderCompileContext _shaderCompileContext = new ShaderCompileContext();
 
-    public readonly List<Transform3DComponent> Transforms = new List<Transform3DComponent>();
+    public bool ForceDataUpdate = false;
+    public readonly SortedList<int, Transform3DComponent> Transforms = new SortedList<int, Transform3DComponent>();
+    
     Matrix4x4[] _modelMatrixes = Array.Empty<Matrix4x4>();
 
     public void Initialize()
     {
-        //currentInstanceBufferSize = 50 * sizeof(Matrix4x4);
-
-        //_instanceBuffer = deviceApi.CreateInstanceBuffer(currentInstanceBufferSize, BufferHint.Dynamic);
-        //_instanceBufferLayout = new BufferLayout();
-
-        //_modelMatrixes = new Matrix4x4[currentInstanceBufferSize / sizeof(Matrix4x4)];
-
         // mat4 model matrix
         _instanceBufferLayout.PushFloat(4, false);
         _instanceBufferLayout.PushFloat(4, false);
         _instanceBufferLayout.PushFloat(4, false);
         _instanceBufferLayout.PushFloat(4, false);
-
-        //var transformsSpan = CollectionsMarshal.AsSpan(Transforms);
-
-        //for (var i = 0; i < transformsSpan.Length; ++i)
-        //{
-        //    var transform = transformsSpan[i];
-        //    _modelMatrixes[i] = transform.GetModelMatrix();
-        //}
-        //_instanceBuffer.SetData(0, _modelMatrixes.AsSpan().Slice(0, Transforms.Count).AsBytes());
-
+        
         CompileShader(lightSources.NumberOfDirLights, lightSources.NumberOfPointLights, lightSources.NumberOfSpotLights);
     }
 
     public void Update()
     {
-        UpdateBuffersSize();
-        UpdateInstanceBufferData();
+        UpdateInstanceBufferData(
+            UpdateBuffersSize()
+            );
 
         if (material.IsTextureDirty ||
            lightSources.NumberOfLightChanged ||
@@ -104,9 +92,9 @@ internal unsafe class RendererDeviceInstanced3DObject(
         _deviceShader = deviceShader;
     }
 
-    void UpdateInstanceBufferData()
+    void UpdateInstanceBufferData(bool bufferResized)
     {
-        var transformsSpan = CollectionsMarshal.AsSpan(Transforms);
+        var transformsSpan = Transforms.ValuesAsSpan();
 
         bool needUpdate = false;
         for (var i = 0; i < transformsSpan.Length; ++i)
@@ -116,18 +104,26 @@ internal unsafe class RendererDeviceInstanced3DObject(
             _modelMatrixes[i] = transform.GetModelMatrix();
         }
 
-        if (needUpdate)
+        if(transformsSpan.Length != lasTransformCount)
+        {
+            needUpdate = true;
+        }
+        lasTransformCount = transformsSpan.Length;
+
+        if (needUpdate || bufferResized || ForceDataUpdate)
         {
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
             _instanceBuffer.SetData(0, _modelMatrixes.AsSpan().Slice(0, Transforms.Count).AsBytes());
 #pragma warning restore CS8602 // Dereference of a possibly null reference.
         }
+
+        ForceDataUpdate = false;
     }
 
-    void UpdateBuffersSize()
+    bool UpdateBuffersSize()
     {
         // resize device instance buffer
-        var instanceBufferSizeNeeded = Transforms.Count * sizeof(Matrix4x4) + sizeof(Matrix4x4);
+        var instanceBufferSizeNeeded = Transforms.Count * sizeof(Matrix4x4);
         if (instanceBufferSizeNeeded > currentInstanceBufferSize)
         {
             currentInstanceBufferSize = Math.Max(currentInstanceBufferSize * 2, instanceBufferSizeNeeded);
@@ -135,6 +131,8 @@ internal unsafe class RendererDeviceInstanced3DObject(
             _instanceBuffer = deviceApi.CreateInstanceBuffer(currentInstanceBufferSize, BufferHint.Dynamic);
 
             _modelMatrixes = new Matrix4x4[currentInstanceBufferSize / sizeof(Matrix4x4)];
+
+            return true;
         }
         else if (_instanceBuffer is null)
         {
@@ -143,12 +141,10 @@ internal unsafe class RendererDeviceInstanced3DObject(
 
             _modelMatrixes = new Matrix4x4[currentInstanceBufferSize / sizeof(Matrix4x4)];
 
-            // mat4 model matrix
-            _instanceBufferLayout.PushFloat(4, false);
-            _instanceBufferLayout.PushFloat(4, false);
-            _instanceBufferLayout.PushFloat(4, false);
-            _instanceBufferLayout.PushFloat(4, false);
+            return true;
         }
+
+        return false;
     }
 
     public void SetShaderMaterialUniforms(

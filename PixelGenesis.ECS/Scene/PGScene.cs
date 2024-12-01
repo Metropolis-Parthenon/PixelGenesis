@@ -5,7 +5,10 @@ using PixelGenesis.ECS.AssetManagement;
 using PixelGenesis.ECS.Components;
 using PixelGenesis.ECS.Serialization;
 using System.Collections.Immutable;
+using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using System.Runtime.InteropServices;
+using System.Xml.Linq;
 using YamlDotNet.Serialization;
 
 namespace PixelGenesis.ECS.Scene;
@@ -20,6 +23,16 @@ public sealed class PGScene : ISerializableObject, IAsset
     List<Entity> _entities = new List<Entity>();
 
     Dictionary<Type, List<Component>> Components = new Dictionary<Type, List<Component>>();
+
+    Subject<ComponentAddedEvent> _componentAdded = new Subject<ComponentAddedEvent>();
+    Subject<ComponentRemovedEvent> _componentRemoved = new Subject<ComponentRemovedEvent>();
+    Subject<EntityAddedEvent> _entityAdded = new Subject<EntityAddedEvent>();
+    Subject<EntityRemovedEvent> _entityRemoved = new Subject<EntityRemovedEvent>();
+
+    public IObservable<ComponentAddedEvent> ComponentAdded => _componentAdded.AsObservable();
+    public IObservable<ComponentRemovedEvent> ComponentRemoved => _componentRemoved.AsObservable();
+    public IObservable<EntityAddedEvent> EntityAdded => _entityAdded.AsObservable();
+    public IObservable<EntityRemovedEvent> EntityRemoved => _entityRemoved.AsObservable();
 
     internal ComponentsFactory ComponentFactory { get; }
     public IServiceProvider Provider;
@@ -64,11 +77,9 @@ public sealed class PGScene : ISerializableObject, IAsset
 
     public Entity Clone(Entity entity, Entity? parent = default)
     {
-        var newEntity = EntityPool.Get();
-        _entities.Add(newEntity);
-        newEntity.Id = GetNextId();
-        newEntity.Name = StringPool.Shared.GetOrAdd($"{entity.Name}-{newEntity.Id}");
-        newEntity.Tags = entity.Tags;
+        parent = parent ?? entity.Parent;
+
+        var newEntity = Create(StringPool.Shared.GetOrAdd(entity.Name), entity.Tags, parent);
 
         if (parent is null)
         {
@@ -78,7 +89,6 @@ public sealed class PGScene : ISerializableObject, IAsset
         {
             SetEntityParent(newEntity, parent);
         }
-
 
         foreach (var child in entity.Children)
         {
@@ -92,11 +102,7 @@ public sealed class PGScene : ISerializableObject, IAsset
 
     public Entity Clone(Entity entity, ReadOnlySpan<char> name)
     {
-        var newEntity = EntityPool.Get();
-        _entities.Add(newEntity);
-        newEntity.Name = StringPool.Shared.GetOrAdd(name);
-        newEntity.Id = GetNextId();
-        newEntity.Tags = entity.Tags;
+        var newEntity = Create(StringPool.Shared.GetOrAdd(name), entity.Tags, entity.Parent);
 
         CloneEntityComponents(entity, newEntity);
 
@@ -105,11 +111,7 @@ public sealed class PGScene : ISerializableObject, IAsset
 
     public Entity Clone(Entity entity, string name)
     {
-        var newEntity = EntityPool.Get();
-        _entities.Add(newEntity);
-        newEntity.Name = StringPool.Shared.GetOrAdd(name);
-        newEntity.Id = GetNextId();
-        newEntity.Tags = entity.Tags;
+        var newEntity = Create(StringPool.Shared.GetOrAdd(name), entity.Tags, entity.Parent);
 
         CloneEntityComponents(entity, newEntity);
 
@@ -129,18 +131,26 @@ public sealed class PGScene : ISerializableObject, IAsset
         }
     }
 
-    public Entity Create(string name)
+    public Entity Create(string name, Entity? parent = default)
     {
-        return Create(name, []);
+        return Create(name, [], parent);
     }
 
-    public Entity Create(string name, ImmutableArray<string> tags)
+    public Entity Create(string name, ImmutableArray<string> tags, Entity? parent = default)
     {
         var newEntity = EntityPool.Get();
         _entities.Add(newEntity);
         newEntity.Name = name;
         newEntity.Id = GetNextId();
         newEntity.Tags = tags;
+
+        if (parent is null)
+        {
+            SetEntityParent(newEntity, parent);
+        }
+
+        _entityAdded.OnNext(new EntityAddedEvent(newEntity));
+
         return newEntity;
     }
 
@@ -172,7 +182,17 @@ public sealed class PGScene : ISerializableObject, IAsset
         }
 
         _entities.Remove(entity);
+
+        foreach(var component in entity.Components)
+        {
+            RemoveComponentFromEntity(component);
+        }
+
+        var id = entity.Id;
+
         EntityPool.Return(entity);
+
+        _entityRemoved.OnNext(new EntityRemovedEvent(id));
     }
 
     internal void AddComponentToEntity(Component component)
@@ -188,6 +208,8 @@ public sealed class PGScene : ISerializableObject, IAsset
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
         components.Add(component);
 #pragma warning restore CS8602 // Dereference of a possibly null reference.
+
+        _componentAdded.OnNext(new ComponentAddedEvent(component));
     }
 
     internal void RemoveComponentFromEntity(Component component)
@@ -197,6 +219,10 @@ public sealed class PGScene : ISerializableObject, IAsset
         var entities = Components[type];
 
         var index = entities.IndexOf(component);
+
+        entities.RemoveAt(index);
+
+        _componentRemoved.OnNext(new ComponentRemovedEvent(component));
     }
 
     public IEnumerable<KeyValuePair<string, object>> GetSerializableValues()
@@ -303,4 +329,24 @@ internal sealed class EntityPoolPolicy(PGScene entityManager) : IPooledObjectPol
         obj.Id = 0;
         return true;
     }
+}
+
+public struct ComponentAddedEvent(Component component)
+{
+    public Component Component => component;
+}
+
+public struct ComponentRemovedEvent(Component component)
+{
+    public Component Component => component;
+}
+
+public struct EntityAddedEvent(Entity entity)
+{
+    public Entity Entity => entity;
+}
+
+public struct EntityRemovedEvent(int id)
+{
+    public int Id => id;
 }
