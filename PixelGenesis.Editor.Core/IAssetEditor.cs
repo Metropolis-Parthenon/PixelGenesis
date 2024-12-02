@@ -1,14 +1,17 @@
-﻿namespace PixelGenesis.Editor.Core;
+﻿using PixelGenesis.ECS.AssetManagement;
+
+namespace PixelGenesis.Editor.Core;
 
 public interface IAssetEditor
 {
-    public string Name { get; }
-    public string FileExtension { get; }
+    public bool IsDirty {  get; }
+    public void OnGui();
+    public void BeforeGui();
+    public void OnSave();
+    public void OnClose();
+}
 
-    public void OnOpenFile(string filePath);
-    public void OnSaveFile(string filePath);
-    public void OnCloseFile(string filePath);
-    public bool IsFileDirty(string filePath);
-
-    public void OnGui(string filePath);
+public interface IAssetEditorFactory
+{
+    IAssetEditor CreateAssetEditor(IAsset asset);
 }

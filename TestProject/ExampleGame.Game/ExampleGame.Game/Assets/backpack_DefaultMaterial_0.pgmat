@@ -1,0 +1,14 @@
+shaderReference: c12f8e84-1077-404c-873f-af930807f036
+textureReferences: {}
+blocks:
+  material:
+    ambient: &o0
+      x: 0
+      y: 0
+      z: 0
+    diffuse:
+      x: 0.6
+      y: 0.6
+      z: 0.6
+    specular: *o0
+    shininess: 0

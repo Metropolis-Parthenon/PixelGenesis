@@ -6,6 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <UserSecretsId>bbd7cd7a-e36e-4725-b73c-588b173f9a12</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -29,6 +30,7 @@
     <ProjectReference Include="..\PixelGenesis.3D.Common\PixelGenesis.3D.Common.csproj" />
     <ProjectReference Include="..\PixelGenesis.3D.Renderer.Abstractions\PixelGenesis.3D.Renderer.DeviceApi.Abstractions.csproj" />
     <ProjectReference Include="..\PixelGenesis.3D.Renderer.OpenGL\PixelGenesis.3D.Renderer.DeviceApi.OpenGL.csproj" />
+    <ProjectReference Include="..\PixelGenesis.3D.Renderer\PixelGenesis.3D.Renderer.csproj" />
     <ProjectReference Include="..\PixelGenesis.Editor.Core\PixelGenesis.Editor.Core.csproj" />
   </ItemGroup>
 

@@ -19,4 +19,13 @@ internal class EditorWindowsGUIRenderer(IEnumerable<IEditorWindow> editorWindows
             ImGui.End();
         }
     }
+
+    public void BeforeGui()
+    {
+        foreach (var editorWindow in editorWindows)
+        {         
+            editorWindow.OnBeforeGui();         
+        }
+    }
+
 }

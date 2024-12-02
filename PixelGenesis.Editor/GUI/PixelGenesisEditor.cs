@@ -31,6 +31,11 @@ internal sealed class PixelGenesisEditor(
         windowsGUIRenderer.OnGui();
     }
 
+    public void BeforeGui()
+    {
+        windowsGUIRenderer.BeforeGui();
+    }
+
     public static void SetupImGuiStyle()
     {
         // Fork of Moonlight style from ImThemes

@@ -1,7 +1,11 @@
 ﻿using ImGuiNET;
 using PixelGenesis.Editor.Core;
 using PixelGenesis.Editor.Services;
-
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace PixelGenesis.Editor.BuiltIn.EditorWindows;
 
@@ -9,9 +13,7 @@ internal class AssetExplorerEditorWindow : IEditorWindow
 {
     public const string AssetFolderName = "Assets";
     public string Name => "Asset Explorer";
-    
-    const int PathMaxLength = 64;
-    
+
     SolutionService projectService;
     ICommandDispatcher dispatcher;
 
@@ -27,7 +29,7 @@ internal class AssetExplorerEditorWindow : IEditorWindow
 
     void OnSolutionOpened(SolutionOpened e)
     {
-        if(!projectService.HasEditorProject)
+        if (!projectService.HasEditorProject)
         {
             entryAssetBrowser = default;
             editorAssetBrowser = default;
@@ -37,7 +39,7 @@ internal class AssetExplorerEditorWindow : IEditorWindow
         var assetPath = Path.Combine(Path.GetDirectoryName(projectService.EntryProject.FilePath), AssetFolderName);
         entryAssetBrowser = new AssetBrowser(assetPath, OnEntryFileSelected, OnEntryFileOpen);
 
-        if(projectService.HasEditorProject)
+        if (projectService.HasEditorProject)
         {
             assetPath = Path.Combine(Path.GetDirectoryName(projectService.EditorProject.FilePath), AssetFolderName);
             editorAssetBrowser = new AssetBrowser(assetPath, OnEditorFileSelected, OnEditorFileOpen);
@@ -47,33 +49,33 @@ internal class AssetExplorerEditorWindow : IEditorWindow
 
     private void OnEditorFileOpen(string obj)
     {
-        dispatcher.Dispatch(new AssetFileOpen(ProjectType.Editor, obj));        
+        dispatcher.Dispatch(new AssetFileOpen(ProjectType.Editor, obj));
     }
 
     private void OnEditorFileSelected(string obj)
     {
-        dispatcher.Dispatch(new AssetFileSelected(ProjectType.Editor, obj));        
+        dispatcher.Dispatch(new AssetFileSelected(ProjectType.Editor, obj));
     }
 
     private void OnEntryFileOpen(string obj)
     {
-        dispatcher.Dispatch(new AssetFileOpen(ProjectType.Entry, obj));        
+        dispatcher.Dispatch(new AssetFileOpen(ProjectType.Entry, obj));
     }
 
     private void OnEntryFileSelected(string obj)
     {
-        dispatcher.Dispatch(new AssetFileSelected(ProjectType.Entry, obj));        
+        dispatcher.Dispatch(new AssetFileSelected(ProjectType.Entry, obj));
     }
 
     public void OnGui()
     {
-        if(entryAssetBrowser is null)
+        if (entryAssetBrowser is null)
         {
             ImGui.Text("No project open");
             return;
         }
 
-        if(editorAssetBrowser is not null)
+        if (editorAssetBrowser is not null)
         {
             ImGui.BeginTabBar("Asset Explorer");
 
@@ -87,7 +89,7 @@ internal class AssetExplorerEditorWindow : IEditorWindow
             {
                 editorAssetBrowser.OnGui();
                 ImGui.EndTabItem();
-            }            
+            }
 
             ImGui.EndTabBar();
             return;
@@ -99,7 +101,7 @@ internal class AssetExplorerEditorWindow : IEditorWindow
 
 internal class AssetBrowser(
     string rootAbsolutePath,
-    Action<string> onFileSelected, 
+    Action<string> onFileSelected,
     Action<string> onFileOpen)
 {
     string relativePath = "";
@@ -139,12 +141,12 @@ internal class AssetBrowser(
         foreach (var directory in direcories)
         {
             var directoryName = Path.GetFileName(directory);
-            if(ImGui.Selectable(directoryName, directory == selectedFile))
+            if (ImGui.Selectable(directoryName, directory == selectedFile))
             {
                 selectedFile = directory;
                 onFileSelected(directory);
             }
-            if(ImGui.IsItemHovered() && ImGui.IsMouseDoubleClicked(ImGuiMouseButton.Left))
+            if (ImGui.IsItemHovered() && ImGui.IsMouseDoubleClicked(ImGuiMouseButton.Left))
             {
                 relativePath = Path.Combine(relativePath, directoryName);
             }

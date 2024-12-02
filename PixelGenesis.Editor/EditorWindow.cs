@@ -12,7 +12,7 @@ namespace PixelGenesis.Editor;
 
 public record EditorWindowResized(int Width, int Height);
 
-internal class EditorWindow : GameWindow
+internal class EditorWindow : GameWindow, IPGWindow
 {
     PixelGenesisEditor EditorGUI;
 
@@ -30,7 +30,11 @@ internal class EditorWindow : GameWindow
     }
 
     ImGuiPGController _controller;
-    
+
+    public float Width => Size.X;
+
+    public float Height => Size.Y;
+
     protected override void OnLoad()
     {
         base.OnLoad();
@@ -52,11 +56,13 @@ internal class EditorWindow : GameWindow
     {
         base.OnRenderFrame(args);
 
+        EditorGUI.BeforeGui();
+
         _controller.Update(this, (float)args.Time);
 
         GL.ClearColor(new Color4(0, 32, 48, 255));
         GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
-
+        
         EditorGUI.OnGui();
 
         ImGui.End();

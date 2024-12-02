@@ -1,0 +1,1998 @@
+__type: PixelGenesis.ECS.Scene.PGScene, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+Entities:
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: backpack.obj
+  Tags: []
+  IsDisabled: false
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: Cube.028__0
+  Tags: []
+  IsDisabled: false
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: Plane.008__0
+  Tags: []
+  IsDisabled: false
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: Cube.029__0
+  Tags: []
+  IsDisabled: false
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: Plane.009__0
+  Tags: []
+  IsDisabled: false
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: Plane.010__0
+  Tags: []
+  IsDisabled: false
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: Plane.011__0
+  Tags: []
+  IsDisabled: false
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: Cylinder.029__0
+  Tags: []
+  IsDisabled: false
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: Cube.030__0
+  Tags: []
+  IsDisabled: false
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: Plane.012__0
+  Tags: []
+  IsDisabled: false
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: Plane.013__0
+  Tags: []
+  IsDisabled: false
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: Cylinder.030__0
+  Tags: []
+  IsDisabled: false
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: Plane.014__0
+  Tags: []
+  IsDisabled: false
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: Cube.031__0
+  Tags: []
+  IsDisabled: false
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: Cylinder.031__0
+  Tags: []
+  IsDisabled: false
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: Cube.032__0
+  Tags: []
+  IsDisabled: false
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: Cylinder.032__0
+  Tags: []
+  IsDisabled: false
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: Cube.033__0
+  Tags: []
+  IsDisabled: false
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: Cube.034__0
+  Tags: []
+  IsDisabled: false
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: Cube.035__0
+  Tags: []
+  IsDisabled: false
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: Cube.036__0
+  Tags: []
+  IsDisabled: false
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: Cylinder.033__0
+  Tags: []
+  IsDisabled: false
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: Cube.037__0
+  Tags: []
+  IsDisabled: false
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: Cylinder.034__0
+  Tags: []
+  IsDisabled: false
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: Cylinder.035__0
+  Tags: []
+  IsDisabled: false
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: Cube.038__0
+  Tags: []
+  IsDisabled: false
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: Cube.039__0
+  Tags: []
+  IsDisabled: false
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: Cylinder.036__0
+  Tags: []
+  IsDisabled: false
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: Cylinder.037__0
+  Tags: []
+  IsDisabled: false
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: Cylinder.038__0
+  Tags: []
+  IsDisabled: false
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: Cylinder.039__0
+  Tags: []
+  IsDisabled: false
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: Cylinder.040__0
+  Tags: []
+  IsDisabled: false
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: Cylinder.041__0
+  Tags: []
+  IsDisabled: false
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: Cylinder.042__0
+  Tags: []
+  IsDisabled: false
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: Cylinder.043__0
+  Tags: []
+  IsDisabled: false
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: Cylinder.044__0
+  Tags: []
+  IsDisabled: false
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: Cylinder.045__0
+  Tags: []
+  IsDisabled: false
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: Cylinder.046__0
+  Tags: []
+  IsDisabled: false
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: Cylinder.047__0
+  Tags: []
+  IsDisabled: false
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: Cylinder.048__0
+  Tags: []
+  IsDisabled: false
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: Cylinder.049__0
+  Tags: []
+  IsDisabled: false
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: Cube.040__0
+  Tags: []
+  IsDisabled: false
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: Cube.041__0
+  Tags: []
+  IsDisabled: false
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: Cube.042__0
+  Tags: []
+  IsDisabled: false
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: Cube.043__0
+  Tags: []
+  IsDisabled: false
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: Cube.044__0
+  Tags: []
+  IsDisabled: false
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: Cube.045__0
+  Tags: []
+  IsDisabled: false
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: Plane.015__0
+  Tags: []
+  IsDisabled: false
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: Cube.046__0
+  Tags: []
+  IsDisabled: false
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: Cube.047__0
+  Tags: []
+  IsDisabled: false
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: Cylinder.050__0
+  Tags: []
+  IsDisabled: false
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: Cube.048__0
+  Tags: []
+  IsDisabled: false
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: Cylinder.051__0
+  Tags: []
+  IsDisabled: false
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: Cylinder.052__0
+  Tags: []
+  IsDisabled: false
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: Cylinder.053__0
+  Tags: []
+  IsDisabled: false
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: Cylinder.054__0
+  Tags: []
+  IsDisabled: false
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: BezierCurve.003__0
+  Tags: []
+  IsDisabled: false
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: Cube.049__0
+  Tags: []
+  IsDisabled: false
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: Cylinder.055__0
+  Tags: []
+  IsDisabled: false
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: Cylinder.056__0
+  Tags: []
+  IsDisabled: false
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: Cube.050__0
+  Tags: []
+  IsDisabled: false
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: Sphere.014__0
+  Tags: []
+  IsDisabled: false
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: Sphere.015__0
+  Tags: []
+  IsDisabled: false
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: Sphere.016__0
+  Tags: []
+  IsDisabled: false
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: Sphere.017__0
+  Tags: []
+  IsDisabled: false
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: Cube.051__0
+  Tags: []
+  IsDisabled: false
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: Sphere.018__0
+  Tags: []
+  IsDisabled: false
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: Sphere.019__0
+  Tags: []
+  IsDisabled: false
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: Sphere.020__0
+  Tags: []
+  IsDisabled: false
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: Sphere.021__0
+  Tags: []
+  IsDisabled: false
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: Cube.052__0
+  Tags: []
+  IsDisabled: false
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: Cube.053__0
+  Tags: []
+  IsDisabled: false
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: Cube.054__0
+  Tags: []
+  IsDisabled: false
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: Sphere.022__0
+  Tags: []
+  IsDisabled: false
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: Sphere.023__0
+  Tags: []
+  IsDisabled: false
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: Sphere.024__0
+  Tags: []
+  IsDisabled: false
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: Sphere.025__0
+  Tags: []
+  IsDisabled: false
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: Sphere.026__0
+  Tags: []
+  IsDisabled: false
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: Sphere.027__0
+  Tags: []
+  IsDisabled: false
+- __type: PixelGenesis.ECS.Entity, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  Name: Cube.055__0
+  Tags: []
+  IsDisabled: false
+ParentMap:
+- Item1: 1
+  Item2: 0
+- Item1: 2
+  Item2: 0
+- Item1: 3
+  Item2: 0
+- Item1: 4
+  Item2: 0
+- Item1: 5
+  Item2: 0
+- Item1: 6
+  Item2: 0
+- Item1: 7
+  Item2: 0
+- Item1: 8
+  Item2: 0
+- Item1: 9
+  Item2: 0
+- Item1: 10
+  Item2: 0
+- Item1: 11
+  Item2: 0
+- Item1: 12
+  Item2: 0
+- Item1: 13
+  Item2: 0
+- Item1: 14
+  Item2: 0
+- Item1: 15
+  Item2: 0
+- Item1: 16
+  Item2: 0
+- Item1: 17
+  Item2: 0
+- Item1: 18
+  Item2: 0
+- Item1: 19
+  Item2: 0
+- Item1: 20
+  Item2: 0
+- Item1: 21
+  Item2: 0
+- Item1: 22
+  Item2: 0
+- Item1: 23
+  Item2: 0
+- Item1: 24
+  Item2: 0
+- Item1: 25
+  Item2: 0
+- Item1: 26
+  Item2: 0
+- Item1: 27
+  Item2: 0
+- Item1: 28
+  Item2: 0
+- Item1: 29
+  Item2: 0
+- Item1: 30
+  Item2: 0
+- Item1: 31
+  Item2: 0
+- Item1: 32
+  Item2: 0
+- Item1: 33
+  Item2: 0
+- Item1: 34
+  Item2: 0
+- Item1: 35
+  Item2: 0
+- Item1: 36
+  Item2: 0
+- Item1: 37
+  Item2: 0
+- Item1: 38
+  Item2: 0
+- Item1: 39
+  Item2: 0
+- Item1: 40
+  Item2: 0
+- Item1: 41
+  Item2: 0
+- Item1: 42
+  Item2: 0
+- Item1: 43
+  Item2: 0
+- Item1: 44
+  Item2: 0
+- Item1: 45
+  Item2: 0
+- Item1: 46
+  Item2: 0
+- Item1: 47
+  Item2: 0
+- Item1: 48
+  Item2: 0
+- Item1: 49
+  Item2: 0
+- Item1: 50
+  Item2: 0
+- Item1: 51
+  Item2: 0
+- Item1: 52
+  Item2: 0
+- Item1: 53
+  Item2: 0
+- Item1: 54
+  Item2: 0
+- Item1: 55
+  Item2: 0
+- Item1: 56
+  Item2: 0
+- Item1: 57
+  Item2: 0
+- Item1: 58
+  Item2: 0
+- Item1: 59
+  Item2: 0
+- Item1: 60
+  Item2: 0
+- Item1: 61
+  Item2: 0
+- Item1: 62
+  Item2: 0
+- Item1: 63
+  Item2: 0
+- Item1: 64
+  Item2: 0
+- Item1: 65
+  Item2: 0
+- Item1: 66
+  Item2: 0
+- Item1: 67
+  Item2: 0
+- Item1: 68
+  Item2: 0
+- Item1: 69
+  Item2: 0
+- Item1: 70
+  Item2: 0
+- Item1: 71
+  Item2: 0
+- Item1: 72
+  Item2: 0
+- Item1: 73
+  Item2: 0
+- Item1: 74
+  Item2: 0
+- Item1: 75
+  Item2: 0
+- Item1: 76
+  Item2: 0
+- Item1: 77
+  Item2: 0
+- Item1: 78
+  Item2: 0
+- Item1: 79
+  Item2: 0
+Components:
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 0
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 1
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 2
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 3
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 4
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 5
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 6
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 7
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 8
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 9
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 10
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 11
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 12
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 13
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 14
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 15
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 16
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 17
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 18
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 19
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 20
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 21
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 22
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 23
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 24
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 25
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 26
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 27
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 28
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 29
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 30
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 31
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 32
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 33
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 34
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 35
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 36
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 37
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 38
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 39
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 40
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 41
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 42
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 43
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 44
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 45
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 46
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 47
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 48
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 49
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 50
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 51
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 52
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 53
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 54
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 55
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 56
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 57
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 58
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 59
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 60
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 61
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 62
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 63
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 64
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 65
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 66
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 67
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 68
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 69
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 70
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 71
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 72
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 73
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 74
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 75
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 76
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 77
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 78
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis.ECS.Transform3DComponent, PixelGenesis.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 79
+  Position:
+    X: 0
+    Y: 0
+    Z: 0
+  Rotation:
+    X: 0
+    Y: 0
+    Z: 0
+    W: 1
+  Scale:
+    X: 1
+    Y: 1
+    Z: 1
+- __type: PixelGenesis._3D.Common.Components.MeshRendererComponent, PixelGenesis.3D.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 1
+  Mesh: !PGAsset f377c37a-16a7-4d57-be5c-d2e76802594e
+  Material: !PGAsset 813ad932-539e-4e01-87c4-edc94616be13
+- __type: PixelGenesis._3D.Common.Components.MeshRendererComponent, PixelGenesis.3D.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 2
+  Mesh: !PGAsset d0f27083-36de-4ddd-9130-a1174285f397
+  Material: !PGAsset 813ad932-539e-4e01-87c4-edc94616be13
+- __type: PixelGenesis._3D.Common.Components.MeshRendererComponent, PixelGenesis.3D.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 3
+  Mesh: !PGAsset 1c9cabbf-a5c7-484a-8a4d-cdb51e072255
+  Material: !PGAsset 813ad932-539e-4e01-87c4-edc94616be13
+- __type: PixelGenesis._3D.Common.Components.MeshRendererComponent, PixelGenesis.3D.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 4
+  Mesh: !PGAsset bf9ea58e-2613-4122-8f67-6c3cba4b7836
+  Material: !PGAsset 813ad932-539e-4e01-87c4-edc94616be13
+- __type: PixelGenesis._3D.Common.Components.MeshRendererComponent, PixelGenesis.3D.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 5
+  Mesh: !PGAsset c0983608-2023-422a-b170-da3df1e1e19d
+  Material: !PGAsset 813ad932-539e-4e01-87c4-edc94616be13
+- __type: PixelGenesis._3D.Common.Components.MeshRendererComponent, PixelGenesis.3D.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 6
+  Mesh: !PGAsset 5226ff14-d0a6-4b3f-b5d7-62009ac58bdc
+  Material: !PGAsset 813ad932-539e-4e01-87c4-edc94616be13
+- __type: PixelGenesis._3D.Common.Components.MeshRendererComponent, PixelGenesis.3D.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 7
+  Mesh: !PGAsset bfadd93f-2eca-4cfd-92e3-2dbab91f4dd6
+  Material: !PGAsset 813ad932-539e-4e01-87c4-edc94616be13
+- __type: PixelGenesis._3D.Common.Components.MeshRendererComponent, PixelGenesis.3D.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 8
+  Mesh: !PGAsset 22dcab1f-6fe2-4c8b-b61f-8dfe77871af8
+  Material: !PGAsset 813ad932-539e-4e01-87c4-edc94616be13
+- __type: PixelGenesis._3D.Common.Components.MeshRendererComponent, PixelGenesis.3D.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 9
+  Mesh: !PGAsset b0463d09-7263-42e2-9e8c-6f3d454528ec
+  Material: !PGAsset 813ad932-539e-4e01-87c4-edc94616be13
+- __type: PixelGenesis._3D.Common.Components.MeshRendererComponent, PixelGenesis.3D.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 10
+  Mesh: !PGAsset 4a27b2a0-63a0-40b2-b26c-dc1e28766cdb
+  Material: !PGAsset 813ad932-539e-4e01-87c4-edc94616be13
+- __type: PixelGenesis._3D.Common.Components.MeshRendererComponent, PixelGenesis.3D.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 11
+  Mesh: !PGAsset 3d866296-36d5-441e-839e-745b52ddbd0d
+  Material: !PGAsset 813ad932-539e-4e01-87c4-edc94616be13
+- __type: PixelGenesis._3D.Common.Components.MeshRendererComponent, PixelGenesis.3D.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 12
+  Mesh: !PGAsset 6eda3334-b2e8-4bc8-ad13-185d4ee685a5
+  Material: !PGAsset 813ad932-539e-4e01-87c4-edc94616be13
+- __type: PixelGenesis._3D.Common.Components.MeshRendererComponent, PixelGenesis.3D.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 13
+  Mesh: !PGAsset 5b2dbf51-d921-499c-9576-8e4faf069ba8
+  Material: !PGAsset 813ad932-539e-4e01-87c4-edc94616be13
+- __type: PixelGenesis._3D.Common.Components.MeshRendererComponent, PixelGenesis.3D.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 14
+  Mesh: !PGAsset d193e98f-fc99-45b9-a4a1-f6f062288a2f
+  Material: !PGAsset 813ad932-539e-4e01-87c4-edc94616be13
+- __type: PixelGenesis._3D.Common.Components.MeshRendererComponent, PixelGenesis.3D.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 15
+  Mesh: !PGAsset c59016cd-b4ae-4b50-afed-7942d17b1c59
+  Material: !PGAsset 813ad932-539e-4e01-87c4-edc94616be13
+- __type: PixelGenesis._3D.Common.Components.MeshRendererComponent, PixelGenesis.3D.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 16
+  Mesh: !PGAsset 6b0bf944-bf15-4df3-a762-d6e597448a79
+  Material: !PGAsset 813ad932-539e-4e01-87c4-edc94616be13
+- __type: PixelGenesis._3D.Common.Components.MeshRendererComponent, PixelGenesis.3D.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 17
+  Mesh: !PGAsset 2f862355-6dd2-470d-938a-431d42ae94f3
+  Material: !PGAsset 813ad932-539e-4e01-87c4-edc94616be13
+- __type: PixelGenesis._3D.Common.Components.MeshRendererComponent, PixelGenesis.3D.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 18
+  Mesh: !PGAsset a123f884-2052-4d2b-b6b5-f65deecc86b0
+  Material: !PGAsset 813ad932-539e-4e01-87c4-edc94616be13
+- __type: PixelGenesis._3D.Common.Components.MeshRendererComponent, PixelGenesis.3D.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 19
+  Mesh: !PGAsset d569d5c3-29da-4d02-94c0-02bcb3edcbac
+  Material: !PGAsset 813ad932-539e-4e01-87c4-edc94616be13
+- __type: PixelGenesis._3D.Common.Components.MeshRendererComponent, PixelGenesis.3D.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 20
+  Mesh: !PGAsset f2498368-f077-449e-94d7-c83bbc52175c
+  Material: !PGAsset 813ad932-539e-4e01-87c4-edc94616be13
+- __type: PixelGenesis._3D.Common.Components.MeshRendererComponent, PixelGenesis.3D.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 21
+  Mesh: !PGAsset f4f666e2-4a40-40a2-b989-d60458a8ca93
+  Material: !PGAsset 813ad932-539e-4e01-87c4-edc94616be13
+- __type: PixelGenesis._3D.Common.Components.MeshRendererComponent, PixelGenesis.3D.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 22
+  Mesh: !PGAsset 8c577841-2a3b-40e8-a1cb-4e3000935598
+  Material: !PGAsset 813ad932-539e-4e01-87c4-edc94616be13
+- __type: PixelGenesis._3D.Common.Components.MeshRendererComponent, PixelGenesis.3D.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 23
+  Mesh: !PGAsset 3bd708d4-cc18-4fdd-bdeb-4894f0d5a464
+  Material: !PGAsset 813ad932-539e-4e01-87c4-edc94616be13
+- __type: PixelGenesis._3D.Common.Components.MeshRendererComponent, PixelGenesis.3D.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 24
+  Mesh: !PGAsset ab8f30fc-7649-4d69-ac44-437fca9b443f
+  Material: !PGAsset 813ad932-539e-4e01-87c4-edc94616be13
+- __type: PixelGenesis._3D.Common.Components.MeshRendererComponent, PixelGenesis.3D.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 25
+  Mesh: !PGAsset da4bfc0f-1a3e-449f-8752-4614aad861ce
+  Material: !PGAsset 813ad932-539e-4e01-87c4-edc94616be13
+- __type: PixelGenesis._3D.Common.Components.MeshRendererComponent, PixelGenesis.3D.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 26
+  Mesh: !PGAsset 75bc748e-1e73-4cf2-ab59-b5d3a897fc4b
+  Material: !PGAsset 813ad932-539e-4e01-87c4-edc94616be13
+- __type: PixelGenesis._3D.Common.Components.MeshRendererComponent, PixelGenesis.3D.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 27
+  Mesh: !PGAsset ab61c718-65e5-4ab2-acf9-4598305241b9
+  Material: !PGAsset 813ad932-539e-4e01-87c4-edc94616be13
+- __type: PixelGenesis._3D.Common.Components.MeshRendererComponent, PixelGenesis.3D.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 28
+  Mesh: !PGAsset 05810da6-193e-4bf2-b744-0e0d19a27c43
+  Material: !PGAsset 813ad932-539e-4e01-87c4-edc94616be13
+- __type: PixelGenesis._3D.Common.Components.MeshRendererComponent, PixelGenesis.3D.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 29
+  Mesh: !PGAsset 94c8a0df-f474-4f92-b6cc-425c8b1c7c8c
+  Material: !PGAsset 813ad932-539e-4e01-87c4-edc94616be13
+- __type: PixelGenesis._3D.Common.Components.MeshRendererComponent, PixelGenesis.3D.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 30
+  Mesh: !PGAsset 1c7c7d5c-a790-4819-96d5-ea0cd7d82d7b
+  Material: !PGAsset 813ad932-539e-4e01-87c4-edc94616be13
+- __type: PixelGenesis._3D.Common.Components.MeshRendererComponent, PixelGenesis.3D.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 31
+  Mesh: !PGAsset b6ba189a-3da8-44d2-93a4-304bc95a3b05
+  Material: !PGAsset 813ad932-539e-4e01-87c4-edc94616be13
+- __type: PixelGenesis._3D.Common.Components.MeshRendererComponent, PixelGenesis.3D.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 32
+  Mesh: !PGAsset 0c807ea7-b0dc-4a85-af6c-09de7bbd470c
+  Material: !PGAsset 813ad932-539e-4e01-87c4-edc94616be13
+- __type: PixelGenesis._3D.Common.Components.MeshRendererComponent, PixelGenesis.3D.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 33
+  Mesh: !PGAsset b608eb5b-2145-4b5b-afdd-936dab96115f
+  Material: !PGAsset 813ad932-539e-4e01-87c4-edc94616be13
+- __type: PixelGenesis._3D.Common.Components.MeshRendererComponent, PixelGenesis.3D.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 34
+  Mesh: !PGAsset d530708c-2a26-481c-8f91-17e50cfd6dae
+  Material: !PGAsset 813ad932-539e-4e01-87c4-edc94616be13
+- __type: PixelGenesis._3D.Common.Components.MeshRendererComponent, PixelGenesis.3D.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 35
+  Mesh: !PGAsset 1b1cc33a-8e10-4780-8344-dc15e4be3a02
+  Material: !PGAsset 813ad932-539e-4e01-87c4-edc94616be13
+- __type: PixelGenesis._3D.Common.Components.MeshRendererComponent, PixelGenesis.3D.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 36
+  Mesh: !PGAsset 6ae0d3cb-b62f-489b-81ff-00b114c1f9c3
+  Material: !PGAsset 813ad932-539e-4e01-87c4-edc94616be13
+- __type: PixelGenesis._3D.Common.Components.MeshRendererComponent, PixelGenesis.3D.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 37
+  Mesh: !PGAsset e35a8827-895f-4737-baac-9dbc8819566a
+  Material: !PGAsset 813ad932-539e-4e01-87c4-edc94616be13
+- __type: PixelGenesis._3D.Common.Components.MeshRendererComponent, PixelGenesis.3D.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 38
+  Mesh: !PGAsset 5bc9fa1e-e7fb-40d3-b99b-f0d361373131
+  Material: !PGAsset 813ad932-539e-4e01-87c4-edc94616be13
+- __type: PixelGenesis._3D.Common.Components.MeshRendererComponent, PixelGenesis.3D.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 39
+  Mesh: !PGAsset 2e8866cc-e7dc-4f26-94fc-31277496254f
+  Material: !PGAsset 813ad932-539e-4e01-87c4-edc94616be13
+- __type: PixelGenesis._3D.Common.Components.MeshRendererComponent, PixelGenesis.3D.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 40
+  Mesh: !PGAsset dde872e7-bf18-4bd3-895a-4227fa449494
+  Material: !PGAsset 813ad932-539e-4e01-87c4-edc94616be13
+- __type: PixelGenesis._3D.Common.Components.MeshRendererComponent, PixelGenesis.3D.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 41
+  Mesh: !PGAsset f52ec901-eeff-496c-8907-d7ff92f8b66c
+  Material: !PGAsset 813ad932-539e-4e01-87c4-edc94616be13
+- __type: PixelGenesis._3D.Common.Components.MeshRendererComponent, PixelGenesis.3D.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 42
+  Mesh: !PGAsset 4e7346f8-cb87-4455-8d7a-cfc007d4d77f
+  Material: !PGAsset 813ad932-539e-4e01-87c4-edc94616be13
+- __type: PixelGenesis._3D.Common.Components.MeshRendererComponent, PixelGenesis.3D.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 43
+  Mesh: !PGAsset 2dc4e5bd-c958-4681-8a27-a8ed20eadf3b
+  Material: !PGAsset 813ad932-539e-4e01-87c4-edc94616be13
+- __type: PixelGenesis._3D.Common.Components.MeshRendererComponent, PixelGenesis.3D.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 44
+  Mesh: !PGAsset e849246a-d1ae-4fe5-a1b7-4037ee602d6a
+  Material: !PGAsset 813ad932-539e-4e01-87c4-edc94616be13
+- __type: PixelGenesis._3D.Common.Components.MeshRendererComponent, PixelGenesis.3D.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 45
+  Mesh: !PGAsset b8ec7658-b506-41c2-8fdb-ad091fc5af70
+  Material: !PGAsset 813ad932-539e-4e01-87c4-edc94616be13
+- __type: PixelGenesis._3D.Common.Components.MeshRendererComponent, PixelGenesis.3D.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 46
+  Mesh: !PGAsset 7e1eae15-b5b4-4fd1-94f5-d63da414bb62
+  Material: !PGAsset 813ad932-539e-4e01-87c4-edc94616be13
+- __type: PixelGenesis._3D.Common.Components.MeshRendererComponent, PixelGenesis.3D.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 47
+  Mesh: !PGAsset 4f4bdb5f-863f-45c0-b639-41e3f63c83fe
+  Material: !PGAsset 813ad932-539e-4e01-87c4-edc94616be13
+- __type: PixelGenesis._3D.Common.Components.MeshRendererComponent, PixelGenesis.3D.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 48
+  Mesh: !PGAsset e74b0a9c-a871-428e-bcf9-bda5b318c786
+  Material: !PGAsset 813ad932-539e-4e01-87c4-edc94616be13
+- __type: PixelGenesis._3D.Common.Components.MeshRendererComponent, PixelGenesis.3D.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 49
+  Mesh: !PGAsset fc23a52a-695d-403b-be68-c4b9a8effd57
+  Material: !PGAsset 813ad932-539e-4e01-87c4-edc94616be13
+- __type: PixelGenesis._3D.Common.Components.MeshRendererComponent, PixelGenesis.3D.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 50
+  Mesh: !PGAsset 381bc89e-6c4f-429a-a37f-1e26d9df6fe2
+  Material: !PGAsset 813ad932-539e-4e01-87c4-edc94616be13
+- __type: PixelGenesis._3D.Common.Components.MeshRendererComponent, PixelGenesis.3D.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 51
+  Mesh: !PGAsset 02ab826a-7d57-4aa0-a2f0-0fa2d6ae9d7d
+  Material: !PGAsset 813ad932-539e-4e01-87c4-edc94616be13
+- __type: PixelGenesis._3D.Common.Components.MeshRendererComponent, PixelGenesis.3D.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 52
+  Mesh: !PGAsset fce0520c-0ae9-41fa-bafe-386607c8e4ea
+  Material: !PGAsset 813ad932-539e-4e01-87c4-edc94616be13
+- __type: PixelGenesis._3D.Common.Components.MeshRendererComponent, PixelGenesis.3D.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 53
+  Mesh: !PGAsset 67f3de8f-8b87-4bf0-96cc-c4be6d74eed8
+  Material: !PGAsset 813ad932-539e-4e01-87c4-edc94616be13
+- __type: PixelGenesis._3D.Common.Components.MeshRendererComponent, PixelGenesis.3D.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 54
+  Mesh: !PGAsset 3fa4b44c-3484-416b-9917-a824b5cca84d
+  Material: !PGAsset 813ad932-539e-4e01-87c4-edc94616be13
+- __type: PixelGenesis._3D.Common.Components.MeshRendererComponent, PixelGenesis.3D.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 55
+  Mesh: !PGAsset 94511201-c17c-47c6-9c16-c9050443945f
+  Material: !PGAsset 813ad932-539e-4e01-87c4-edc94616be13
+- __type: PixelGenesis._3D.Common.Components.MeshRendererComponent, PixelGenesis.3D.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 56
+  Mesh: !PGAsset 1db8d192-f832-4550-819f-e81f47d7a911
+  Material: !PGAsset 813ad932-539e-4e01-87c4-edc94616be13
+- __type: PixelGenesis._3D.Common.Components.MeshRendererComponent, PixelGenesis.3D.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 57
+  Mesh: !PGAsset dab65489-e31d-4c95-9eac-9169d3cecd06
+  Material: !PGAsset 813ad932-539e-4e01-87c4-edc94616be13
+- __type: PixelGenesis._3D.Common.Components.MeshRendererComponent, PixelGenesis.3D.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 58
+  Mesh: !PGAsset c00caffc-0707-4064-8151-fabfb6cb0eee
+  Material: !PGAsset 813ad932-539e-4e01-87c4-edc94616be13
+- __type: PixelGenesis._3D.Common.Components.MeshRendererComponent, PixelGenesis.3D.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 59
+  Mesh: !PGAsset b53668f4-9df5-4b23-8ef0-a5c074d6e14b
+  Material: !PGAsset 813ad932-539e-4e01-87c4-edc94616be13
+- __type: PixelGenesis._3D.Common.Components.MeshRendererComponent, PixelGenesis.3D.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 60
+  Mesh: !PGAsset 493144d9-c02c-46ef-8540-b6c8bd83a911
+  Material: !PGAsset 813ad932-539e-4e01-87c4-edc94616be13
+- __type: PixelGenesis._3D.Common.Components.MeshRendererComponent, PixelGenesis.3D.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 61
+  Mesh: !PGAsset 9b00d29e-8153-4a77-aeb4-ff23db0289aa
+  Material: !PGAsset 813ad932-539e-4e01-87c4-edc94616be13
+- __type: PixelGenesis._3D.Common.Components.MeshRendererComponent, PixelGenesis.3D.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 62
+  Mesh: !PGAsset b004b664-3b9e-4dec-98de-c438fa32ef39
+  Material: !PGAsset 813ad932-539e-4e01-87c4-edc94616be13
+- __type: PixelGenesis._3D.Common.Components.MeshRendererComponent, PixelGenesis.3D.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 63
+  Mesh: !PGAsset abe43e3a-d33f-4ee3-a4c6-111de8906603
+  Material: !PGAsset 813ad932-539e-4e01-87c4-edc94616be13
+- __type: PixelGenesis._3D.Common.Components.MeshRendererComponent, PixelGenesis.3D.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 64
+  Mesh: !PGAsset 927f1fd3-35a5-4378-ad50-6eb512c88280
+  Material: !PGAsset 813ad932-539e-4e01-87c4-edc94616be13
+- __type: PixelGenesis._3D.Common.Components.MeshRendererComponent, PixelGenesis.3D.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 65
+  Mesh: !PGAsset 18369760-57df-47d0-8870-0443aa351271
+  Material: !PGAsset 813ad932-539e-4e01-87c4-edc94616be13
+- __type: PixelGenesis._3D.Common.Components.MeshRendererComponent, PixelGenesis.3D.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 66
+  Mesh: !PGAsset de90c389-640f-4231-ad97-5a256d847a72
+  Material: !PGAsset 813ad932-539e-4e01-87c4-edc94616be13
+- __type: PixelGenesis._3D.Common.Components.MeshRendererComponent, PixelGenesis.3D.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 67
+  Mesh: !PGAsset 4fbfa89e-91c0-47a3-829d-9854669d9c9f
+  Material: !PGAsset 813ad932-539e-4e01-87c4-edc94616be13
+- __type: PixelGenesis._3D.Common.Components.MeshRendererComponent, PixelGenesis.3D.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 68
+  Mesh: !PGAsset 9e49cb25-e71d-42c8-ab6d-a0826e87c6c4
+  Material: !PGAsset 813ad932-539e-4e01-87c4-edc94616be13
+- __type: PixelGenesis._3D.Common.Components.MeshRendererComponent, PixelGenesis.3D.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 69
+  Mesh: !PGAsset 20dad3ff-feae-49d3-9441-f2dd99764d38
+  Material: !PGAsset 813ad932-539e-4e01-87c4-edc94616be13
+- __type: PixelGenesis._3D.Common.Components.MeshRendererComponent, PixelGenesis.3D.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 70
+  Mesh: !PGAsset 26d42ec5-2abb-4962-a5b8-f4c6b7524c7c
+  Material: !PGAsset 813ad932-539e-4e01-87c4-edc94616be13
+- __type: PixelGenesis._3D.Common.Components.MeshRendererComponent, PixelGenesis.3D.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 71
+  Mesh: !PGAsset 85c27215-242b-4574-869f-dd168344cdf3
+  Material: !PGAsset 813ad932-539e-4e01-87c4-edc94616be13
+- __type: PixelGenesis._3D.Common.Components.MeshRendererComponent, PixelGenesis.3D.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 72
+  Mesh: !PGAsset 484760d4-d0df-46d5-a40c-d487c2c5c05e
+  Material: !PGAsset 813ad932-539e-4e01-87c4-edc94616be13
+- __type: PixelGenesis._3D.Common.Components.MeshRendererComponent, PixelGenesis.3D.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 73
+  Mesh: !PGAsset 32b346a4-0ff0-47d4-9ecc-238cf7fe192c
+  Material: !PGAsset 813ad932-539e-4e01-87c4-edc94616be13
+- __type: PixelGenesis._3D.Common.Components.MeshRendererComponent, PixelGenesis.3D.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 74
+  Mesh: !PGAsset c1ddde3d-4044-4207-a718-3d31dc11e331
+  Material: !PGAsset 813ad932-539e-4e01-87c4-edc94616be13
+- __type: PixelGenesis._3D.Common.Components.MeshRendererComponent, PixelGenesis.3D.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 75
+  Mesh: !PGAsset 5cf2acff-3415-4b9b-a04b-91a1a4997dff
+  Material: !PGAsset 813ad932-539e-4e01-87c4-edc94616be13
+- __type: PixelGenesis._3D.Common.Components.MeshRendererComponent, PixelGenesis.3D.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 76
+  Mesh: !PGAsset 15dba7b7-d08b-4521-afbe-01d9614e7c11
+  Material: !PGAsset 813ad932-539e-4e01-87c4-edc94616be13
+- __type: PixelGenesis._3D.Common.Components.MeshRendererComponent, PixelGenesis.3D.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 77
+  Mesh: !PGAsset a842109f-b007-4e21-980c-b695cdd266f2
+  Material: !PGAsset 813ad932-539e-4e01-87c4-edc94616be13
+- __type: PixelGenesis._3D.Common.Components.MeshRendererComponent, PixelGenesis.3D.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 78
+  Mesh: !PGAsset 31486689-9692-4df0-b92e-c9a31c8698ce
+  Material: !PGAsset 813ad932-539e-4e01-87c4-edc94616be13
+- __type: PixelGenesis._3D.Common.Components.MeshRendererComponent, PixelGenesis.3D.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  __ownerIndex: 79
+  Mesh: !PGAsset 995acd0b-3652-4a88-93e6-3259a0fad915
+  Material: !PGAsset 813ad932-539e-4e01-87c4-edc94616be13

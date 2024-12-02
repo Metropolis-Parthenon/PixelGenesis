@@ -146,7 +146,7 @@ internal class RendererWindowTest : GameWindow, IPGWindow
         GL.ClearColor(0.5f, 0.5f, 0.5f, 1.0f);
         GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
-        if (timePassed >= 1f)
+        if (timePassed >= 0.02f)
         {
             var transform = scene.Clone(original).GetComponent<Transform3DComponent>();
             transform.Position.X = index * 4;
@@ -159,7 +159,7 @@ internal class RendererWindowTest : GameWindow, IPGWindow
             timePassed = 0f;
             index++;
         }
-        timePassed += (float)args.Time;
+        //timePassed += (float)args.Time;
         
 
         

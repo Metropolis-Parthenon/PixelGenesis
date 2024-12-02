@@ -1,4 +1,5 @@
-﻿using PixelGenesis._3D.Renderer.DeviceApi.Abstractions;
+﻿using PixelGenesis._3D.Common.Components;
+using PixelGenesis._3D.Renderer.DeviceApi.Abstractions;
 using PixelGenesis._3D.Renderer.DeviceObjects;
 using PixelGenesis.ECS.Scene;
 using System.Numerics;
@@ -9,6 +10,8 @@ public class ForwardRenderer
 {
     IPGWindow window;
     IDeviceApi deviceApi;
+
+    public PerspectiveCameraComponent? CameraComponent { get; set; }
 
     DeviceRenderObjectManager manager;
 
@@ -63,12 +66,12 @@ public class ForwardRenderer
 
     public void Draw()
     {
-        if (changesTracker.Cameras.Length is 0)
+        if (CameraComponent is null)
         {
             return;
         }
 
-        var camera = changesTracker.Cameras[0];
+        var camera = CameraComponent;
 
         var projection = camera.GetProjectionMatrix(window.Width / window.Height);
         var view = camera.GetViewMatrix();

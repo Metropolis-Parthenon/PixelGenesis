@@ -64,4 +64,7 @@ internal sealed class SolutionService
 
 public record SolutionOpened();
 
-public record Config(string entryProject, string editorProject);
+public record Config(
+    string entryProject,
+    string editorProject    
+    );
