@@ -5,7 +5,7 @@ using PixelGenesis._3D.Renderer.DeviceApi.Abstractions;
 using PixelGenesis._3D.Renderer.DeviceApi.OpenGL;
 using PixelGenesis.ECS;
 using PixelGenesis.ECS.AssetManagement;
-using PixelGenesis.ECS.Scene;
+using PixelGenesis.ECS.Systems;
 using PixelGenesis.Editor.BuiltIn.AssetEditors;
 using PixelGenesis.Editor.Core;
 using PixelGenesis.Editor.GUI;
@@ -49,6 +49,7 @@ internal sealed class EditorApplication(EditorWindow window, IHost host) : IHost
         builder.Services.AddSingleton<MenuItemGUIRenderer>();
         builder.Services.AddSingleton<EditorWindowsGUIRenderer>();
         builder.Services.AddSingleton<PixelGenesisEditor>();
+        builder.Services.AddSingleton<FileEditorWindowService>();
         builder.Services.AddSingleton<IEditionCommandDispatcher, EditionCommandDispatcher>();
         builder.Services.AddSingleton<ICommandDispatcher, CommandDispatcher>();
         builder.Services.AddSingleton<IDeviceApi, OpenGLDeviceApi>();
@@ -61,6 +62,8 @@ internal sealed class EditorApplication(EditorWindow window, IHost host) : IHost
             sp.GetRequiredService<ICommandDispatcher>()
         ));
         builder.Services.AddSingleton<IPGWindow>(provider => provider.GetRequiredService<EditorWindow>());
+        builder.Services.AddSingleton<IWindowInputs>(provider => provider.GetRequiredService<EditorWindow>());
+        builder.Services.AddSingleton<ITime>(provider => provider.GetRequiredService<EditorWindow>());
 
         builder.Services.Scan(
             scan => 
@@ -81,17 +84,6 @@ internal sealed class EditorApplication(EditorWindow window, IHost host) : IHost
                 classes.AssignableTo<IEditorWindow>())
             .AsImplementedInterfaces()
             .WithSingletonLifetime());
-
-        builder.Services.Scan(
-            scan =>
-            scan
-            .FromCallingAssembly()
-            .AddClasses(
-                classes =>
-                classes.AssignableTo<IAssetEditor>())
-            .AsImplementedInterfaces()
-            .WithSingletonLifetime());
-
 
         builder.Services.AddSingleton<IEditorAssetManager, EditorAssetManager>();
         builder.Services.AddSingleton<IAssetManager>(provider => provider.GetRequiredService<IEditorAssetManager>());

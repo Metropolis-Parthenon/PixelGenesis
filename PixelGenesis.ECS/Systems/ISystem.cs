@@ -2,5 +2,7 @@
 
 public interface ISystem
 {
-
+    public bool IsEnabled { get; }
+    public void Update();
+    public void FixedUpdate();
 }

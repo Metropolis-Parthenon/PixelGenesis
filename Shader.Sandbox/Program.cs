@@ -37,7 +37,7 @@ var modelPath = "C:\\Users\\thesk\\OneDrive\\Documents\\Projects\\GameEngine\\Pi
 
 
 
-using (RendererWindowTest game = new RendererWindowTest(800, 600, "LearnOpenTK", assetManager, Guid.Parse("af1fca2e-e287-46f4-ab03-e0674f969051")))
+using (RendererWindowTest game = new RendererWindowTest(1920, 1080, "LearnOpenTK", assetManager, Guid.Parse("af1fca2e-e287-46f4-ab03-e0674f969051")))
 {
     game.Run();
 }

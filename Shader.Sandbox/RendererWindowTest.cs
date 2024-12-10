@@ -5,7 +5,6 @@ using PixelGenesis._3D.Renderer.DeviceApi.Abstractions;
 using PixelGenesis._3D.Renderer.DeviceApi.OpenGL;
 using System.Numerics;
 using OpenTK.Graphics.OpenGL4;
-using PixelGenesis._3D.Renderer;
 using PixelGenesis.ECS;
 using PixelGenesis._3D.Common.Components;
 using OpenTK.Windowing.GraphicsLibraryFramework;
@@ -14,8 +13,10 @@ using PixelGenesis._3D.Common.Components.Lighting;
 using PixelGenesis.ECS.AssetManagement;
 using PixelGenesis.ECS.Scene;
 using PixelGenesis._3D.Renderer.DrawPipeline;
-using Assimp;
-using static Assimp.Metadata;
+using System.Reactive.Subjects;
+using System.Reactive.Linq;
+using System.Drawing;
+
 
 namespace Shader.Sandbox;
 
@@ -29,6 +30,8 @@ internal class RendererWindowTest : GameWindow, IPGWindow
     {
         this.assetManager = assetManager;
         this.sceneId = sceneId;
+
+        SizeSubject = new BehaviorSubject<Size>(new Size(FramebufferSize.X, FramebufferSize.Y));
     }
 
     static GameWindowSettings SetSettings(GameWindowSettings settings)
@@ -43,9 +46,9 @@ internal class RendererWindowTest : GameWindow, IPGWindow
 
     PerspectiveCameraComponent PerspectiveCameraComponent;
 
-    public float Width => Size.X;
-
-    public float Height => Size.Y;
+    public Size ViewportSize => SizeSubject.Value;
+    public IObservable<Size> ViewportSizeObservable => SizeSubject.AsObservable();
+    BehaviorSubject<Size> SizeSubject;
 
     Entity light;
     Entity original;
@@ -131,6 +134,7 @@ internal class RendererWindowTest : GameWindow, IPGWindow
         var vao = GL.GenVertexArray();
         GL.BindVertexArray(vao);
         renderer.Initialize();
+        renderer.CameraComponent = PerspectiveCameraComponent;
 
         GL.ClearColor(0.5f, 0.5f, 0.5f, 1.0f);
 
@@ -142,11 +146,8 @@ internal class RendererWindowTest : GameWindow, IPGWindow
         base.OnRenderFrame(args);
 
         HandleInput((float)args.Time);
-
-        GL.ClearColor(0.5f, 0.5f, 0.5f, 1.0f);
-        GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-
-        if (timePassed >= 0.02f)
+                
+        if (timePassed >= 1f)
         {
             var transform = scene.Clone(original).GetComponent<Transform3DComponent>();
             transform.Position.X = index * 4;
@@ -159,13 +160,13 @@ internal class RendererWindowTest : GameWindow, IPGWindow
             timePassed = 0f;
             index++;
         }
-        //timePassed += (float)args.Time;
+        timePassed += (float)args.Time;
         
 
         
 
         renderer.Update();
-        renderer.Draw();
+        renderer.Draw(0);
 
         Console.Clear();
         Console.WriteLine($"FPS: {1d / args.Time}");
@@ -219,15 +220,13 @@ internal class RendererWindowTest : GameWindow, IPGWindow
         {
             cameraTransform.Rotation.Y -= speed * deltaTime;
         }
-
-
-
     }
 
     protected override void OnFramebufferResize(FramebufferResizeEventArgs e)
     {
         base.OnFramebufferResize(e);
         GL.Viewport(0, 0, e.Width, e.Height);
+        SizeSubject.OnNext(new Size(e.Width, e.Height));
     }
 
 }

@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\PixelGenesis.3D.Renderer.Abstractions\PixelGenesis.3D.Renderer.DeviceApi.Abstractions.csproj" />
     <ProjectReference Include="..\PixelGenesis.ECS\PixelGenesis.ECS.csproj" />
   </ItemGroup>
 

@@ -10,8 +10,4 @@
     <Folder Include="Assets\" />
   </ItemGroup>
 
-	<ItemGroup>
-		<AssetFolder>Assets\</AssetFolder>
-	</ItemGroup>
-
 </Project>

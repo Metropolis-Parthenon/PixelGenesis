@@ -1,12 +1,14 @@
 ﻿using ImGuiNET;
 using PixelGenesis.Editor.Core;
+using PixelGenesis.Editor.Services;
 using System.Numerics;
 
 namespace PixelGenesis.Editor.GUI;
 
 internal sealed class PixelGenesisEditor(
     MenuItemGUIRenderer menuItemGUIRenderer,
-    EditorWindowsGUIRenderer windowsGUIRenderer
+    EditorWindowsGUIRenderer windowsGUIRenderer,
+    FileEditorWindowService fileEditorService
     )
 {
     const float ToolbarSize = 50;
@@ -29,6 +31,7 @@ internal sealed class PixelGenesisEditor(
 
         menuItemGUIRenderer.OnGui();
         windowsGUIRenderer.OnGui();
+        fileEditorService.OnGui();
     }
 
     public void BeforeGui()

@@ -15,15 +15,29 @@ public sealed partial class Transform3DComponent : Component
     Quaternion lastRotation = Quaternion.CreateFromYawPitchRoll(0, 0, 0);
     Vector3 lastScale = Vector3.One;
 
-    public Vector3 Forward => -Vector3.Transform(Vector3.UnitZ, Rotation);
-    public Vector3 Backward => Vector3.Transform(Vector3.UnitZ, Rotation);
+    public Vector3 Forward => Vector3.Normalize(-Vector3.Transform(Vector3.UnitZ, Rotation));
+    public Vector3 Backward => Vector3.Normalize(Vector3.Transform(Vector3.UnitZ, Rotation));
 
-    public Vector3 Up => Vector3.Transform(Vector3.UnitY, Rotation);
-        
+    public Vector3 Left => Vector3.Normalize(-Vector3.Transform(Vector3.UnitX, Rotation));
+    public Vector3 Right => Vector3.Normalize(Vector3.Transform(Vector3.UnitX, Rotation));
+
+    public Vector3 Up => Vector3.Normalize(Vector3.Transform(Vector3.UnitY, Rotation));
+    public Vector3 Down => Vector3.Normalize(-Vector3.Transform(Vector3.UnitY, Rotation));
+
     Matrix4x4 _worldModelMatrix;
 
     public bool HasLocalChanged { get; private set; }
     public bool HasWorldChanged {  get; private set; }
+
+    public void Rotate(Quaternion offset)
+    {
+        Rotation = offset * Rotation;
+    }
+
+    public void Rotate(Vector3 eulerAngles)
+    {
+        Rotate(Quaternion.CreateFromYawPitchRoll(eulerAngles.Z, eulerAngles.Y, eulerAngles.X));
+    }
 
     public void UpdateModelMatrix()
     {        

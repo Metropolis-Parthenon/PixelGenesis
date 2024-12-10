@@ -22,4 +22,8 @@
     <Compile Update="Transform3DComponent.cs" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\" />
+  </ItemGroup>
+
 </Project>

@@ -14,7 +14,25 @@ public class OpenGLDeviceApi : IDeviceApi
     internal Dictionary<int, ICubemapTexture> _cubemaps = new Dictionary<int, ICubemapTexture>();
     internal Dictionary<int, IShaderProgram> _shaderPrograms = new Dictionary<int, IShaderProgram>();
     internal Dictionary<int, IFrameBuffer> _frameBuffers = new Dictionary<int, IFrameBuffer>();
-        
+    public void ClearColor(Vector4 color)
+    {
+        GL.ClearColor(color.X, color.Y, color.Z, color.W);
+    }
+
+    public void Clear(PGClearBufferMask mask, DrawContext context)
+    {
+        SetContext(context);
+        GL.Clear((ClearBufferMask)mask);
+    }
+    public void Viewport(int x, int y, int width, int height)
+    {
+        GL.Viewport(x,y, width, height);
+    }
+    public void BindFrameBuffer(int id)
+    {
+        GL.BindFramebuffer(FramebufferTarget.Framebuffer, id);
+    }
+
     public IInstanceBuffer CreateInstanceBuffer(int size, BufferHint bufferHint)
     {
         return new GLInstanceBuffer(size, GetUsageHint(bufferHint), this);

@@ -4,6 +4,10 @@ namespace PixelGenesis._3D.Renderer.DeviceApi.Abstractions;
 
 public interface IDeviceApi : IDisposable
 {
+    void ClearColor(Vector4 color);
+    void Clear(PGClearBufferMask mask, DrawContext context);
+    void Viewport(int x, int y, int width, int height);
+    void BindFrameBuffer(int id);
     IVertexBuffer GetVertexBufferById(int id);
     IInstanceBuffer GetInstanceBufferById(int id);
     IIndexBuffer GetIndexBufferById(int id);
@@ -71,4 +75,33 @@ public enum BufferHint
 {
     Dynamic,
     Static
+}
+
+[Flags]
+public enum PGClearBufferMask
+{
+    //
+    // Summary:
+    //     [requires: v1.0 or KHR_context_flush_control] Original was GL_NONE = 0
+    None = 0,
+    //
+    // Summary:
+    //     [requires: v1.0] Original was GL_DEPTH_BUFFER_BIT = 0x00000100
+    DepthBufferBit = 0x100,
+    //
+    // Summary:
+    //     Original was GL_ACCUM_BUFFER_BIT = 0x00000200
+    AccumBufferBit = 0x200,
+    //
+    // Summary:
+    //     [requires: v1.0] Original was GL_STENCIL_BUFFER_BIT = 0x00000400
+    StencilBufferBit = 0x400,
+    //
+    // Summary:
+    //     [requires: v1.0] Original was GL_COLOR_BUFFER_BIT = 0x00004000
+    ColorBufferBit = 0x4000,
+    //
+    // Summary:
+    //     Original was GL_COVERAGE_BUFFER_BIT_NV = 0x00008000
+    CoverageBufferBitNv = 0x8000
 }

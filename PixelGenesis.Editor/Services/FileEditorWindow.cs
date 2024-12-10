@@ -1,23 +1,19 @@
 ﻿using ImGuiNET;
 using Microsoft.Extensions.DependencyInjection;
+using PixelGenesis.Editor.BuiltIn.EditorWindows;
 using PixelGenesis.Editor.Core;
-using PixelGenesis.Editor.Services;
-using System;
 using System.Reactive.Linq;
-using System.Runtime.InteropServices;
 
-namespace PixelGenesis.Editor.BuiltIn.EditorWindows;
+namespace PixelGenesis.Editor.Services;
 
-internal class FileEditorWindow : IEditorWindow
+internal class FileEditorWindowService
 {
-    public string Name => "EditorWindow";
-        
-    List<(string Path, IAssetEditor AssetEditor)> _openedAssets = new List<(string Path, IAssetEditor AssetEditor)>();
+    Dictionary<string, IAssetEditor> _openedAssets = new ();
 
     IServiceProvider provider;
     IEditorAssetManager assetManager;
 
-    public FileEditorWindow(IServiceProvider provider, IEditorAssetManager assetManager, ICommandDispatcher commandDispatcher)
+    public FileEditorWindowService(IServiceProvider provider, IEditorAssetManager assetManager, ICommandDispatcher commandDispatcher)
     {
         this.provider = provider;
         this.assetManager = assetManager;
@@ -29,7 +25,7 @@ internal class FileEditorWindow : IEditorWindow
         var extension = Path.GetExtension(open.path);
 
         var factory = provider.GetKeyedService<IAssetEditorFactory>(extension);
-        if(factory is null)
+        if (factory is null)
         {
             // TODO open with external program
             return;
@@ -39,7 +35,7 @@ internal class FileEditorWindow : IEditorWindow
 
         var editor = factory.CreateAssetEditor(assetManager.LoadAssetFromFile(relativePath));
 
-        _openedAssets.Add((open.path, editor));
+        _openedAssets.TryAdd(open.path, editor);
 
         //if (_editors.TryGetValue(extension, out var editor))
         //{
@@ -50,25 +46,19 @@ internal class FileEditorWindow : IEditorWindow
 
     public void OnGui()
     {
-        ImGui.BeginTabBar("Editors");
-
-        var editors = CollectionsMarshal.AsSpan(_openedAssets);
-        foreach (var (path, editor) in editors)
+        foreach (var (path, editor) in _openedAssets)
         {
-            ImGui.BeginTabItem(Path.GetFileName(path));
+            ImGui.Begin(Path.GetFileName(path));
             editor.OnGui();
-            ImGui.EndTabItem();
+            ImGui.End();
         }
-
-        ImGui.EndTabBar();
     }
 
     public void OnBeforeGui()
     {
-        var editors = CollectionsMarshal.AsSpan(_openedAssets);
-        foreach (var (path, editor) in editors)
-        {            
-            editor.BeforeGui();         
+        foreach (var (path, editor) in _openedAssets)
+        {
+            editor.BeforeGui();
         }
     }
 
